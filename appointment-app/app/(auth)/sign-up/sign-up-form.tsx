@@ -34,7 +34,7 @@ export function SignUpForm() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleAccountTypeChange = (value: string) => {
+  const handleAccountTypeChange = (value: string | null) => {
     if (value === "customer" || value === "organiser") {
       setAccountType(value);
     }
@@ -83,26 +83,8 @@ export function SignUpForm() {
         return;
       }
 
-      // Sign in the user after successful registration
-      const signInResult = await authClient.signIn.email({
-        email,
-        password,
-      });
-
-      if (signInResult.error) {
-        setError("Account created but sign-in failed. Please try signing in manually.");
-        return;
-      }
-
-      // Redirect based on account type and role
-      if (result.accountType === "customer") {
-        router.push("/book");
-      } else if (result.role === "owner") {
-        router.push("/organiser");
-      } else {
-        router.push("/organiser");
-      }
-      router.refresh();
+      // Redirect to OTP verification page
+      router.push(`/verify-otp?email=${encodeURIComponent(email)}`);
     } catch (err) {
       console.error("Sign-up error:", err);
       setError("An unexpected error occurred. Please try again.");
