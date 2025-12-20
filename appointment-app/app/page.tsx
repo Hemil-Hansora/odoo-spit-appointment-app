@@ -87,46 +87,46 @@ export default function Page() {
 
 	return (
 		<main
-			className={`${inter.className} bg-slate-50 text-slate-800 antialiased overflow-x-hidden selection:bg-brand-100 selection:text-brand-900`}
+			className={`${inter.className} bg-background text-foreground antialiased overflow-x-hidden`}
 		>
 			<Script src="https://unpkg.com/lucide@latest" strategy="afterInteractive" onLoad={handleIconRender} />
 
 			<nav
-				className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all duration-300"
+				className="fixed w-full z-50 bg-card/80 backdrop-blur-md border-b border-border transition-all duration-300"
 				id="navbar"
 			>
 				<div className="max-w-[1440px] mx-auto px-6 h-20 flex items-center justify-between">
 					<div className="flex items-center gap-2">
-						<div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white">
+						<div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground">
 							<i data-lucide="calendar-check-2" className="w-5 h-5" />
 						</div>
-						<span className="font-bold text-xl tracking-tight text-slate-900">
-							Appoint<span className="text-brand-600">.</span>
+						<span className="font-bold text-xl tracking-tight text-foreground">
+							Appoint<span className="text-primary">.</span>
 						</span>
 					</div>
 
-					<div className="hidden md:flex items-center gap-8 font-medium text-sm text-slate-600">
-						<a href="#use-cases" className="hover:text-brand-600 transition-colors">
+					<div className="hidden md:flex items-center gap-8 font-medium text-sm text-muted-foreground">
+						<a href="#use-cases" className="hover:text-primary transition-colors">
 							Use Cases
 						</a>
-						<a href="#features" className="hover:text-brand-600 transition-colors">
+						<a href="#features" className="hover:text-primary transition-colors">
 							Features
 						</a>
-						<a href="#how-it-works" className="hover:text-brand-600 transition-colors">
+						<a href="#how-it-works" className="hover:text-primary transition-colors">
 							How it Works
 						</a>
-						<a href="#pricing" className="hover:text-brand-600 transition-colors">
+						<a href="#pricing" className="hover:text-primary transition-colors">
 							Pricing
 						</a>
 					</div>
 
 					<div className="flex items-center gap-4">
-						<a href="#" className="hidden md:block text-sm font-semibold text-slate-600 hover:text-slate-900">
+						<a href="#" className="hidden md:block text-sm font-semibold text-muted-foreground hover:text-foreground">
 							Log in
 						</a>
 						<a
 							href="#"
-							className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-lg transition-all shadow-lg shadow-slate-900/10"
+							className="px-5 py-2.5 bg-foreground hover:bg-foreground/90 text-background text-sm font-semibold rounded-lg transition-all shadow-lg"
 						>
 							Get Started
 						</a>
@@ -137,48 +137,48 @@ export default function Page() {
 			<section className="pt-32 pb-20 lg:pt-48 lg:pb-32 px-6 overflow-hidden">
 				<div className="max-w-[1440px] mx-auto grid lg:grid-cols-2 gap-16 items-center">
 					<div className="max-w-2xl reveal active">
-						<div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-brand-600 mb-8">
-							<span className="w-2 h-2 rounded-full bg-brand-600 animate-pulse" />
+						<div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted border border-border text-xs font-semibold text-primary mb-8">
+							<span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
 							v2.0 is now live
 						</div>
-						<h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 leading-[1.1] mb-6">
+						<h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.1] mb-6">
 							The Perfect <br />
-							<span className="text-slate-400">Appointment</span> <br />
+							<span className="text-muted-foreground">Appointment</span> <br />
 							Booking System
 						</h1>
-						<p className="text-lg text-slate-500 mb-10 leading-relaxed max-w-lg">
+						<p className="text-lg text-muted-foreground mb-10 leading-relaxed max-w-lg">
 							Manage real-time availability, enforce flexible rules, and ensure zero double bookings. The
 							enterprise-grade scheduling layer for modern professionals.
 						</p>
 						<div className="flex flex-col sm:flex-row gap-4">
 							<a
 								href="#"
-								className="px-8 py-4 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-lg shadow-brand-600/20 transition-all transform hover:-translate-y-1 text-center"
+								className="px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl shadow-lg transition-all transform hover:-translate-y-1 text-center"
 							>
 								Try Interactive Demo
 							</a>
 							<a
 								href="#"
-								className="px-8 py-4 bg-white border border-slate-200 hover:border-slate-300 text-slate-700 font-semibold rounded-xl shadow-sm hover:shadow-md transition-all text-center"
+								className="px-8 py-4 bg-card border border-border hover:border-muted-foreground text-foreground font-semibold rounded-xl shadow-sm hover:shadow-md transition-all text-center"
 							>
 								Create a Service
 							</a>
 						</div>
-						<div className="mt-8 flex items-center gap-4 text-sm text-slate-400">
+						<div className="mt-8 flex items-center gap-4 text-sm text-muted-foreground">
 							<div className="flex -space-x-2">
 								<img
 									src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&h=64"
-									className="w-8 h-8 rounded-full border-2 border-slate-50"
+									className="w-8 h-8 rounded-full border-2 border-background"
 									alt="Customer 1"
 								/>
 								<img
 									src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=64&h=64"
-									className="w-8 h-8 rounded-full border-2 border-slate-50"
+									className="w-8 h-8 rounded-full border-2 border-background"
 									alt="Customer 2"
 								/>
 								<img
 									src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=64&h=64"
-									className="w-8 h-8 rounded-full border-2 border-slate-50"
+									className="w-8 h-8 rounded-full border-2 border-background"
 									alt="Customer 3"
 								/>
 							</div>
@@ -187,17 +187,17 @@ export default function Page() {
 					</div>
 
 					<div className="relative reveal delay-100">
-						<div className="absolute -top-20 -right-20 w-96 h-96 bg-brand-100/50 rounded-full blur-3xl" />
+						<div className="absolute -top-20 -right-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
 
-						<div className="relative bg-white rounded-2xl shadow-floating border border-slate-100 p-8 max-w-md mx-auto lg:ml-auto">
-							<div className="flex items-start justify-between mb-8 border-b border-slate-100 pb-6">
+						<div className="relative bg-card rounded-2xl shadow-xl border border-border p-8 max-w-md mx-auto lg:ml-auto">
+							<div className="flex items-start justify-between mb-8 border-b border-border pb-6">
 								<div className="flex gap-4">
-									<div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-600">
+									<div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center text-muted-foreground">
 										<i data-lucide="user" className="w-6 h-6" />
 									</div>
 									<div>
-										<h3 className="font-bold text-slate-900">Discovery Call</h3>
-										<p className="text-sm text-slate-500">30 min • Zoom Video</p>
+										<h3 className="font-bold text-foreground">Discovery Call</h3>
+										<p className="text-sm text-muted-foreground">30 min • Zoom Video</p>
 									</div>
 								</div>
 							</div>
