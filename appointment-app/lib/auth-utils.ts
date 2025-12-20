@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import db from "./db";
 
 export type UserRole = "owner" | "admin" | "member" | "customer";
 
@@ -9,10 +10,11 @@ export interface AuthUser {
   email: string;
   role?: UserRole;
   organizationId?: string;
+  accountType?: "customer" | "organiser";
 }
 
 /**
- * Get the current authenticated user session
+ * Get the current authenticated user session with role and organization info
  * Use this in Server Components and Server Actions
  */
 export async function getSession() {
@@ -20,7 +22,65 @@ export async function getSession() {
     headers: await headers(),
   });
   
-  return session;
+  if (!session) {
+    return null;
+  }
+
+  const userId = session.user.id;
+
+  // Get user's organization memberships
+  const memberships = await db.member.findMany({
+    where: { userId },
+    include: {
+      organization: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  // Get active organization from session or use first membership
+  let activeOrganizationId = (session as any).activeOrganizationId;
+  
+  if (!activeOrganizationId && memberships.length > 0) {
+    activeOrganizationId = memberships[0].organizationId;
+  }
+
+  const activeMembership = memberships.find(
+    (m) => m.organizationId === activeOrganizationId
+  );
+
+  // Determine role and account type
+  let role: UserRole = "customer";
+  let accountType: "customer" | "organiser" = "customer";
+  let organization = null;
+
+  if (activeMembership) {
+    role = activeMembership.role as UserRole;
+    accountType = "organiser";
+    organization = {
+      id: activeMembership.organization.id,
+      name: activeMembership.organization.name,
+      slug: activeMembership.organization.slug,
+      logo: activeMembership.organization.logo,
+    };
+  }
+
+  return {
+    ...session,
+    user: {
+      ...session.user,
+      role,
+      accountType,
+      organizationId: activeOrganizationId,
+      activeOrganizationId,
+      organizations: memberships.map((m) => ({
+        id: m.organization.id,
+        name: m.organization.name,
+        slug: m.organization.slug,
+        role: m.role,
+      })),
+    },
+    organization,
+  };
 }
 
 /**

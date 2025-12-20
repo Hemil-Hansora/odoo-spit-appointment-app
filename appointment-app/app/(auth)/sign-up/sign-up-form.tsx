@@ -31,6 +31,7 @@ export function SignUpForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [accountType, setAccountType] = useState<"customer" | "organiser">("customer");
+  const [organizationName, setOrganizationName] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,32 +50,58 @@ export function SignUpForm() {
       return;
     }
 
+    if (accountType === "organiser" && !organizationName.trim()) {
+      setError("Organization name is required for organiser accounts");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const result = await authClient.signUp.email({
-        email,
-        password,
-        name,
-        // Add custom field for account type if needed in your schema
-        // accountType,
+      // Use custom sign-up endpoint that handles organization creation
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+          name,
+          accountType,
+          organizationName: accountType === "organiser" ? organizationName : undefined,
+        }),
       });
 
-      if (result.error) {
-        setError(result.error.message || "Failed to create account");
+      const result = await response.json();
+
+      if (!response.ok || result.error) {
+        setError(result.error || "Failed to create account");
         setIsLoading(false);
         return;
       }
 
-      // Successfully signed up, redirect to appropriate dashboard
-      // For now, customer goes to customer portal, organiser needs to create/join org
-      if (accountType === "customer") {
+      // Sign in the user after successful registration
+      const signInResult = await authClient.signIn.email({
+        email,
+        password,
+      });
+
+      if (signInResult.error) {
+        setError("Account created but sign-in failed. Please try signing in manually.");
+        setIsLoading(false);
+        return;
+      }
+
+      // Redirect based on account type and role
+      if (result.accountType === "customer") {
         router.push("/customer");
+      } else if (result.role === "owner") {
+        router.push("/admin");
       } else {
         router.push("/organiser");
       }
       router.refresh();
     } catch (err) {
+      console.error("Sign-up error:", err);
       setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
     }
@@ -146,6 +173,28 @@ export function SignUpForm() {
                 : "As an organiser, you can create services and manage bookings."}
             </p>
           </div>
+          
+          {accountType === "organiser" && (
+            <div className="grid gap-2">
+              <Label htmlFor="organizationName" className="text-foreground">
+                Organization Name
+              </Label>
+              <Input
+                id="organizationName"
+                name="organizationName"
+                placeholder="My Company"
+                value={organizationName}
+                onChange={(e) => setOrganizationName(e.target.value)}
+                required={accountType === "organiser"}
+                disabled={isLoading}
+                className="border-border"
+              />
+              <p className="text-xs text-muted-foreground">
+                This will be the name of your organization where you manage services
+              </p>
+            </div>
+          )}
+          
           <div className="grid gap-2">
             <Label htmlFor="password" className="text-foreground">Password</Label>
             <Input

@@ -45,6 +45,7 @@ export type ServiceMinAggregateOutputType = {
   maxCapacity: number | null
   manualConfirm: boolean | null
   advancePayment: boolean | null
+  metadata: string | null
   organizationId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -59,6 +60,7 @@ export type ServiceMaxAggregateOutputType = {
   maxCapacity: number | null
   manualConfirm: boolean | null
   advancePayment: boolean | null
+  metadata: string | null
   organizationId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -73,6 +75,7 @@ export type ServiceCountAggregateOutputType = {
   maxCapacity: number
   manualConfirm: number
   advancePayment: number
+  metadata: number
   organizationId: number
   createdAt: number
   updatedAt: number
@@ -99,6 +102,7 @@ export type ServiceMinAggregateInputType = {
   maxCapacity?: true
   manualConfirm?: true
   advancePayment?: true
+  metadata?: true
   organizationId?: true
   createdAt?: true
   updatedAt?: true
@@ -113,6 +117,7 @@ export type ServiceMaxAggregateInputType = {
   maxCapacity?: true
   manualConfirm?: true
   advancePayment?: true
+  metadata?: true
   organizationId?: true
   createdAt?: true
   updatedAt?: true
@@ -127,6 +132,7 @@ export type ServiceCountAggregateInputType = {
   maxCapacity?: true
   manualConfirm?: true
   advancePayment?: true
+  metadata?: true
   organizationId?: true
   createdAt?: true
   updatedAt?: true
@@ -228,6 +234,7 @@ export type ServiceGroupByOutputType = {
   maxCapacity: number | null
   manualConfirm: boolean
   advancePayment: boolean
+  metadata: string | null
   organizationId: string
   createdAt: Date
   updatedAt: Date
@@ -265,6 +272,7 @@ export type ServiceWhereInput = {
   maxCapacity?: Prisma.IntNullableFilter<"Service"> | number | null
   manualConfirm?: Prisma.BoolFilter<"Service"> | boolean
   advancePayment?: Prisma.BoolFilter<"Service"> | boolean
+  metadata?: Prisma.StringNullableFilter<"Service"> | string | null
   organizationId?: Prisma.StringFilter<"Service"> | string
   createdAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Service"> | Date | string
@@ -285,6 +293,7 @@ export type ServiceOrderByWithRelationInput = {
   maxCapacity?: Prisma.SortOrderInput | Prisma.SortOrder
   manualConfirm?: Prisma.SortOrder
   advancePayment?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -308,6 +317,7 @@ export type ServiceWhereUniqueInput = Prisma.AtLeast<{
   maxCapacity?: Prisma.IntNullableFilter<"Service"> | number | null
   manualConfirm?: Prisma.BoolFilter<"Service"> | boolean
   advancePayment?: Prisma.BoolFilter<"Service"> | boolean
+  metadata?: Prisma.StringNullableFilter<"Service"> | string | null
   organizationId?: Prisma.StringFilter<"Service"> | string
   createdAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Service"> | Date | string
@@ -328,6 +338,7 @@ export type ServiceOrderByWithAggregationInput = {
   maxCapacity?: Prisma.SortOrderInput | Prisma.SortOrder
   manualConfirm?: Prisma.SortOrder
   advancePayment?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -350,6 +361,7 @@ export type ServiceScalarWhereWithAggregatesInput = {
   maxCapacity?: Prisma.IntNullableWithAggregatesFilter<"Service"> | number | null
   manualConfirm?: Prisma.BoolWithAggregatesFilter<"Service"> | boolean
   advancePayment?: Prisma.BoolWithAggregatesFilter<"Service"> | boolean
+  metadata?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   organizationId?: Prisma.StringWithAggregatesFilter<"Service"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Service"> | Date | string
@@ -364,6 +376,7 @@ export type ServiceCreateInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutServicesInput
@@ -383,6 +396,7 @@ export type ServiceUncheckedCreateInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   organizationId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -402,6 +416,7 @@ export type ServiceUpdateInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutServicesNestedInput
@@ -421,6 +436,7 @@ export type ServiceUncheckedUpdateInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -440,6 +456,7 @@ export type ServiceCreateManyInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   organizationId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -454,6 +471,7 @@ export type ServiceUpdateManyMutationInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -467,6 +485,7 @@ export type ServiceUncheckedUpdateManyInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -491,6 +510,7 @@ export type ServiceCountOrderByAggregateInput = {
   maxCapacity?: Prisma.SortOrder
   manualConfirm?: Prisma.SortOrder
   advancePayment?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -510,6 +530,7 @@ export type ServiceMaxOrderByAggregateInput = {
   maxCapacity?: Prisma.SortOrder
   manualConfirm?: Prisma.SortOrder
   advancePayment?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -524,6 +545,7 @@ export type ServiceMinOrderByAggregateInput = {
   maxCapacity?: Prisma.SortOrder
   manualConfirm?: Prisma.SortOrder
   advancePayment?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -700,6 +722,7 @@ export type ServiceCreateWithoutOrganizationInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   resources?: Prisma.ResourceCreateNestedManyWithoutServicesInput
@@ -718,6 +741,7 @@ export type ServiceUncheckedCreateWithoutOrganizationInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   resources?: Prisma.ResourceUncheckedCreateNestedManyWithoutServicesInput
@@ -765,6 +789,7 @@ export type ServiceScalarWhereInput = {
   maxCapacity?: Prisma.IntNullableFilter<"Service"> | number | null
   manualConfirm?: Prisma.BoolFilter<"Service"> | boolean
   advancePayment?: Prisma.BoolFilter<"Service"> | boolean
+  metadata?: Prisma.StringNullableFilter<"Service"> | string | null
   organizationId?: Prisma.StringFilter<"Service"> | string
   createdAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Service"> | Date | string
@@ -779,6 +804,7 @@ export type ServiceCreateWithoutResourcesInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutServicesInput
@@ -797,6 +823,7 @@ export type ServiceUncheckedCreateWithoutResourcesInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   organizationId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -836,6 +863,7 @@ export type ServiceCreateWithoutSchedulesInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutServicesInput
@@ -854,6 +882,7 @@ export type ServiceUncheckedCreateWithoutSchedulesInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   organizationId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -888,6 +917,7 @@ export type ServiceUpdateWithoutSchedulesInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutServicesNestedInput
@@ -906,6 +936,7 @@ export type ServiceUncheckedUpdateWithoutSchedulesInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -924,6 +955,7 @@ export type ServiceCreateWithoutSlotsInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutServicesInput
@@ -942,6 +974,7 @@ export type ServiceUncheckedCreateWithoutSlotsInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   organizationId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -976,6 +1009,7 @@ export type ServiceUpdateWithoutSlotsInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutServicesNestedInput
@@ -994,6 +1028,7 @@ export type ServiceUncheckedUpdateWithoutSlotsInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1012,6 +1047,7 @@ export type ServiceCreateWithoutBookingsInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutServicesInput
@@ -1030,6 +1066,7 @@ export type ServiceUncheckedCreateWithoutBookingsInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   organizationId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1064,6 +1101,7 @@ export type ServiceUpdateWithoutBookingsInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutServicesNestedInput
@@ -1082,6 +1120,7 @@ export type ServiceUncheckedUpdateWithoutBookingsInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1100,6 +1139,7 @@ export type ServiceCreateWithoutQuestionsInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutServicesInput
@@ -1118,6 +1158,7 @@ export type ServiceUncheckedCreateWithoutQuestionsInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   organizationId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1152,6 +1193,7 @@ export type ServiceUpdateWithoutQuestionsInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutServicesNestedInput
@@ -1170,6 +1212,7 @@ export type ServiceUncheckedUpdateWithoutQuestionsInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1188,6 +1231,7 @@ export type ServiceCreateManyOrganizationInput = {
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1201,6 +1245,7 @@ export type ServiceUpdateWithoutOrganizationInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   resources?: Prisma.ResourceUpdateManyWithoutServicesNestedInput
@@ -1219,6 +1264,7 @@ export type ServiceUncheckedUpdateWithoutOrganizationInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   resources?: Prisma.ResourceUncheckedUpdateManyWithoutServicesNestedInput
@@ -1237,6 +1283,7 @@ export type ServiceUncheckedUpdateManyWithoutOrganizationInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1250,6 +1297,7 @@ export type ServiceUpdateWithoutResourcesInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutServicesNestedInput
@@ -1268,6 +1316,7 @@ export type ServiceUncheckedUpdateWithoutResourcesInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1286,6 +1335,7 @@ export type ServiceUncheckedUpdateManyWithoutResourcesInput = {
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  metadata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1367,6 +1417,7 @@ export type ServiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   maxCapacity?: boolean
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: boolean
   organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1388,6 +1439,7 @@ export type ServiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   maxCapacity?: boolean
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: boolean
   organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1403,6 +1455,7 @@ export type ServiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   maxCapacity?: boolean
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: boolean
   organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1418,12 +1471,13 @@ export type ServiceSelectScalar = {
   maxCapacity?: boolean
   manualConfirm?: boolean
   advancePayment?: boolean
+  metadata?: boolean
   organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "durationMinutes" | "isPublished" | "maxCapacity" | "manualConfirm" | "advancePayment" | "organizationId" | "createdAt" | "updatedAt", ExtArgs["result"]["service"]>
+export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "durationMinutes" | "isPublished" | "maxCapacity" | "manualConfirm" | "advancePayment" | "metadata" | "organizationId" | "createdAt" | "updatedAt", ExtArgs["result"]["service"]>
 export type ServiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   resources?: boolean | Prisma.Service$resourcesArgs<ExtArgs>
@@ -1459,6 +1513,7 @@ export type $ServicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     maxCapacity: number | null
     manualConfirm: boolean
     advancePayment: boolean
+    metadata: string | null
     organizationId: string
     createdAt: Date
     updatedAt: Date
@@ -1899,6 +1954,7 @@ export interface ServiceFieldRefs {
   readonly maxCapacity: Prisma.FieldRef<"Service", 'Int'>
   readonly manualConfirm: Prisma.FieldRef<"Service", 'Boolean'>
   readonly advancePayment: Prisma.FieldRef<"Service", 'Boolean'>
+  readonly metadata: Prisma.FieldRef<"Service", 'String'>
   readonly organizationId: Prisma.FieldRef<"Service", 'String'>
   readonly createdAt: Prisma.FieldRef<"Service", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Service", 'DateTime'>
