@@ -1,0 +1,3273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment App — The Perfect Booking System</title>
+  <meta name="description" content="Streamline appointments, automate scheduling, and deliver exceptional booking experiences. The perfect booking system for modern teams.">
+  <meta name="keywords" content="appointment booking, scheduling software, calendar management, booking system">
+  <link rel="canonical" href="https://appointmentapp.com">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Appointment App — The Perfect Booking System">
+  <meta property="og:description" content="Streamline appointments, automate scheduling, and deliver exceptional booking experiences.">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Appointment App — The Perfect Booking System">
+  <meta name="twitter:description" content="Streamline appointments, automate scheduling, and deliver exceptional booking experiences.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* ========================================
+       DESIGN SYSTEM - CSS VARIABLES
+       ======================================== */
+    :root {
+      /* Core - Dark theme */
+      --background: oklch(0 0 0);
+      --foreground: oklch(1.0000 0 0);
+      
+      /* Card surfaces */
+      --card: oklch(0.2455 0.0217 257.2823);
+      --card-foreground: oklch(1.0000 0 0);
+      
+      /* Popover */
+      --popover: oklch(0.2455 0.0217 257.2823);
+      --popover-foreground: oklch(1.0000 0 0);
+      
+      /* Primary - Purple/Violet */
+      --primary: oklch(0.6801 0.1583 276.9349);
+      --primary-foreground: oklch(0 0 0);
+      --primary-hover: oklch(0.7201 0.1683 276.9349);
+      --primary-light: oklch(0.3801 0.0883 276.9349);
+      
+      /* Secondary - Cyan/Teal */
+      --secondary: oklch(0.7845 0.1325 181.9120);
+      --secondary-foreground: oklch(0 0 0);
+      
+      /* Muted - Subtle backgrounds */
+      --muted: oklch(0.3211 0 0);
+      --muted-foreground: oklch(0.8452 0 0);
+      
+      /* Accent - Yellow/Lime */
+      --accent: oklch(0.8790 0.1534 91.6054);
+      --accent-foreground: oklch(0 0 0);
+      
+      /* Destructive */
+      --destructive: oklch(0.7106 0.1661 22.2162);
+      --destructive-foreground: oklch(0 0 0);
+      
+      /* Border and input */
+      --border: oklch(0.4459 0 0);
+      --input: oklch(1.0000 0 0);
+      --ring: oklch(0.6801 0.1583 276.9349);
+      
+      /* Radius */
+      --radius: 1rem;
+      
+      /* Shadows */
+      --shadow-sm: 0px 0px 0px 0px hsl(0 0% 10.1961% / 0.05), 0px 1px 2px -1px hsl(0 0% 10.1961% / 0.05);
+      --shadow-md: 0px 0px 0px 0px hsl(0 0% 10.1961% / 0.05), 0px 2px 4px -1px hsl(0 0% 10.1961% / 0.05);
+      --shadow-lg: 0px 0px 0px 0px hsl(0 0% 10.1961% / 0.05), 0px 4px 6px -1px hsl(0 0% 10.1961% / 0.05);
+      --shadow-xl: 0px 0px 0px 0px hsl(0 0% 10.1961% / 0.05), 0px 8px 10px -1px hsl(0 0% 10.1961% / 0.05);
+      --shadow-card: 0px 0px 0px 0px hsl(0 0% 10.1961% / 0.05), 0px 1px 2px -1px hsl(0 0% 10.1961% / 0.05);
+      --shadow-card-hover: 0px 0px 0px 0px hsl(0 0% 10.1961% / 0.05), 0px 4px 6px -1px hsl(0 0% 10.1961% / 0.05);
+    }
+
+    .light {
+      --background: oklch(0.9789 0.0082 121.6272);
+      --foreground: oklch(0 0 0);
+      --card: oklch(1.0000 0 0);
+      --card-foreground: oklch(0 0 0);
+      --popover: oklch(1.0000 0 0);
+      --popover-foreground: oklch(0 0 0);
+      --primary: oklch(0.5106 0.2301 276.9656);
+      --primary-foreground: oklch(1.0000 0 0);
+      --primary-hover: oklch(0.4506 0.2401 276.9656);
+      --primary-light: oklch(0.9106 0.0801 276.9656);
+      --secondary: oklch(0.7038 0.1230 182.5025);
+      --secondary-foreground: oklch(1.0000 0 0);
+      --muted: oklch(0.9551 0 0);
+      --muted-foreground: oklch(0.3211 0 0);
+      --accent: oklch(0.7686 0.1647 70.0804);
+      --accent-foreground: oklch(0 0 0);
+      --destructive: oklch(0.6368 0.2078 25.3313);
+      --destructive-foreground: oklch(1.0000 0 0);
+      --border: oklch(0 0 0);
+      --input: oklch(0.5555 0 0);
+      --ring: oklch(0.7853 0.1041 274.7134);
+      --shadow-card: 0px 0px 0px 0px hsl(0 0% 10.1961% / 0.03);
+      --shadow-card-hover: 0px 0px 0px 0px hsl(0 0% 10.1961% / 0.05), 0px 4px 6px -1px hsl(0 0% 10.1961% / 0.05);
+    }
+
+    /* ========================================
+       BASE STYLES
+       ======================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      outline: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* ========================================
+       UTILITY CLASSES
+       ======================================== */
+    .container-custom {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .container-custom {
+        padding: 0 1.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .container-custom {
+        padding: 0 2rem;
+      }
+    }
+
+    .section-padding {
+      padding: 5rem 0;
+    }
+
+    @media (min-width: 768px) {
+      .section-padding {
+        padding: 7rem 0;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .section-padding {
+        padding: 8rem 0;
+      }
+    }
+
+    .card-premium {
+      background-color: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .card-premium:hover {
+      box-shadow: var(--shadow-card-hover);
+    }
+
+    .texture-dots {
+      background-image: radial-gradient(hsla(210, 40%, 96%, 0.03) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .text-gradient {
+      background: linear-gradient(to right, var(--primary), hsla(38, 92%, 50%, 0.7));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius);
+      font-weight: 500;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary);
+      color: var(--secondary-foreground);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--accent);
+      border-color: var(--primary);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--muted-foreground);
+    }
+
+    .btn-ghost:hover {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    .btn-xl {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+    }
+
+    /* ========================================
+       ANIMATIONS
+       ======================================== */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-10px) rotate(1deg);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .animate-fade-up {
+      animation: fadeUp 0.6s ease-out forwards;
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-pulse {
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* Staggered animation delays */
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    .delay-500 { animation-delay: 0.5s; }
+
+    /* ========================================
+       HEADER
+       ======================================== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      transition: all 0.3s ease;
+    }
+
+    .header.scrolled {
+      background-color: hsla(222, 47%, 6%, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 4rem;
+    }
+
+    @media (min-width: 1024px) {
+      .header-inner {
+        height: 5rem;
+      }
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.5rem;
+      background-color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-foreground);
+    }
+
+    .logo-text {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--foreground);
+      display: none;
+    }
+
+    @media (min-width: 640px) {
+      .logo-text {
+        display: block;
+      }
+    }
+
+    .nav-desktop {
+      display: none;
+      gap: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+      .nav-desktop {
+        display: flex;
+      }
+    }
+
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--foreground);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .theme-toggle, .mobile-menu-toggle {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.5rem;
+      background-color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted-foreground);
+      transition: color 0.2s ease;
+    }
+
+    .theme-toggle:hover, .mobile-menu-toggle:hover {
+      color: var(--foreground);
+    }
+
+    .mobile-menu-toggle {
+      display: flex;
+    }
+
+    @media (min-width: 1024px) {
+      .mobile-menu-toggle {
+        display: none;
+      }
+    }
+
+    .header-btn {
+      display: none;
+    }
+
+    @media (min-width: 640px) {
+      .header-btn {
+        display: inline-flex;
+      }
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      background-color: var(--background);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-menu.open {
+      display: block;
+    }
+
+    @media (min-width: 1024px) {
+      .mobile-menu {
+        display: none !important;
+      }
+    }
+
+    .mobile-menu-inner {
+      padding: 1rem 0;
+    }
+
+    .mobile-nav-link {
+      display: block;
+      padding: 0.5rem 0;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+    }
+
+    .mobile-menu-buttons {
+      display: flex;
+      gap: 0.5rem;
+      padding-top: 1rem;
+      margin-top: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .mobile-menu-buttons .btn {
+      flex: 1;
+    }
+
+    /* ========================================
+       HERO SECTION
+       ======================================== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-texture {
+      position: absolute;
+      inset: 0;
+      opacity: 0.5;
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent, transparent 50%, hsla(222, 47%, 6%, 0.5));
+    }
+
+    .hero-orb-1 {
+      position: absolute;
+      top: 25%;
+      left: 0;
+      width: 24rem;
+      height: 24rem;
+      background-color: hsla(38, 92%, 50%, 0.05);
+      border-radius: 50%;
+      filter: blur(48px);
+      transform: translateX(-50%);
+    }
+
+    .hero-orb-2 {
+      position: absolute;
+      bottom: 25%;
+      right: 0;
+      width: 20rem;
+      height: 20rem;
+      background-color: var(--accent);
+      border-radius: 50%;
+      filter: blur(48px);
+      transform: translateX(50%);
+      opacity: 0.3;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      padding: 5rem 0;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-content {
+        padding: 0;
+      }
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+      }
+    }
+
+    .hero-text {
+      text-align: center;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-text {
+        text-align: left;
+      }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.375rem 0.75rem;
+      border-radius: 9999px;
+      background-color: var(--primary-light);
+      border: 1px solid hsla(38, 92%, 50%, 0.1);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease-out forwards;
+      animation-delay: 0.1s;
+    }
+
+    .hero-badge-dot {
+      width: 0.375rem;
+      height: 0.375rem;
+      border-radius: 50%;
+      background-color: var(--primary);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .hero-badge-text {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--primary);
+    }
+
+    .hero-title {
+      font-size: 2.25rem;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease-out forwards;
+      animation-delay: 0.2s;
+    }
+
+    @media (min-width: 640px) {
+      .hero-title {
+        font-size: 3rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .hero-title {
+        font-size: 3.75rem;
+      }
+    }
+
+    .hero-underline {
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-underline svg {
+      position: absolute;
+      bottom: -0.5rem;
+      left: 0;
+      width: 100%;
+    }
+
+    .hero-description {
+      font-size: 1.125rem;
+      color: var(--muted-foreground);
+      max-width: 32rem;
+      margin: 0 auto 2rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease-out forwards;
+      animation-delay: 0.3s;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-description {
+        margin-left: 0;
+      }
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.6s ease-out forwards;
+      animation-delay: 0.4s;
+    }
+
+    @media (min-width: 640px) {
+      .hero-cta {
+        flex-direction: row;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .hero-cta {
+        justify-content: flex-start;
+      }
+    }
+
+    .hero-cta .btn i {
+      transition: transform 0.2s ease;
+    }
+
+    .hero-cta .btn:hover i {
+      transform: translateX(4px);
+    }
+
+    .hero-social-proof {
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.6s ease-out forwards;
+      animation-delay: 0.6s;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-social-proof {
+        justify-content: flex-start;
+      }
+    }
+
+    .hero-avatars {
+      display: flex;
+    }
+
+    .hero-avatar {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, hsla(38, 92%, 50%, 0.2), hsla(38, 92%, 50%, 0.05));
+      border: 2px solid var(--background);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: -0.5rem;
+    }
+
+    .hero-avatar:first-child {
+      margin-left: 0;
+    }
+
+    .hero-avatar span {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--primary);
+    }
+
+    .hero-social-text {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .hero-social-text strong {
+      color: var(--foreground);
+      font-weight: 600;
+    }
+
+    /* Booking Card */
+    .hero-card-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    @media (min-width: 1024px) {
+      .hero-card-container {
+        justify-content: flex-end;
+      }
+    }
+
+    .booking-card {
+      width: 100%;
+      max-width: 22rem;
+      position: relative;
+      opacity: 0;
+      animation: fadeUp 0.6s ease-out forwards;
+      animation-delay: 0.3s;
+    }
+
+    .booking-card-inner {
+      padding: 1.5rem;
+      overflow: hidden;
+    }
+
+    .booking-progress {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .booking-progress-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background-color: var(--border);
+      transition: background-color 0.3s ease;
+    }
+
+    .booking-progress-dot.active {
+      background-color: var(--primary);
+    }
+
+    .booking-progress-line {
+      width: 2rem;
+      height: 2px;
+      background-color: var(--border);
+      transition: background-color 0.3s ease;
+    }
+
+    .booking-progress-line.active {
+      background-color: var(--primary);
+    }
+
+    .booking-step {
+      display: none;
+    }
+
+    .booking-step.active {
+      display: block;
+      animation: fadeUp 0.3s ease-out forwards;
+    }
+
+    .booking-step h3 {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .booking-step > p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 1rem;
+    }
+
+    .service-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .service-item {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+      background-color: transparent;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .service-item:hover {
+      border-color: hsla(38, 92%, 50%, 0.3);
+      background-color: var(--accent);
+    }
+
+    .service-item.selected {
+      border-color: var(--primary);
+      background-color: var(--primary-light);
+    }
+
+    .service-item-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .service-color {
+      width: 0.5rem;
+      height: 2rem;
+      border-radius: 9999px;
+    }
+
+    .service-color.primary { background-color: var(--primary); }
+    .service-color.accent { background-color: var(--accent-foreground); }
+    .service-color.muted { background-color: var(--muted-foreground); }
+
+    .service-info p:first-child {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--foreground);
+    }
+
+    .service-info p:last-child {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+
+    .date-grid {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .date-item {
+      flex: 1;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      background-color: var(--secondary);
+      color: var(--foreground);
+      text-align: center;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .date-item:hover:not(:disabled) {
+      background-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .date-item.selected {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .date-item:disabled {
+      background-color: var(--muted);
+      color: var(--muted-foreground);
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .date-item span:first-child {
+      font-size: 0.75rem;
+      font-weight: 500;
+      display: block;
+    }
+
+    .date-item span:last-child {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .time-item {
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      background-color: var(--secondary);
+      color: var(--foreground);
+      font-size: 0.875rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .time-item:hover {
+      background-color: var(--accent);
+      transform: scale(1.02);
+    }
+
+    .time-item.selected {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .booking-confirm {
+      text-align: center;
+    }
+
+    .confirm-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background-color: hsla(38, 92%, 50%, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      color: var(--primary);
+    }
+
+    .booking-confirm h3 {
+      margin-bottom: 0.25rem;
+    }
+
+    .booking-confirm > p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      margin-bottom: 1rem;
+    }
+
+    .confirm-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .confirm-buttons button {
+      flex: 1;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .booking-card-orb-1 {
+      position: absolute;
+      z-index: -1;
+      top: -1rem;
+      right: -1rem;
+      width: 6rem;
+      height: 6rem;
+      background-color: hsla(38, 92%, 50%, 0.05);
+      border-radius: 50%;
+      filter: blur(24px);
+    }
+
+    .booking-card-orb-2 {
+      position: absolute;
+      z-index: -1;
+      bottom: -1rem;
+      left: -1rem;
+      width: 8rem;
+      height: 8rem;
+      background-color: var(--accent);
+      border-radius: 50%;
+      filter: blur(24px);
+      opacity: 0.5;
+    }
+
+    /* ========================================
+       USE CASES SECTION
+       ======================================== */
+    .use-cases {
+      background-color: hsla(222, 40%, 12%, 0.3);
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 42rem;
+      margin: 0 auto 4rem;
+    }
+
+    .section-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--primary);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .section-title {
+      font-size: 1.875rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .section-title {
+        font-size: 2.25rem;
+      }
+    }
+
+    .section-description {
+      color: var(--muted-foreground);
+    }
+
+    .use-cases-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .use-cases-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .use-cases-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .use-case-card {
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .use-case-card:nth-child(5) {
+      grid-column: 1;
+    }
+
+    @media (min-width: 1024px) {
+      .use-case-card:nth-child(5) {
+        grid-column: 2;
+      }
+    }
+
+    .use-case-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .use-case-icon.healthcare { background-color: hsla(0, 70%, 50%, 0.1); color: hsl(0, 70%, 60%); }
+    .use-case-icon.team { background-color: hsla(210, 70%, 50%, 0.1); color: hsl(210, 70%, 60%); }
+    .use-case-icon.interviews { background-color: hsla(38, 70%, 50%, 0.1); color: hsl(38, 70%, 60%); }
+    .use-case-icon.events { background-color: hsla(270, 70%, 50%, 0.1); color: hsl(270, 70%, 60%); }
+    .use-case-icon.coaching { background-color: hsla(150, 70%, 40%, 0.1); color: hsl(150, 70%, 50%); }
+
+    .use-case-card:hover .use-case-icon.healthcare { background-color: hsla(0, 70%, 50%, 0.2); }
+    .use-case-card:hover .use-case-icon.team { background-color: hsla(210, 70%, 50%, 0.2); }
+    .use-case-card:hover .use-case-icon.interviews { background-color: hsla(38, 70%, 50%, 0.2); }
+    .use-case-card:hover .use-case-icon.events { background-color: hsla(270, 70%, 50%, 0.2); }
+    .use-case-card:hover .use-case-icon.coaching { background-color: hsla(150, 70%, 40%, 0.2); }
+
+    .use-case-card h3 {
+      font-size: 1.125rem;
+      margin-bottom: 0.5rem;
+      transition: color 0.2s ease;
+    }
+
+    .use-case-card:hover h3 {
+      color: var(--primary);
+    }
+
+    .use-case-card p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+    }
+
+    .use-case-arrow {
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--primary);
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: all 0.2s ease;
+    }
+
+    .use-case-card:hover .use-case-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ========================================
+       HOW IT WORKS SECTION
+       ======================================== */
+    .steps-container {
+      position: relative;
+    }
+
+    .steps-line {
+      display: none;
+      position: absolute;
+      top: 6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 66%;
+      height: 2px;
+      background: linear-gradient(to right, transparent, hsla(38, 92%, 50%, 0.2), transparent);
+    }
+
+    @media (min-width: 1024px) {
+      .steps-line {
+        display: block;
+      }
+    }
+
+    .steps-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .steps-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+      }
+    }
+
+    .step-item {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-icon-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    .step-icon {
+      width: 5rem;
+      height: 5rem;
+      border-radius: 1rem;
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      position: relative;
+      z-index: 10;
+    }
+
+    .step-number {
+      position: absolute;
+      top: -0.5rem;
+      right: -0.5rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.5rem;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+    }
+
+    .step-glow {
+      position: absolute;
+      inset: 0;
+      background-color: hsla(38, 92%, 50%, 0.1);
+      border-radius: 1rem;
+      filter: blur(16px);
+      transform: scale(1.2);
+    }
+
+    .step-item h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .step-item p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      max-width: 20rem;
+      margin: 0 auto;
+    }
+
+    /* ========================================
+       FEATURES SECTION
+       ======================================== */
+    .features {
+      background-color: hsla(222, 40%, 12%, 0.3);
+    }
+
+    .features-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .feature-card {
+      padding: 1.5rem;
+    }
+
+    .feature-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 0.75rem;
+      background-color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .feature-text h3 {
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .feature-text p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .feature-preview {
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      opacity: 0.5;
+      transition: opacity 0.2s ease;
+    }
+
+    .feature-card:hover .feature-preview {
+      opacity: 1;
+    }
+
+    /* Feature previews */
+    .time-slots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .time-slot {
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .time-slot.available {
+      background-color: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .time-slot.booked {
+      background-color: var(--muted);
+      color: var(--muted-foreground);
+      text-decoration: line-through;
+    }
+
+    .capacity-bar {
+      height: 0.5rem;
+      background-color: var(--muted);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+
+    .capacity-fill {
+      height: 100%;
+      background-color: var(--primary);
+      border-radius: 9999px;
+    }
+
+    .capacity-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+    }
+
+    .capacity-row span:first-child {
+      color: var(--muted-foreground);
+    }
+
+    .capacity-row span:last-child {
+      font-weight: 500;
+    }
+
+    .share-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      background-color: var(--muted);
+      border-radius: 0.5rem;
+    }
+
+    .share-link span {
+      flex: 1;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .share-link button {
+      padding: 0.25rem 0.5rem;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .analytics-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.25rem;
+      height: 3rem;
+    }
+
+    .analytics-bar {
+      flex: 1;
+      background-color: hsla(38, 92%, 50%, 0.2);
+      border-radius: 0.25rem 0.25rem 0 0;
+    }
+
+    .analytics-bar-inner {
+      width: 100%;
+      background-color: var(--primary);
+      border-radius: 0.25rem 0.25rem 0 0;
+    }
+
+    .team-avatars {
+      display: flex;
+    }
+
+    .team-avatar {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, hsla(38, 92%, 50%, 0.3), hsla(38, 92%, 50%, 0.1));
+      border: 2px solid var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--primary);
+      margin-left: -0.5rem;
+    }
+
+    .team-avatar:first-child {
+      margin-left: 0;
+    }
+
+    .team-avatar.more {
+      background-color: var(--muted);
+      color: var(--muted-foreground);
+    }
+
+    .notification-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .notification-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    .notification-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+    }
+
+    .notification-dot.green { background-color: hsl(150, 70%, 50%); }
+    .notification-dot.amber { background-color: hsl(38, 92%, 50%); }
+    .notification-dot.blue { background-color: hsl(210, 70%, 60%); }
+
+    .notification-item span {
+      color: var(--muted-foreground);
+    }
+
+    /* ========================================
+       AI AUTOMATION SECTION
+       ======================================== */
+    .ai-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+      .ai-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem;
+      }
+    }
+
+    .ai-card {
+      padding: 1.5rem;
+    }
+
+    .ai-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ai-card-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.5rem;
+      background-color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    .ai-card-info h4 {
+      font-size: 0.875rem;
+    }
+
+    .ai-card-info p {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+
+    .ai-card-header-right {
+      margin-left: auto;
+      color: var(--primary);
+    }
+
+    .ai-card-header-right.synced {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.75rem;
+      color: hsl(150, 70%, 50%);
+    }
+
+    /* Chat messages */
+    .chat-messages {
+      min-height: 17.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .chat-message {
+      max-width: 80%;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.875rem;
+      white-space: pre-line;
+    }
+
+    .chat-message.user {
+      align-self: flex-end;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      border-bottom-right-radius: 0.25rem;
+    }
+
+    .chat-message.ai {
+      align-self: flex-start;
+      background-color: var(--muted);
+      color: var(--foreground);
+      border-bottom-left-radius: 0.25rem;
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 0.25rem;
+      padding-left: 0.5rem;
+    }
+
+    .typing-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background-color: var(--muted-foreground);
+      opacity: 0.5;
+      animation: pulse 1s ease-in-out infinite;
+    }
+
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    /* Calendar events */
+    .calendar-events {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .calendar-event {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .calendar-event.regular {
+      background-color: hsla(222, 40%, 12%, 0.5);
+    }
+
+    .calendar-event.new {
+      background-color: var(--primary-light);
+      border: 1px solid hsla(38, 92%, 50%, 0.2);
+    }
+
+    .calendar-event .time {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+      width: 3rem;
+    }
+
+    .calendar-event .bar {
+      width: 0.25rem;
+      height: 2rem;
+      border-radius: 9999px;
+    }
+
+    .calendar-event .bar.primary { background-color: var(--primary); }
+    .calendar-event .bar.blue { background-color: hsl(210, 70%, 60%); }
+    .calendar-event .bar.amber { background-color: hsl(38, 92%, 50%); }
+
+    .calendar-event .event-info {
+      flex: 1;
+    }
+
+    .calendar-event .event-info p:first-child {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .calendar-event .event-info p:last-child {
+      font-size: 0.75rem;
+      color: var(--primary);
+    }
+
+    .integrations {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .integrations p {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-bottom: 0.75rem;
+    }
+
+    .integrations-list {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .integration-tag {
+      padding: 0.375rem 0.75rem;
+      background-color: var(--muted);
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+    }
+
+    /* ========================================
+       ROLE PREVIEW SECTION
+       ======================================== */
+    .roles {
+      background-color: hsla(222, 40%, 12%, 0.3);
+    }
+
+    .roles-content {
+      max-width: 42rem;
+      margin: 0 auto;
+    }
+
+    .role-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .role-tab {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      background-color: var(--card);
+      color: var(--muted-foreground);
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .role-tab:hover {
+      color: var(--foreground);
+      border-color: hsla(38, 92%, 50%, 0.2);
+    }
+
+    .role-tab.active {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-md);
+    }
+
+    .role-preview {
+      display: none;
+    }
+
+    .role-preview.active {
+      display: block;
+      animation: fadeUp 0.3s ease-out forwards;
+    }
+
+    .role-preview-inner {
+      padding: 1.5rem;
+    }
+
+    .role-preview-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .role-preview-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 0.75rem;
+      background-color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    .role-preview-info h4 {
+      font-size: 1rem;
+    }
+
+    .role-preview-info p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    /* Customer mockup */
+    .customer-mockup .select-service {
+      height: 2rem;
+      background-color: var(--muted);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      padding: 0 0.75rem;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-bottom: 0.75rem;
+    }
+
+    .customer-mockup .date-picker {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .customer-mockup .date-picker div {
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      font-size: 0.875rem;
+      background-color: var(--muted);
+    }
+
+    .customer-mockup .date-picker div.selected {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      font-weight: 500;
+    }
+
+    .customer-mockup .time-picker {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .customer-mockup .time-picker div {
+      flex: 1;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      background-color: var(--muted);
+      color: var(--muted-foreground);
+    }
+
+    .customer-mockup .time-picker div.selected {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    /* Organizer mockup */
+    .organizer-mockup .schedule-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .organizer-mockup .schedule-header span:first-child {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .organizer-mockup .schedule-header span:last-child {
+      font-size: 0.75rem;
+      color: var(--primary);
+    }
+
+    .organizer-mockup .booking-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .organizer-mockup .booking-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem;
+      background-color: var(--muted);
+      border-radius: 0.5rem;
+    }
+
+    .organizer-mockup .booking-item .time {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      width: 3rem;
+    }
+
+    .organizer-mockup .booking-item .name {
+      flex: 1;
+      font-size: 0.875rem;
+    }
+
+    .organizer-mockup .booking-item .status {
+      font-size: 0.75rem;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+    }
+
+    .organizer-mockup .booking-item .status.confirmed {
+      background-color: hsla(150, 70%, 40%, 0.1);
+      color: hsl(150, 70%, 50%);
+    }
+
+    .organizer-mockup .booking-item .status.pending {
+      background-color: hsla(38, 70%, 50%, 0.1);
+      color: hsl(38, 70%, 60%);
+    }
+
+    /* Admin mockup */
+    .admin-mockup .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .admin-mockup .stat-card {
+      padding: 0.75rem;
+      background-color: var(--muted);
+      border-radius: 0.5rem;
+    }
+
+    .admin-mockup .stat-card p:first-child {
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+
+    .admin-mockup .stat-card p:last-child {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .admin-mockup .completion-card {
+      padding: 0.75rem;
+      background-color: var(--muted);
+      border-radius: 0.5rem;
+    }
+
+    .admin-mockup .completion-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .admin-mockup .completion-header span:first-child {
+      color: var(--muted-foreground);
+    }
+
+    .admin-mockup .completion-header span:last-child {
+      font-weight: 500;
+    }
+
+    .admin-mockup .completion-bar {
+      height: 0.5rem;
+      background-color: var(--background);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .admin-mockup .completion-bar-fill {
+      height: 100%;
+      width: 94%;
+      background-color: var(--primary);
+      border-radius: 9999px;
+    }
+
+    /* ========================================
+       FINAL CTA SECTION
+       ======================================== */
+    .final-cta-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      background-color: var(--foreground);
+      padding: 2rem;
+      text-align: center;
+    }
+
+    @media (min-width: 640px) {
+      .final-cta-wrapper {
+        padding: 3rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .final-cta-wrapper {
+        padding: 4rem;
+      }
+    }
+
+    .final-cta-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image: radial-gradient(circle at center, transparent 0%, transparent 50%, currentColor 50.5%, transparent 51%);
+      background-size: 24px 24px;
+    }
+
+    .final-cta-orb-1 {
+      position: absolute;
+      top: -5rem;
+      left: -5rem;
+      width: 15rem;
+      height: 15rem;
+      background-color: hsla(38, 92%, 50%, 0.2);
+      border-radius: 50%;
+      filter: blur(48px);
+    }
+
+    .final-cta-orb-2 {
+      position: absolute;
+      bottom: -5rem;
+      right: -5rem;
+      width: 20rem;
+      height: 20rem;
+      background-color: hsla(38, 92%, 50%, 0.1);
+      border-radius: 50%;
+      filter: blur(48px);
+    }
+
+    .final-cta-content {
+      position: relative;
+      z-index: 10;
+    }
+
+    .final-cta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      background-color: hsla(222, 47%, 6%, 0.1);
+      border: 1px solid hsla(222, 47%, 6%, 0.1);
+      margin-bottom: 1.5rem;
+    }
+
+    .final-cta-badge i {
+      color: var(--primary-foreground);
+    }
+
+    .final-cta-badge span {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--background);
+    }
+
+    .final-cta-title {
+      font-size: 1.875rem;
+      color: var(--background);
+      margin-bottom: 1rem;
+      max-width: 42rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (min-width: 640px) {
+      .final-cta-title {
+        font-size: 2.25rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .final-cta-title {
+        font-size: 3rem;
+      }
+    }
+
+    .final-cta-description {
+      color: hsla(222, 47%, 6%, 0.7);
+      max-width: 32rem;
+      margin: 0 auto 2rem;
+      font-size: 1.125rem;
+    }
+
+    .final-cta-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    @media (min-width: 640px) {
+      .final-cta-buttons {
+        flex-direction: row;
+      }
+    }
+
+    .final-cta-buttons .btn-light {
+      background-color: var(--background);
+      color: var(--foreground);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .final-cta-buttons .btn-light:hover {
+      background-color: hsla(222, 47%, 6%, 0.9);
+    }
+
+    .final-cta-buttons .btn-outline {
+      background-color: transparent;
+      color: var(--background);
+      border: 1px solid hsla(222, 47%, 6%, 0.2);
+    }
+
+    .final-cta-buttons .btn-outline:hover {
+      background-color: hsla(222, 47%, 6%, 0.1);
+      border-color: hsla(222, 47%, 6%, 0.3);
+    }
+
+    .final-cta-note {
+      font-size: 0.875rem;
+      color: hsla(222, 47%, 6%, 0.5);
+      margin-top: 1.5rem;
+    }
+
+    /* ========================================
+       FOOTER
+       ======================================== */
+    .footer {
+      border-top: 1px solid var(--border);
+      background-color: hsla(222, 40%, 12%, 0.2);
+    }
+
+    .footer-inner {
+      padding: 3rem 0;
+    }
+
+    @media (min-width: 1024px) {
+      .footer-inner {
+        padding: 4rem 0;
+      }
+    }
+
+    .footer-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+      .footer-grid {
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      }
+    }
+
+    .footer-brand p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      max-width: 20rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .footer-social a {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.5rem;
+      background-color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted-foreground);
+      transition: all 0.2s ease;
+    }
+
+    .footer-social a:hover {
+      background-color: var(--accent);
+      color: var(--accent-foreground);
+    }
+
+    .footer-links h4 {
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer-links a {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--foreground);
+    }
+
+    .footer-bottom {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    @media (min-width: 640px) {
+      .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .footer-bottom p {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-bottom-links a {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      transition: color 0.2s ease;
+    }
+
+    .footer-bottom-links a:hover {
+      color: var(--foreground);
+    }
+  </style>
+</head>
+<body>
+  <!-- ========================================
+       HEADER
+       ======================================== -->
+  <header class="header" id="header">
+    <div class="container-custom">
+      <div class="header-inner">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <i data-lucide="calendar" style="width: 1rem; height: 1rem;"></i>
+          </div>
+          <span class="logo-text">Appointment App</span>
+        </a>
+
+        <nav class="nav-desktop">
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#how-it-works" class="nav-link">How It Works</a>
+          <a href="#use-cases" class="nav-link">Use Cases</a>
+          <a href="#ai" class="nav-link">AI</a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <i data-lucide="moon" class="theme-icon-moon" style="width: 1rem; height: 1rem;"></i>
+            <i data-lucide="sun" class="theme-icon-sun" style="width: 1rem; height: 1rem; display: none;"></i>
+          </button>
+          <button class="btn btn-ghost header-btn" onclick="window.location.href='/sign-in'">Sign In</button>
+          <button class="btn btn-primary header-btn">Get Started</button>
+          <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+            <i data-lucide="menu" class="menu-icon" style="width: 1rem; height: 1rem;"></i>
+            <i data-lucide="x" class="close-icon" style="width: 1rem; height: 1rem; display: none;"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="container-custom mobile-menu-inner">
+        <a href="#features" class="mobile-nav-link" onclick="closeMobileMenu()">Features</a>
+        <a href="#how-it-works" class="mobile-nav-link" onclick="closeMobileMenu()">How It Works</a>
+        <a href="#use-cases" class="mobile-nav-link" onclick="closeMobileMenu()">Use Cases</a>
+        <a href="#ai" class="mobile-nav-link" onclick="closeMobileMenu()">AI</a>
+        <div class="mobile-menu-buttons">
+          <button class="btn btn-secondary" onclick="window.location.href='/sign-in'">Sign In</button>
+          <button class="btn btn-primary">Get Started</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================
+       HERO SECTION
+       ======================================== -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-texture texture-dots"></div>
+      <div class="hero-gradient"></div>
+    </div>
+    <div class="hero-orb-1"></div>
+    <div class="hero-orb-2"></div>
+
+    <div class="container-custom hero-content">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            <span class="hero-badge-text">Now with AI-powered scheduling</span>
+          </div>
+
+          <h1 class="hero-title">
+            The Perfect
+            <span class="hero-underline">
+              <span class="text-gradient">Booking System</span>
+              <svg viewBox="0 0 200 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 5.5C47.6667 2.16667 141.4 -2.1 199 5.5" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-opacity="0.3"/>
+              </svg>
+            </span>
+          </h1>
+
+          <p class="hero-description">
+            Streamline appointments, automate scheduling, and deliver exceptional booking experiences. Built for teams who value simplicity and power.
+          </p>
+
+          <div class="hero-cta">
+            <button class="btn btn-primary btn-xl">
+              Try Demo
+              <i data-lucide="arrow-right" style="width: 1rem; height: 1rem;"></i>
+            </button>
+            <button class="btn btn-secondary btn-xl">
+              <i data-lucide="play" style="width: 1rem; height: 1rem;"></i>
+              Create Service
+            </button>
+          </div>
+
+          <div class="hero-social-proof">
+            <div class="hero-avatars">
+              <div class="hero-avatar"><span>A</span></div>
+              <div class="hero-avatar"><span>B</span></div>
+              <div class="hero-avatar"><span>C</span></div>
+              <div class="hero-avatar"><span>D</span></div>
+            </div>
+            <div class="hero-social-text">
+              <strong>2,000+</strong> teams already booking
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card-container">
+          <div class="booking-card card-premium">
+            <div class="booking-card-inner">
+              <div class="booking-progress">
+                <div class="booking-progress-dot active" data-step="1"></div>
+                <div class="booking-progress-line" data-step="1"></div>
+                <div class="booking-progress-dot" data-step="2"></div>
+                <div class="booking-progress-line" data-step="2"></div>
+                <div class="booking-progress-dot" data-step="3"></div>
+                <div class="booking-progress-line" data-step="3"></div>
+                <div class="booking-progress-dot" data-step="4"></div>
+              </div>
+
+              <!-- Step 1: Select Service -->
+              <div class="booking-step active" id="step-service">
+                <h3>Select a Service</h3>
+                <p>Choose the type of appointment</p>
+                <div class="service-list">
+                  <button class="service-item" onclick="selectService(1)">
+                    <div class="service-item-left">
+                      <div class="service-color primary"></div>
+                      <div class="service-info">
+                        <p>Initial Consultation</p>
+                        <p>30 min</p>
+                      </div>
+                    </div>
+                    <i data-lucide="chevron-right" style="width: 1rem; height: 1rem; color: var(--muted-foreground);"></i>
+                  </button>
+                  <button class="service-item" onclick="selectService(2)">
+                    <div class="service-item-left">
+                      <div class="service-color accent"></div>
+                      <div class="service-info">
+                        <p>Follow-up Session</p>
+                        <p>45 min</p>
+                      </div>
+                    </div>
+                    <i data-lucide="chevron-right" style="width: 1rem; height: 1rem; color: var(--muted-foreground);"></i>
+                  </button>
+                  <button class="service-item" onclick="selectService(3)">
+                    <div class="service-item-left">
+                      <div class="service-color muted"></div>
+                      <div class="service-info">
+                        <p>Deep Dive Meeting</p>
+                        <p>60 min</p>
+                      </div>
+                    </div>
+                    <i data-lucide="chevron-right" style="width: 1rem; height: 1rem; color: var(--muted-foreground);"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Step 2: Select Date -->
+              <div class="booking-step" id="step-date">
+                <h3>Pick a Date</h3>
+                <p>December 2024</p>
+                <div class="date-grid">
+                  <button class="date-item" onclick="selectDate(16)">
+                    <span>Mon</span>
+                    <span>16</span>
+                  </button>
+                  <button class="date-item" onclick="selectDate(17)">
+                    <span>Tue</span>
+                    <span>17</span>
+                  </button>
+                  <button class="date-item" disabled>
+                    <span>Wed</span>
+                    <span>18</span>
+                  </button>
+                  <button class="date-item" onclick="selectDate(19)">
+                    <span>Thu</span>
+                    <span>19</span>
+                  </button>
+                  <button class="date-item" onclick="selectDate(20)">
+                    <span>Fri</span>
+                    <span>20</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Step 3: Select Time -->
+              <div class="booking-step" id="step-time">
+                <h3>Select Time</h3>
+                <p>Available slots for Dec <span id="selected-date-display">17</span></p>
+                <div class="time-grid">
+                  <button class="time-item" onclick="selectTime('9:00 AM')">
+                    <i data-lucide="clock" style="width: 0.875rem; height: 0.875rem;"></i>
+                    9:00 AM
+                  </button>
+                  <button class="time-item" onclick="selectTime('10:30 AM')">
+                    <i data-lucide="clock" style="width: 0.875rem; height: 0.875rem;"></i>
+                    10:30 AM
+                  </button>
+                  <button class="time-item" onclick="selectTime('2:00 PM')">
+                    <i data-lucide="clock" style="width: 0.875rem; height: 0.875rem;"></i>
+                    2:00 PM
+                  </button>
+                  <button class="time-item" onclick="selectTime('3:30 PM')">
+                    <i data-lucide="clock" style="width: 0.875rem; height: 0.875rem;"></i>
+                    3:30 PM
+                  </button>
+                </div>
+              </div>
+
+              <!-- Step 4: Confirmation -->
+              <div class="booking-step" id="step-confirm">
+                <div class="booking-confirm">
+                  <div class="confirm-icon">
+                    <i data-lucide="check" style="width: 1.5rem; height: 1.5rem;"></i>
+                  </div>
+                  <h3>Booking Confirmed!</h3>
+                  <p id="confirm-details">Initial Consultation<br>Dec 17 at 9:00 AM</p>
+                  <div class="confirm-buttons">
+                    <button class="btn btn-secondary" onclick="resetBooking()">Book Another</button>
+                    <button class="btn btn-primary">
+                      <i data-lucide="calendar" style="width: 0.875rem; height: 0.875rem;"></i>
+                      Add to Cal
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="booking-card-orb-1"></div>
+            <div class="booking-card-orb-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       USE CASES SECTION
+       ======================================== -->
+  <section class="use-cases section-padding" id="use-cases">
+    <div class="container-custom">
+      <div class="section-header">
+        <span class="section-label">Use Cases</span>
+        <h2 class="section-title">Built for Every Industry</h2>
+        <p class="section-description">From healthcare to coaching, our booking system adapts to your unique scheduling needs with specialized workflows.</p>
+      </div>
+
+      <div class="use-cases-grid">
+        <div class="use-case-card card-premium">
+          <div class="use-case-icon healthcare">
+            <i data-lucide="stethoscope" style="width: 1.5rem; height: 1.5rem;"></i>
+          </div>
+          <h3>Healthcare</h3>
+          <p>Patient appointments, consultations, and follow-ups with automated reminders.</p>
+          <div class="use-case-arrow">Learn more →</div>
+        </div>
+
+        <div class="use-case-card card-premium">
+          <div class="use-case-icon team">
+            <i data-lucide="users" style="width: 1.5rem; height: 1.5rem;"></i>
+          </div>
+          <h3>Team Meetings</h3>
+          <p>Coordinate team syncs, 1:1s, and project reviews across time zones.</p>
+          <div class="use-case-arrow">Learn more →</div>
+        </div>
+
+        <div class="use-case-card card-premium">
+          <div class="use-case-icon interviews">
+            <i data-lucide="user-check" style="width: 1.5rem; height: 1.5rem;"></i>
+          </div>
+          <h3>Interviews</h3>
+          <p>Streamline candidate scheduling with calendar integration and self-booking.</p>
+          <div class="use-case-arrow">Learn more →</div>
+        </div>
+
+        <div class="use-case-card card-premium">
+          <div class="use-case-icon events">
+            <i data-lucide="calendar-days" style="width: 1.5rem; height: 1.5rem;"></i>
+          </div>
+          <h3>Events</h3>
+          <p>Workshops, webinars, and conferences with capacity management.</p>
+          <div class="use-case-arrow">Learn more →</div>
+        </div>
+
+        <div class="use-case-card card-premium">
+          <div class="use-case-icon coaching">
+            <i data-lucide="graduation-cap" style="width: 1.5rem; height: 1.5rem;"></i>
+          </div>
+          <h3>Coaching</h3>
+          <p>Personal sessions, group classes, and recurring mentorship programs.</p>
+          <div class="use-case-arrow">Learn more →</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       HOW IT WORKS SECTION
+       ======================================== -->
+  <section class="section-padding" id="how-it-works">
+    <div class="container-custom">
+      <div class="section-header">
+        <span class="section-label">How It Works</span>
+        <h2 class="section-title">Simple as 1, 2, 3</h2>
+        <p class="section-description">Get up and running in minutes. No complex setup, no learning curve.</p>
+      </div>
+
+      <div class="steps-container">
+        <div class="steps-line"></div>
+        <div class="steps-grid">
+          <div class="step-item">
+            <div class="step-icon-wrapper">
+              <div class="step-icon">
+                <i data-lucide="calendar" style="width: 2rem; height: 2rem;"></i>
+              </div>
+              <div class="step-number">01</div>
+              <div class="step-glow"></div>
+            </div>
+            <h3>Create Your Service</h3>
+            <p>Define your availability, duration, and booking rules in minutes.</p>
+          </div>
+
+          <div class="step-item">
+            <div class="step-icon-wrapper">
+              <div class="step-icon">
+                <i data-lucide="mouse-pointer" style="width: 2rem; height: 2rem;"></i>
+              </div>
+              <div class="step-number">02</div>
+              <div class="step-glow"></div>
+            </div>
+            <h3>Share Your Link</h3>
+            <p>Send your personalized booking page to clients and colleagues.</p>
+          </div>
+
+          <div class="step-item">
+            <div class="step-icon-wrapper">
+              <div class="step-icon">
+                <i data-lucide="check-circle" style="width: 2rem; height: 2rem;"></i>
+              </div>
+              <div class="step-number">03</div>
+              <div class="step-glow"></div>
+            </div>
+            <h3>Get Booked</h3>
+            <p>Appointments sync automatically with confirmations and reminders.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       FEATURES SECTION
+       ======================================== -->
+  <section class="features section-padding" id="features">
+    <div class="container-custom">
+      <div class="section-header">
+        <span class="section-label">Features</span>
+        <h2 class="section-title">Everything You Need</h2>
+        <p class="section-description">Powerful features designed for modern scheduling needs. Simple to use, flexible to configure.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card card-premium">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <i data-lucide="clock" style="width: 1.25rem; height: 1.25rem;"></i>
+            </div>
+            <div class="feature-text">
+              <h3>Real-time Availability</h3>
+              <p>Slots update instantly as bookings are made. No double-bookings, ever.</p>
+            </div>
+          </div>
+          <div class="feature-preview">
+            <div class="time-slots">
+              <span class="time-slot available">9:00</span>
+              <span class="time-slot booked">10:00</span>
+              <span class="time-slot available">11:00</span>
+              <span class="time-slot available">2:00</span>
+              <span class="time-slot available">3:00</span>
+              <span class="time-slot available">4:00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card card-premium">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <i data-lucide="users" style="width: 1.25rem; height: 1.25rem;"></i>
+            </div>
+            <div class="feature-text">
+              <h3>Capacity Rules</h3>
+              <p>Set limits per slot, day, or week. Perfect for classes and group sessions.</p>
+            </div>
+          </div>
+          <div class="feature-preview">
+            <div class="capacity-row">
+              <span>Morning Session</span>
+              <span>8/10</span>
+            </div>
+            <div class="capacity-bar">
+              <div class="capacity-fill" style="width: 80%;"></div>
+            </div>
+            <div class="capacity-row" style="margin-top: 0.5rem;">
+              <span>Afternoon Session</span>
+              <span>3/10</span>
+            </div>
+            <div class="capacity-bar">
+              <div class="capacity-fill" style="width: 30%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card card-premium">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <i data-lucide="link" style="width: 1.25rem; height: 1.25rem;"></i>
+            </div>
+            <div class="feature-text">
+              <h3>Shareable Links</h3>
+              <p>One-click booking links for each service. Embed anywhere.</p>
+            </div>
+          </div>
+          <div class="feature-preview">
+            <div class="share-link">
+              <span>app.book/dr-smith/consultation</span>
+              <button>Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card card-premium">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <i data-lucide="bar-chart-3" style="width: 1.25rem; height: 1.25rem;"></i>
+            </div>
+            <div class="feature-text">
+              <h3>Analytics & Reports</h3>
+              <p>Track bookings, no-shows, and revenue with actionable insights.</p>
+            </div>
+          </div>
+          <div class="feature-preview">
+            <div class="analytics-bars">
+              <div class="analytics-bar" style="height: 40%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
+              <div class="analytics-bar" style="height: 65%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
+              <div class="analytics-bar" style="height: 45%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
+              <div class="analytics-bar" style="height: 80%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
+              <div class="analytics-bar" style="height: 55%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
+              <div class="analytics-bar" style="height: 90%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
+              <div class="analytics-bar" style="height: 70%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card card-premium">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <i data-lucide="shield" style="width: 1.25rem; height: 1.25rem;"></i>
+            </div>
+            <div class="feature-text">
+              <h3>Multi-organizer</h3>
+              <p>Manage multiple team members with individual availability and permissions.</p>
+            </div>
+          </div>
+          <div class="feature-preview">
+            <div class="team-avatars">
+              <div class="team-avatar">A</div>
+              <div class="team-avatar">B</div>
+              <div class="team-avatar">C</div>
+              <div class="team-avatar">D</div>
+              <div class="team-avatar more">+3</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card card-premium">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <i data-lucide="zap" style="width: 1.25rem; height: 1.25rem;"></i>
+            </div>
+            <div class="feature-text">
+              <h3>Instant Notifications</h3>
+              <p>Email and SMS confirmations, reminders, and updates automatically.</p>
+            </div>
+          </div>
+          <div class="feature-preview">
+            <div class="notification-list">
+              <div class="notification-item">
+                <div class="notification-dot green"></div>
+                <span>Confirmation sent</span>
+              </div>
+              <div class="notification-item">
+                <div class="notification-dot amber"></div>
+                <span>Reminder in 24h</span>
+              </div>
+              <div class="notification-item">
+                <div class="notification-dot blue"></div>
+                <span>Follow-up queued</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       AI AUTOMATION SECTION
+       ======================================== -->
+  <section class="section-padding" id="ai">
+    <div class="container-custom">
+      <div class="section-header">
+        <span class="section-label">AI & Automation</span>
+        <h2 class="section-title">Smart Scheduling, Zero Effort</h2>
+        <p class="section-description">Let AI handle the back-and-forth. Natural language booking and seamless calendar sync across all your tools.</p>
+      </div>
+
+      <div class="ai-grid">
+        <div class="ai-card card-premium">
+          <div class="ai-card-header">
+            <div class="ai-card-icon">
+              <i data-lucide="bot" style="width: 1rem; height: 1rem;"></i>
+            </div>
+            <div class="ai-card-info">
+              <h4>AI Assistant</h4>
+              <p>Natural language scheduling</p>
+            </div>
+            <div class="ai-card-header-right">
+              <i data-lucide="sparkles" style="width: 1rem; height: 1rem;"></i>
+            </div>
+          </div>
+          <div class="chat-messages" id="chat-messages">
+            <!-- Messages will be added by JavaScript -->
+          </div>
+        </div>
+
+        <div class="ai-card card-premium">
+          <div class="ai-card-header">
+            <div class="ai-card-icon">
+              <i data-lucide="calendar" style="width: 1rem; height: 1rem;"></i>
+            </div>
+            <div class="ai-card-info">
+              <h4>Calendar Sync</h4>
+              <p>Real-time multi-calendar integration</p>
+            </div>
+            <div class="ai-card-header-right synced">
+              <i data-lucide="refresh-cw" style="width: 0.75rem; height: 0.75rem;"></i>
+              Synced
+            </div>
+          </div>
+          <div class="calendar-events">
+            <div class="calendar-event regular">
+              <span class="time">9:00</span>
+              <div class="bar blue"></div>
+              <div class="event-info">
+                <p>Team Standup</p>
+              </div>
+              <i data-lucide="refresh-cw" style="width: 0.75rem; height: 0.75rem; color: var(--muted-foreground);"></i>
+            </div>
+            <div class="calendar-event new">
+              <span class="time">10:00</span>
+              <div class="bar primary"></div>
+              <div class="event-info">
+                <p>Dr. Smith - Follow-up</p>
+                <p>Just added</p>
+              </div>
+            </div>
+            <div class="calendar-event regular">
+              <span class="time">11:30</span>
+              <div class="bar amber"></div>
+              <div class="event-info">
+                <p>Client Call</p>
+              </div>
+            </div>
+            <div class="calendar-event regular">
+              <span class="time">14:00</span>
+              <div class="bar blue"></div>
+              <div class="event-info">
+                <p>Review Meeting</p>
+              </div>
+              <i data-lucide="refresh-cw" style="width: 0.75rem; height: 0.75rem; color: var(--muted-foreground);"></i>
+            </div>
+          </div>
+          <div class="integrations">
+            <p>Syncs with your favorite tools</p>
+            <div class="integrations-list">
+              <div class="integration-tag">Google</div>
+              <div class="integration-tag">Outlook</div>
+              <div class="integration-tag">Apple</div>
+              <div class="integration-tag">Zoom</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       ROLE PREVIEW SECTION
+       ======================================== -->
+  <section class="roles section-padding" id="roles">
+    <div class="container-custom">
+      <div class="section-header">
+        <span class="section-label">Role Previews</span>
+        <h2 class="section-title">Tailored for Everyone</h2>
+        <p class="section-description">Different views optimized for customers, organizers, and administrators.</p>
+      </div>
+
+      <div class="roles-content">
+        <div class="role-tabs">
+          <button class="role-tab active" onclick="switchRole('customer')">
+            <i data-lucide="user" style="width: 1rem; height: 1rem;"></i>
+            Customer
+          </button>
+          <button class="role-tab" onclick="switchRole('organizer')">
+            <i data-lucide="briefcase" style="width: 1rem; height: 1rem;"></i>
+            Organizer
+          </button>
+          <button class="role-tab" onclick="switchRole('admin')">
+            <i data-lucide="shield" style="width: 1rem; height: 1rem;"></i>
+            Admin
+          </button>
+        </div>
+
+        <div class="role-preview active" id="role-customer">
+          <div class="card-premium role-preview-inner">
+            <div class="role-preview-header">
+              <div class="role-preview-icon">
+                <i data-lucide="user" style="width: 1.25rem; height: 1.25rem;"></i>
+              </div>
+              <div class="role-preview-info">
+                <h4>Customer View</h4>
+                <p>Simple, beautiful booking experience</p>
+              </div>
+            </div>
+            <div class="customer-mockup">
+              <div class="select-service">Select a service...</div>
+              <div class="date-picker">
+                <div>16</div>
+                <div class="selected">17</div>
+                <div>18</div>
+                <div>19</div>
+                <div>20</div>
+                <div>21</div>
+              </div>
+              <div class="time-picker">
+                <div>9:00</div>
+                <div class="selected">10:30</div>
+                <div>2:00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="role-preview" id="role-organizer">
+          <div class="card-premium role-preview-inner">
+            <div class="role-preview-header">
+              <div class="role-preview-icon">
+                <i data-lucide="briefcase" style="width: 1.25rem; height: 1.25rem;"></i>
+              </div>
+              <div class="role-preview-info">
+                <h4>Organizer View</h4>
+                <p>Manage services and availability</p>
+              </div>
+            </div>
+            <div class="organizer-mockup">
+              <div class="schedule-header">
+                <span>Today's Schedule</span>
+                <span>5 bookings</span>
+              </div>
+              <div class="booking-list">
+                <div class="booking-item">
+                  <span class="time">9:00</span>
+                  <span class="name">John D.</span>
+                  <span class="status confirmed">confirmed</span>
+                </div>
+                <div class="booking-item">
+                  <span class="time">10:30</span>
+                  <span class="name">Sarah M.</span>
+                  <span class="status confirmed">confirmed</span>
+                </div>
+                <div class="booking-item">
+                  <span class="time">14:00</span>
+                  <span class="name">Mike R.</span>
+                  <span class="status pending">pending</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="role-preview" id="role-admin">
+          <div class="card-premium role-preview-inner">
+            <div class="role-preview-header">
+              <div class="role-preview-icon">
+                <i data-lucide="shield" style="width: 1.25rem; height: 1.25rem;"></i>
+              </div>
+              <div class="role-preview-info">
+                <h4>Admin View</h4>
+                <p>Full control and analytics</p>
+              </div>
+            </div>
+            <div class="admin-mockup">
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <p>Total Bookings</p>
+                  <p>1,284</p>
+                </div>
+                <div class="stat-card">
+                  <p>Revenue</p>
+                  <p>$24.5k</p>
+                </div>
+              </div>
+              <div class="completion-card">
+                <div class="completion-header">
+                  <span>Completion Rate</span>
+                  <span>94%</span>
+                </div>
+                <div class="completion-bar">
+                  <div class="completion-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       FINAL CTA SECTION
+       ======================================== -->
+  <section class="section-padding" id="cta">
+    <div class="container-custom">
+      <div class="final-cta-wrapper">
+        <div class="final-cta-pattern"></div>
+        <div class="final-cta-orb-1"></div>
+        <div class="final-cta-orb-2"></div>
+        <div class="final-cta-content">
+          <div class="final-cta-badge">
+            <i data-lucide="sparkles" style="width: 1rem; height: 1rem;"></i>
+            <span>Start free, upgrade anytime</span>
+          </div>
+          <h2 class="final-cta-title">Ready to Transform Your Scheduling?</h2>
+          <p class="final-cta-description">Join thousands of professionals who've simplified their booking process. Set up in minutes, not hours.</p>
+          <div class="final-cta-buttons">
+            <button class="btn btn-light btn-xl">
+              Get Started Free
+              <i data-lucide="arrow-right" style="width: 1rem; height: 1rem;"></i>
+            </button>
+            <button class="btn btn-outline btn-xl">Schedule a Demo</button>
+          </div>
+          <p class="final-cta-note">No credit card required • Free forever for individuals</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       FOOTER
+       ======================================== -->
+  <footer class="footer">
+    <div class="container-custom footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="margin-bottom: 1rem;">
+            <div class="logo-icon">
+              <i data-lucide="calendar" style="width: 1rem; height: 1rem;"></i>
+            </div>
+            <span class="logo-text" style="display: block;">Appointment App</span>
+          </div>
+          <p>The perfect booking system for modern teams. Simple, powerful, and built to scale with your business.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Follow us on X">X</a>
+            <a href="#" aria-label="Follow us on LinkedIn">In</a>
+            <a href="#" aria-label="Follow us on GitHub">Gh</a>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Integrations</a></li>
+            <li><a href="#">API</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Community</a></li>
+            <li><a href="#">Status</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Security</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2024 Appointment App. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================
+       JAVASCRIPT
+       ======================================== -->
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // ========================================
+    // HEADER SCROLL EFFECT
+    // ========================================
+    let isScrolled = false;
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('header');
+      if (window.scrollY > 20 && !isScrolled) {
+        header.classList.add('scrolled');
+        isScrolled = true;
+      } else if (window.scrollY <= 20 && isScrolled) {
+        header.classList.remove('scrolled');
+        isScrolled = false;
+      }
+    });
+
+    // ========================================
+    // THEME TOGGLE
+    // ========================================
+    let isDark = true;
+    function toggleTheme() {
+      isDark = !isDark;
+      document.body.classList.toggle('light', !isDark);
+      
+      const moonIcon = document.querySelector('.theme-icon-moon');
+      const sunIcon = document.querySelector('.theme-icon-sun');
+      
+      if (isDark) {
+        moonIcon.style.display = 'block';
+        sunIcon.style.display = 'none';
+      } else {
+        moonIcon.style.display = 'none';
+        sunIcon.style.display = 'block';
+      }
+    }
+
+    // ========================================
+    // MOBILE MENU
+    // ========================================
+    let isMobileMenuOpen = false;
+    function toggleMobileMenu() {
+      isMobileMenuOpen = !isMobileMenuOpen;
+      const menu = document.getElementById('mobile-menu');
+      const menuIcon = document.querySelector('.menu-icon');
+      const closeIcon = document.querySelector('.close-icon');
+      
+      menu.classList.toggle('open', isMobileMenuOpen);
+      menuIcon.style.display = isMobileMenuOpen ? 'none' : 'block';
+      closeIcon.style.display = isMobileMenuOpen ? 'block' : 'none';
+    }
+
+    function closeMobileMenu() {
+      isMobileMenuOpen = false;
+      const menu = document.getElementById('mobile-menu');
+      const menuIcon = document.querySelector('.menu-icon');
+      const closeIcon = document.querySelector('.close-icon');
+      
+      menu.classList.remove('open');
+      menuIcon.style.display = 'block';
+      closeIcon.style.display = 'none';
+    }
+
+    // ========================================
+    // BOOKING CARD FUNCTIONALITY
+    // ========================================
+    let currentStep = 1;
+    let selectedService = null;
+    let selectedDate = null;
+    let selectedTime = null;
+
+    const services = [
+      { id: 1, name: 'Initial Consultation', duration: '30 min' },
+      { id: 2, name: 'Follow-up Session', duration: '45 min' },
+      { id: 3, name: 'Deep Dive Meeting', duration: '60 min' }
+    ];
+
+    function updateProgress() {
+      const dots = document.querySelectorAll('.booking-progress-dot');
+      const lines = document.querySelectorAll('.booking-progress-line');
+      
+      dots.forEach((dot, index) => {
+        const step = index + 1;
+        dot.classList.toggle('active', step <= currentStep);
+      });
+      
+      lines.forEach((line, index) => {
+        const step = index + 1;
+        line.classList.toggle('active', step < currentStep);
+      });
+    }
+
+    function showStep(step) {
+      document.querySelectorAll('.booking-step').forEach(s => s.classList.remove('active'));
+      
+      switch(step) {
+        case 1:
+          document.getElementById('step-service').classList.add('active');
+          break;
+        case 2:
+          document.getElementById('step-date').classList.add('active');
+          break;
+        case 3:
+          document.getElementById('step-time').classList.add('active');
+          break;
+        case 4:
+          document.getElementById('step-confirm').classList.add('active');
+          break;
+      }
+      
+      currentStep = step;
+      updateProgress();
+      lucide.createIcons();
+    }
+
+    function selectService(id) {
+      selectedService = id;
+      
+      // Update UI
+      document.querySelectorAll('.service-item').forEach(item => item.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+      
+      setTimeout(() => showStep(2), 300);
+    }
+
+    function selectDate(date) {
+      selectedDate = date;
+      
+      // Update UI
+      document.querySelectorAll('.date-item').forEach(item => item.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+      document.getElementById('selected-date-display').textContent = date;
+      
+      setTimeout(() => showStep(3), 300);
+    }
+
+    function selectTime(time) {
+      selectedTime = time;
+      
+      // Update UI
+      document.querySelectorAll('.time-item').forEach(item => item.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+      
+      // Update confirmation details
+      const service = services.find(s => s.id === selectedService);
+      document.getElementById('confirm-details').innerHTML = 
+        `${service ? service.name : 'Appointment'}<br>Dec ${selectedDate} at ${selectedTime}`;
+      
+      setTimeout(() => showStep(4), 300);
+    }
+
+    function resetBooking() {
+      selectedService = null;
+      selectedDate = null;
+      selectedTime = null;
+      
+      document.querySelectorAll('.service-item').forEach(item => item.classList.remove('selected'));
+      document.querySelectorAll('.date-item').forEach(item => item.classList.remove('selected'));
+      document.querySelectorAll('.time-item').forEach(item => item.classList.remove('selected'));
+      
+      showStep(1);
+    }
+
+    // ========================================
+    // ROLE PREVIEW TABS
+    // ========================================
+    function switchRole(role) {
+      // Update tabs
+      document.querySelectorAll('.role-tab').forEach(tab => tab.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      
+      // Update previews
+      document.querySelectorAll('.role-preview').forEach(preview => preview.classList.remove('active'));
+      document.getElementById('role-' + role).classList.add('active');
+    }
+
+    // ========================================
+    // AI CHAT ANIMATION
+    // ========================================
+    const chatMessages = [
+      { role: 'user', text: 'Schedule a follow-up with Dr. Smith next week' },
+      { role: 'ai', text: 'I found 3 available slots with Dr. Smith next week:' },
+      { role: 'ai', text: '• Tuesday 10:00 AM\n• Wednesday 2:00 PM\n• Friday 11:30 AM' },
+      { role: 'user', text: 'Book Tuesday at 10' },
+      { role: 'ai', text: 'Done! Appointment confirmed for Tuesday at 10:00 AM. Calendar invite sent.' }
+    ];
+
+    let chatIndex = 0;
+    const chatContainer = document.getElementById('chat-messages');
+
+    function addChatMessage() {
+      if (chatIndex >= chatMessages.length) return;
+      
+      const msg = chatMessages[chatIndex];
+      const div = document.createElement('div');
+      div.className = 'chat-message ' + msg.role;
+      div.textContent = msg.text;
+      div.style.opacity = '0';
+      div.style.transform = 'translateY(10px)';
+      chatContainer.appendChild(div);
+      
+      // Animate in
+      setTimeout(() => {
+        div.style.transition = 'all 0.3s ease';
+        div.style.opacity = '1';
+        div.style.transform = 'translateY(0)';
+      }, 50);
+      
+      chatIndex++;
+      
+      if (chatIndex < chatMessages.length) {
+        // Add typing indicator
+        const typing = document.createElement('div');
+        typing.className = 'typing-indicator';
+        typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+        chatContainer.appendChild(typing);
+        
+        setTimeout(() => {
+          typing.remove();
+          addChatMessage();
+        }, 800);
+      }
+    }
+
+    // Start chat animation when AI section is in view
+    const aiSection = document.getElementById('ai');
+    let chatStarted = false;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !chatStarted) {
+          chatStarted = true;
+          setTimeout(addChatMessage, 500);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(aiSection);
+
+    // ========================================
+    // SCROLL ANIMATIONS
+    // ========================================
+    const animateOnScroll = () => {
+      const elements = document.querySelectorAll('.use-case-card, .step-item, .feature-card, .ai-card');
+      
+      elements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight - 100;
+        
+        if (isVisible && !el.classList.contains('animated')) {
+          el.classList.add('animated');
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }
+      });
+    };
+
+    // Initialize elements with opacity 0
+    document.querySelectorAll('.use-case-card, .step-item, .feature-card, .ai-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'all 0.5s ease';
+    });
+
+    window.addEventListener('scroll', animateOnScroll);
+    animateOnScroll(); // Run once on load
+  </script>
+</body>
+</html>
