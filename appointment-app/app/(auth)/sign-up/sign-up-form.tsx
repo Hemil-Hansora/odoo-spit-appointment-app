@@ -22,7 +22,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { authClient } from "@/lib/auth-client";
-import { redirectToDashboard } from "../actions";
 
 export function SignUpForm() {
   const router = useRouter();
@@ -34,6 +33,12 @@ export function SignUpForm() {
   const [organizationName, setOrganizationName] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleAccountTypeChange = (value: string) => {
+    if (value === "customer" || value === "organiser") {
+      setAccountType(value);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,7 +80,6 @@ export function SignUpForm() {
 
       if (!response.ok || result.error) {
         setError(result.error || "Failed to create account");
-        setIsLoading(false);
         return;
       }
 
@@ -87,7 +91,6 @@ export function SignUpForm() {
 
       if (signInResult.error) {
         setError("Account created but sign-in failed. Please try signing in manually.");
-        setIsLoading(false);
         return;
       }
 
@@ -103,6 +106,7 @@ export function SignUpForm() {
     } catch (err) {
       console.error("Sign-up error:", err);
       setError("An unexpected error occurred. Please try again.");
+    } finally {
       setIsLoading(false);
     }
   };
@@ -130,6 +134,7 @@ export function SignUpForm() {
               id="name"
               name="name"
               placeholder="John Doe"
+              autoComplete="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -144,6 +149,7 @@ export function SignUpForm() {
               name="email"
               type="email"
               placeholder="name@example.com"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -155,11 +161,10 @@ export function SignUpForm() {
             <Label htmlFor="accountType" className="text-foreground">Account Type</Label>
             <Select
               value={accountType}
-              //@ts-ignore
-              onValueChange={(value) => setAccountType(value as "customer" | "organiser")}
+              onValueChange={handleAccountTypeChange}
               disabled={isLoading}
             >
-              <SelectTrigger className="border-border">
+              <SelectTrigger className="w-full border-border">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -201,6 +206,7 @@ export function SignUpForm() {
               id="password"
               name="password"
               type="password"
+              autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -220,6 +226,7 @@ export function SignUpForm() {
               id="confirmPassword"
               name="confirmPassword"
               type="password"
+              autoComplete="new-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -231,7 +238,7 @@ export function SignUpForm() {
         <CardFooter className="flex flex-col gap-4">
           <Button
             type="submit"
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="w-full"
             disabled={isLoading}
           >
             {isLoading ? "Creating account..." : "Create account"}
