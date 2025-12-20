@@ -2,6 +2,116 @@ import { NextRequest, NextResponse } from "next/server"
 import db from "@/lib/db"
 import { nanoid } from "nanoid"
 import { auth } from "@/lib/auth"
+import { getSession } from "@/lib/auth-utils"
+
+export async function GET(request: NextRequest) {
+  try {
+    // Get authenticated user
+    const session = await getSession();
+    
+    if (!session?.user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const userId = session.user.id;
+
+    // Fetch user's bookings with all related data
+    const bookings = await db.booking.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        service: {
+          include: {
+            organization: true,
+          },
+        },
+        slot: {
+          include: {
+            resource: true,
+          },
+        },
+        answers: {
+          include: {
+            question: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    // Transform bookings to frontend format
+    const formattedBookings = bookings.map((booking) => {
+      const slot = booking.slot;
+      const service = booking.service;
+      const resource = booking.slot.resource;
+      const organization = booking.service.organization;
+
+      // Format date and time
+      const slotDate = new Date(slot.startTime);
+      const formattedDate = slotDate.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+      const formattedTime = slotDate.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+
+      // Calculate duration in minutes
+      const duration = Math.round(
+        (new Date(slot.endTime).getTime() - new Date(slot.startTime).getTime()) / 60000
+      );
+
+      // Get answers as key-value pairs
+      const answersObj: Record<string, string> = {};
+      booking.answers.forEach((answer) => {
+        answersObj[answer.question.label] = answer.value;
+      });
+
+      return {
+        id: booking.id,
+        serviceName: service.title,
+        serviceDescription: service.description,
+        resourceName: resource?.name || "Not assigned",
+        slotDate: formattedDate,
+        slotTime: formattedTime,
+        duration,
+        status: booking.status.toLowerCase() as "confirmed" | "pending" | "cancelled",
+        venue: {
+          name: organization.name,
+          address: "Address not available",
+          city: "City not available",
+        },
+        capacity: service.maxCapacity || 1,
+        confirmationMessage: service.metadata
+          ? JSON.parse(service.metadata).confirmationMessage
+          : undefined,
+        notes: booking.notes,
+        answers: answersObj,
+        createdAt: booking.createdAt,
+      };
+    });
+
+    return NextResponse.json({
+      bookings: formattedBookings,
+      total: formattedBookings.length,
+    });
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch bookings" },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {

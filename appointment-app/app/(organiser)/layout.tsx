@@ -1,13 +1,27 @@
+"use client"
+
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ProtectedRoute } from "@/components/protected-route";
+import { signOut } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function OrganiserLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/");
+    router.refresh();
+  };
+
   return (
+    <ProtectedRoute requiredRole="admin">
     <div className="min-h-screen flex bg-muted/30">
       {/* Sidebar */}
       <aside className="w-64 bg-background border-r border-border hidden md:flex flex-col">
@@ -47,17 +61,21 @@ export default function OrganiserLayout({
           >
             Calendar
           </Link>
+          <Link
+            href="/organiser/reporting"
+            className="flex items-center px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground rounded-md"
+          >
+            Reporting
+          </Link>
         </nav>
         <div className="p-4 border-t border-border">
-          <Link
-            href="/sign-in"
-            className={cn(
-              buttonVariants({ variant: "ghost" }),
-              "w-full justify-start text-muted-foreground hover:text-foreground"
-            )}
+          <Button
+            variant="ghost"
+            onClick={handleSignOut}
+            className="w-full justify-start text-muted-foreground hover:text-foreground"
           >
             Sign Out
-          </Link>
+          </Button>
         </div>
       </aside>
 
@@ -68,5 +86,6 @@ export default function OrganiserLayout({
         </div>
       </main>
     </div>
+    </ProtectedRoute>
   );
 }

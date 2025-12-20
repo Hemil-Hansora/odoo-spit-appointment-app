@@ -15,8 +15,9 @@ export async function GET(req: NextRequest) {
       )
     }
 
-    // Parse the date
-    const requestedDate = new Date(dateStr)
+    // Parse the date in local timezone to avoid offset issues
+    const [year, month, day] = dateStr.split('-').map(Number)
+    const requestedDate = new Date(year, month - 1, day)
     const dayOfWeek = requestedDate.getDay() // 0 = Sunday, 6 = Saturday
 
     // Fetch service with schedules

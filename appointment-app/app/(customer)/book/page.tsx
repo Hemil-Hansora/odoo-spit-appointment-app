@@ -117,7 +117,7 @@ export default function ServiceSelectionPage() {
                         </div>
                       </div>
                       <div className="rounded border border-gray-300 bg-gray-50 px-3 py-1 text-sm text-gray-700">
-                        {service.price === 0 ? "Free" : `$${service.price}`}
+                        {service.price === 0 ? "Free" : `₹${service.price}`}
                       </div>
                     </div>
                     <p className="text-sm text-gray-600">{service.description}</p>

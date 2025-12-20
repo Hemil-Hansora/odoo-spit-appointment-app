@@ -149,11 +149,18 @@ export default function AppointmentsPage() {
   useEffect(() => {
     const fetchSession = async () => {
       try {
+        console.log("Fetching session...")
         const response = await fetch("/api/auth/session")
+        console.log("Session response status:", response.status)
         if (response.ok) {
           const data = await response.json()
-          if (data.session?.user?.organizationId) {
-            setOrganizationId(data.session.user.organizationId)
+          console.log("Session data:", data)
+          // Use activeOrganizationId instead of organizationId
+          if (data.session?.user?.activeOrganizationId) {
+            console.log("Setting organizationId:", data.session.user.activeOrganizationId)
+            setOrganizationId(data.session.user.activeOrganizationId)
+          } else {
+            console.warn("No activeOrganizationId found in session")
           }
         }
       } catch (err) {
@@ -180,13 +187,21 @@ export default function AppointmentsPage() {
   const fetchBookings = async () => {
     try {
       setLoading(true)
+      console.log("Fetching bookings for organizationId:", organizationId)
       const response = await fetch(
         `/api/organiser/bookings?organizationId=${organizationId}`
       )
-      if (!response.ok) throw new Error("Failed to fetch bookings")
+      console.log("Response status:", response.status)
+      if (!response.ok) {
+        const errorData = await response.json()
+        console.error("Error response:", errorData)
+        throw new Error(errorData.error || "Failed to fetch bookings")
+      }
       const data = await response.json()
+      console.log("Fetched bookings data:", data)
       setBookings(data.bookings || [])
     } catch (err) {
+      console.error("Error in fetchBookings:", err)
       setError(err instanceof Error ? err.message : "Failed to load bookings")
     } finally {
       setLoading(false)

@@ -1,11 +1,16 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
 type PaymentMethod = "credit" | "debit" | "upi"
+
+interface ServiceData {
+  title: string
+  price: number
+}
 
 export default function PaymentPage() {
   const router = useRouter()
@@ -30,6 +35,38 @@ export default function PaymentPage() {
   })
   const [processing, setProcessing] = useState(false)
   const [error, setError] = useState("")
+  const [serviceData, setServiceData] = useState<ServiceData | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  // Fetch service details to get price
+  useEffect(() => {
+    if (!serviceId) {
+      setError("Service ID is required")
+      setLoading(false)
+      return
+    }
+
+    async function fetchServiceDetails() {
+      try {
+        const response = await fetch(`/api/customer/services/${serviceId}`)
+        if (!response.ok) {
+          throw new Error("Failed to fetch service details")
+        }
+        const data = await response.json()
+        setServiceData({
+          title: data.title,
+          price: data.price || 0,
+        })
+      } catch (err) {
+        console.error("Error fetching service:", err)
+        setError("Failed to load service details")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchServiceDetails()
+  }, [serviceId])
 
   const handlePayment = async () => {
     try {
@@ -86,6 +123,12 @@ export default function PaymentPage() {
         cardDetails.expiry.trim() &&
         cardDetails.cvv.trim()
 
+  // Calculate pricing
+  const subtotal = serviceData?.price || 0
+  const taxRate = 0.10 // 10% tax
+  const tax = subtotal * taxRate
+  const total = subtotal + tax
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-6xl px-6 py-12">
@@ -98,6 +141,10 @@ export default function PaymentPage() {
             {error}
           </div>
         )}
+
+        {loading ? (
+          <div className="py-12 text-center text-gray-600">Loading...</div>
+        ) : (
 
         <div className="rounded border border-gray-200 bg-white p-8 shadow-sm">
           <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
@@ -286,25 +333,25 @@ export default function PaymentPage() {
 
               <div className="space-y-4">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Dental care</span>
-                  <span className="text-gray-900">1000</span>
+                  <span className="text-gray-600">{serviceData?.title || "Service"}</span>
+                  <span className="text-gray-900">₹{subtotal.toFixed(2)}</span>
                 </div>
 
                 <div className="border-t border-gray-200 pt-4">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Subtotal</span>
-                    <span className="text-gray-900">1000</span>
+                    <span className="text-gray-900">₹{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="mt-2 flex justify-between text-sm">
-                    <span className="text-gray-600">Taxes</span>
-                    <span className="text-gray-900">100</span>
+                    <span className="text-gray-600">Taxes (10%)</span>
+                    <span className="text-gray-900">₹{tax.toFixed(2)}</span>
                   </div>
                 </div>
 
                 <div className="border-t border-gray-200 pt-4">
                   <div className="flex justify-between font-semibold">
                     <span className="text-gray-900">Total</span>
-                    <span className="text-gray-900">1100</span>
+                    <span className="text-gray-900">₹{total.toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -324,6 +371,7 @@ export default function PaymentPage() {
             </div>
           </div>
         </div>
+        )}
       </div>
     </div>
   )

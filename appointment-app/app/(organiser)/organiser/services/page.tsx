@@ -159,7 +159,7 @@ export default function ServicesPage() {
                           <span>
                             Price:{" "}
                             {typeof service.metadata.price === "number"
-                              ? `$${service.metadata.price}`
+                              ? `₹${service.metadata.price}`
                               : service.metadata.price}
                           </span>
                         </>

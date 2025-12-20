@@ -68,14 +68,28 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Create new questions
+    // Create new questions (skip duplicates based on label)
     const createdQuestions = [];
+    const existingLabels = new Set(
+      existingQuestions.filter(q => q._count.answers > 0).map(q => q.label.toLowerCase().trim())
+    );
+    
     for (const question of questions) {
       const { label, required, answerType } = question;
 
       if (!label || !label.trim()) {
         continue; // Skip empty questions
       }
+
+      const normalizedLabel = label.trim().toLowerCase();
+      
+      // Skip if this label already exists (prevent duplicates)
+      if (existingLabels.has(normalizedLabel)) {
+        continue;
+      }
+      
+      // Add to set to prevent duplicates within this batch
+      existingLabels.add(normalizedLabel);
 
       // Note: answerType is stored in the frontend but not in the current schema
       // You could extend the Question model to include answerType field if needed

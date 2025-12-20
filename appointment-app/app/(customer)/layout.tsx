@@ -24,7 +24,7 @@ export default function CustomerLayout({
                 Services
               </Link>
               <Link
-                href="/book"
+                href="/book/my-appointments"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground"
               >
                 My Appointments

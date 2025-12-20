@@ -5,9 +5,10 @@ import { auth } from "@/lib/auth";
 // PATCH /api/organiser/services/[id]/config - Update service configuration with extended fields
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await auth.api.getSession({
       headers: req.headers,
     });
@@ -34,10 +35,15 @@ export async function PATCH(
       introMessage,
       confirmationMessage,
       image,
+      price,
+      capacity,
+      bufferMinutes,
+      dateSlots,
+      resourceIds, // Array of resource IDs to connect
     } = body;
 
     const existingService = await db.service.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingService) {
@@ -87,6 +93,10 @@ export async function PATCH(
     if (confirmationMessage !== undefined)
       metadata.confirmationMessage = confirmationMessage;
     if (image !== undefined) metadata.image = image;
+    if (price !== undefined) metadata.price = price;
+    if (capacity !== undefined) metadata.capacity = capacity;
+    if (bufferMinutes !== undefined) metadata.bufferMinutes = bufferMinutes;
+    if (dateSlots !== undefined) metadata.dateSlots = dateSlots;
 
     const updateData: any = {};
     if (title !== undefined) updateData.title = title;
@@ -110,8 +120,15 @@ export async function PATCH(
       updateData.metadata = JSON.stringify({ ...parsedMetadata, ...metadata });
     }
 
+    // Handle resource connections
+    if (resourceIds !== undefined && Array.isArray(resourceIds)) {
+      updateData.resources = {
+        set: resourceIds.map((id: string) => ({ id })),
+      };
+    }
+
     const service = await db.service.update({
-      where: { id: params.id },
+      where: { id },
       data: updateData,
       include: {
         organization: { select: { id: true, name: true, slug: true } },
@@ -134,9 +151,10 @@ export async function PATCH(
 // GET /api/organiser/services/[id]/config - Get full service configuration
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await auth.api.getSession({ headers: req.headers });
 
     if (!session) {
@@ -144,7 +162,7 @@ export async function GET(
     }
 
     const service = await db.service.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         organization: { select: { id: true, name: true, slug: true } },
         resources: true,

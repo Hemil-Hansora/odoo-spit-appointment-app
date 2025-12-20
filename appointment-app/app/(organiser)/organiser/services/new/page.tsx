@@ -41,6 +41,11 @@ interface Resource {
   isActive: boolean;
 }
 
+interface DateSlot {
+  date: string;
+  totalSlots: number;
+}
+
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 export default function CreateServicePage() {
@@ -55,6 +60,10 @@ export default function CreateServicePage() {
   const [price, setPrice] = useState("");
   const [capacity, setCapacity] = useState("1");
   const [buffer, setBuffer] = useState("0");
+  const [isPublished, setIsPublished] = useState(false);
+
+  // Date slots state
+  const [dateSlots, setDateSlots] = useState<DateSlot[]>([]);
 
   // Schedules state
   const [schedules, setSchedules] = useState<Schedule[]>([
@@ -140,6 +149,22 @@ export default function CreateServicePage() {
     );
   };
 
+  // Date slot handlers
+  const addDateSlot = () => {
+    const today = new Date().toISOString().split('T')[0];
+    setDateSlots([...dateSlots, { date: today, totalSlots: 10 }]);
+  };
+
+  const removeDateSlot = (index: number) => {
+    setDateSlots(dateSlots.filter((_, i) => i !== index));
+  };
+
+  const updateDateSlot = (index: number, field: keyof DateSlot, value: any) => {
+    const updated = [...dateSlots];
+    updated[index] = { ...updated[index], [field]: value };
+    setDateSlots(updated);
+  };
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
@@ -164,11 +189,13 @@ export default function CreateServicePage() {
         description: description || null,
         durationMinutes: parseInt(duration),
         organizationId,
-        isPublished: false,
+        isPublished: isPublished,
+        resourceIds: selectedResourceIds, // Send selected resource IDs
         metadata: {
           price: price ? parseFloat(price) : 0,
           capacity: capacity ? parseInt(capacity) : 1,
           bufferMinutes: parseInt(buffer),
+          dateSlots: dateSlots,
         },
       };
 
@@ -219,19 +246,6 @@ export default function CreateServicePage() {
             })),
           }),
         });
-      }
-
-      // Link resources if any selected
-      if (selectedResourceIds.length > 0) {
-        await Promise.all(
-          selectedResourceIds.map(resourceId =>
-            fetch(`/api/organiser/resources/${resourceId}`, {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ serviceIds: [serviceId] }),
-            })
-          )
-        );
       }
 
       // Success - redirect to services page
@@ -317,7 +331,7 @@ export default function CreateServicePage() {
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="price">Price ($)</Label>
+                <Label htmlFor="price">Price (₹)</Label>
                 <Input
                   id="price"
                   name="price"
@@ -330,6 +344,24 @@ export default function CreateServicePage() {
                   onChange={(e) => setPrice(e.target.value)}
                 />
               </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="status">Status</Label>
+              <Select
+                name="status"
+                value={isPublished ? "published" : "draft"}
+                onValueChange={(value) => setIsPublished(value === "published")}
+                disabled={loading}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="draft">Draft (Not visible to customers)</SelectItem>
+                  <SelectItem value="published">Published (Visible to customers)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
         </Card>
@@ -535,6 +567,70 @@ export default function CreateServicePage() {
             </CardContent>
           </Card>
         )}
+
+        <Card className="mt-6 border-border shadow-sm">
+          <CardHeader>
+            <CardTitle>Date-Specific Slots</CardTitle>
+            <CardDescription>
+              Configure specific dates with custom slot availability.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label>Date Slots</Label>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addDateSlot}
+                disabled={loading}
+              >
+                + Add Date Slot
+              </Button>
+            </div>
+            {dateSlots.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No date-specific slots configured. Slots will be generated based on weekly schedule.</p>
+            ) : (
+              <div className="space-y-3">
+                {dateSlots.map((dateSlot, index) => (
+                  <div key={index} className="grid grid-cols-[2fr_1fr_auto] gap-2 items-center">
+                    <div className="grid gap-2">
+                      <Label htmlFor={`date-${index}`} className="text-xs">Date</Label>
+                      <Input
+                        id={`date-${index}`}
+                        type="date"
+                        value={dateSlot.date}
+                        onChange={(e) => updateDateSlot(index, "date", e.target.value)}
+                        disabled={loading}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor={`slots-${index}`} className="text-xs">Total Slots</Label>
+                      <Input
+                        id={`slots-${index}`}
+                        type="number"
+                        min="1"
+                        value={dateSlot.totalSlots}
+                        onChange={(e) => updateDateSlot(index, "totalSlots", parseInt(e.target.value) || 1)}
+                        disabled={loading}
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeDateSlot(index)}
+                      disabled={loading}
+                      className="mt-6"
+                    >
+                      ✕
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         <Card className="mt-6 border-border shadow-sm">
           <CardFooter className="flex justify-between bg-muted/50 border-t border-border p-6">
