@@ -26,10 +26,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={publicSans.variable}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <header className="border-b bg-card">
+          <div className="mx-auto flex max-w-6xl items-center justify-between p-4">
+            <div className="flex items-center gap-3">
+              <span className="font-semibold">Appointment App</span>
+            </div>
+            <nav className="flex items-center gap-2 text-sm">
+              <a href="/landing" className="rounded-md px-2 py-1 hover:bg-muted">Landing</a>
+              <a href="/" className="rounded-md px-2 py-1 hover:bg-muted">Home</a>
+              <a href="/auth/login" className="rounded-md px-2 py-1 hover:bg-muted">Login</a>
+              <a href="/customer" className="rounded-md px-2 py-1 hover:bg-muted">My Profile</a>
+              <a href="/organiser" className="rounded-md px-2 py-1 hover:bg-muted">Organiser</a>
+              <a href="/admin" className="rounded-md px-2 py-1 hover:bg-muted">Admin</a>
+            </nav>
+          </div>
+        </header>
+        <main>{children}</main>
       </body>
     </html>
   );

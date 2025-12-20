@@ -1,22 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Appointment App — Next.js + shadcn UI
+
+This project implements a scheduling and booking system with customer, organiser, and admin views. UI uses shadcn components styled with the neutral color tokens defined in `app/globals.css` (no gradients or purple/blue palettes).
 
 ## Getting Started
 
-First, run the development server:
+Run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm -F appointment-app dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Key routes:
+
+- `/` — Home: list available appointment types and “Book Appointment” actions.
+- `/book/[serviceId]` — Booking flow: select provider, date, real-time slots, capacity, questions, confirm.
+- `/auth/login`, `/auth/signup`, `/auth/verify-otp`, `/auth/forgot-password` — Auth flows (Better Auth integration stubbed).
+- `/customer` — Profile management: update details, view upcoming and past appointments.
+- `/organiser` — Configure appointment types and manage resources; view bookings.
+- `/admin` — Admin dashboard with totals.
+
+Tech:
+- Next.js App Router
+- shadcn components (Base UI powered) with tokens from `globals.css`
+- In-memory mock data in `lib/data.ts` and types in `lib/types.ts`
+
+Next steps:
+- Integrate Better Auth fully with persistence (SQLite/Prisma) and OTP/email provider.
+- Add server actions/APIs for booking creation, capacity validation, and conflict prevention.
+- Add publish/unpublish, share links for unpublished appointments, and payment handling (advance payments).
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
