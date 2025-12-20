@@ -49,7 +49,7 @@ importers:
         version: 19.2.3(react@19.2.3)
       shadcn:
         specifier: ^3.6.2
-        version: 3.6.2(@types/node@20.19.27)(hono@4.11.1)(typescript@5.9.3)
+        version: 3.6.2(@types/node@20.19.27)(hono@4.10.6)(typescript@5.9.3)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
@@ -2185,10 +2185,13 @@ packages:
 
   hono@4.10.6:
     resolution: {integrity: sha512-BIdolzGpDO9MQ4nu3AUuDwHZZ+KViNm+EZ75Ae55eMXMqLVhDFqEMXxtUe9Qh8hjL+pIna/frs2j6Y2yD5Ua/g==}
+<<<<<<< HEAD
     engines: {node: '>=16.9.0'}
 
   hono@4.11.1:
     resolution: {integrity: sha512-KsFcH0xxHes0J4zaQgWbYwmz3UPOOskdqZmItstUG93+Wk1ePBLkLGwbP9zlmh1BFUiL8Qp+Xfu9P7feJWpGNg==}
+=======
+>>>>>>> 3dad1191c3aa941f7f466c117e4b4ddbda087edd
     engines: {node: '>=16.9.0'}
 
   http-errors@2.0.1:
@@ -4066,12 +4069,19 @@ snapshots:
   '@floating-ui/utils@0.2.10': {}
 
   '@hono/node-server@1.19.6(hono@4.10.6)':
+<<<<<<< HEAD
     dependencies:
       hono: 4.10.6
 
   '@hono/node-server@1.19.7(hono@4.11.1)':
+=======
+>>>>>>> 3dad1191c3aa941f7f466c117e4b4ddbda087edd
     dependencies:
-      hono: 4.11.1
+      hono: 4.10.6
+
+  '@hono/node-server@1.19.7(hono@4.10.6)':
+    dependencies:
+      hono: 4.10.6
 
   '@hugeicons/core-free-icons@3.0.0': {}
 
@@ -4240,9 +4250,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@modelcontextprotocol/sdk@1.25.1(hono@4.11.1)(zod@3.25.76)':
+  '@modelcontextprotocol/sdk@1.25.1(hono@4.10.6)(zod@3.25.76)':
     dependencies:
-      '@hono/node-server': 1.19.7(hono@4.11.1)
+      '@hono/node-server': 1.19.7(hono@4.10.6)
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
       content-type: 1.0.5
@@ -5818,8 +5828,11 @@ snapshots:
       hermes-estree: 0.25.1
 
   hono@4.10.6: {}
+<<<<<<< HEAD
 
   hono@4.11.1: {}
+=======
+>>>>>>> 3dad1191c3aa941f7f466c117e4b4ddbda087edd
 
   http-errors@2.0.1:
     dependencies:
@@ -6796,7 +6809,7 @@ snapshots:
 
   setprototypeof@1.2.0: {}
 
-  shadcn@3.6.2(@types/node@20.19.27)(hono@4.11.1)(typescript@5.9.3):
+  shadcn@3.6.2(@types/node@20.19.27)(hono@4.10.6)(typescript@5.9.3):
     dependencies:
       '@antfu/ni': 25.0.0
       '@babel/core': 7.28.5
@@ -6804,7 +6817,7 @@ snapshots:
       '@babel/plugin-transform-typescript': 7.28.5(@babel/core@7.28.5)
       '@babel/preset-typescript': 7.28.5(@babel/core@7.28.5)
       '@dotenvx/dotenvx': 1.51.2
-      '@modelcontextprotocol/sdk': 1.25.1(hono@4.11.1)(zod@3.25.76)
+      '@modelcontextprotocol/sdk': 1.25.1(hono@4.10.6)(zod@3.25.76)
       browserslist: 4.28.1
       commander: 14.0.2
       cosmiconfig: 9.0.0(typescript@5.9.3)
