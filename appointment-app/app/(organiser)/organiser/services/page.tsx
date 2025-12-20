@@ -40,58 +40,70 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            Services
-          </h1>
-          <p className="text-muted-foreground">
-            Manage your appointment types.
-          </p>
+    <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+                Services
+              </h1>
+              <p className="mt-2 text-sm text-gray-600">
+                Manage your appointment types
+              </p>
+            </div>
+            <Link
+              href="/organiser/services/new"
+              className={cn(
+                buttonVariants(),
+                "bg-gray-900 hover:bg-gray-800 text-white shadow-sm"
+              )}
+            >
+              Create Service
+            </Link>
+          </div>
         </div>
-        <Link
-          href="/organiser/services/new"
-          className={cn(
-            buttonVariants(),
-            "bg-primary hover:bg-primary/90 text-primary-foreground"
-          )}
-        >
-          Create Service
-        </Link>
-      </div>
 
-      <div className="grid gap-6">
-        {services.map((service) => (
-          <Card key={service.id} className="border-border shadow-sm flex flex-col sm:flex-row items-center justify-between p-6">
-            <div className="space-y-1">
-              <div className="flex items-center gap-3">
-                <h3 className="font-semibold text-lg text-foreground">{service.name}</h3>
-                <Badge
-                  variant={service.status === "published" ? "default" : "secondary"}
-                  className={
-                    service.status === "published"
-                      ? "bg-green-100 text-green-700 hover:bg-green-200 border-green-200"
-                      : "bg-secondary text-muted-foreground hover:bg-secondary/80 border-border"
-                  }
-                >
-                  {service.status}
-                </Badge>
+        {/* Services List */}
+        <div className="space-y-4">
+          {services.map((service) => (
+            <Card key={service.id} className="overflow-hidden border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6">
+                <div className="flex-1 space-y-1">
+                  <div className="flex items-center gap-3">
+                    <h3 className="text-lg font-semibold text-gray-900">{service.name}</h3>
+                    <Badge
+                      variant="outline"
+                      className={
+                        service.status === "published"
+                          ? "border-green-200 bg-green-50 text-green-700"
+                          : "border-gray-200 bg-gray-50 text-gray-600"
+                      }
+                    >
+                      {service.status}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm text-gray-600">
+                    <span>{service.duration}</span>
+                    <span>•</span>
+                    <span>{service.price}</span>
+                    <span>•</span>
+                    <span>{service.bookings} bookings</span>
+                  </div>
+                </div>
+                <div className="mt-4 sm:mt-0 flex items-center gap-3">
+                  <Button variant="outline" size="sm" className="border-gray-300 text-gray-700 hover:bg-gray-100">
+                    Edit
+                  </Button>
+                  <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
+                    View
+                  </Button>
+                </div>
               </div>
-              <div className="text-sm text-muted-foreground">
-                {service.duration} • {service.price}
-              </div>
-            </div>
-            <div className="flex items-center gap-4 mt-4 sm:mt-0">
-              <div className="text-sm text-muted-foreground">
-                {service.bookings} bookings
-              </div>
-              <Button variant="outline" size="sm" className="border-border">
-                Edit
-              </Button>
-            </div>
-          </Card>
-        ))}
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );
