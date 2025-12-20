@@ -14,25 +14,24 @@ export async function redirectToDashboard() {
   }
   
   const user = session.user as any;
-  const accountType = user.accountType;
-  const role = user.role;
-  
-  // Customer (no organization)
-  if (accountType === "customer" || !user.organizationId) {
+  const accountType = user.accountType as string | undefined;
+  const role = user.role as string | undefined;
+
+  // 3 user dashboards:
+  // - Customer (no org) -> /customer
+  // - Org Owner -> /admin
+  // - Other org users -> /organiser
+  const hasOrg = !!user.organizationId;
+
+  if (!hasOrg || accountType === "customer") {
     redirect("/customer");
   }
-  
-  // Organization members - redirect based on role
+
   if (role === "owner") {
     redirect("/admin");
-  } else if (role === "admin") {
-    redirect("/organiser");
-  } else if (role === "member") {
-    redirect("/organiser/appointments");
   }
-  
-  // Default fallback
-  redirect("/customer");
+
+  redirect("/organiser");
 }
 
 /**

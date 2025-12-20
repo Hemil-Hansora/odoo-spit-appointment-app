@@ -6,13 +6,17 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/30 p-4">
-      <div className="w-full max-w-md space-y-8">
+    <div className="min-h-svh bg-muted/30 px-4 py-10">
+      <div className="mx-auto w-full max-w-md space-y-6">
         <div className="text-center">
-          <h2 className="mt-6 text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Appointment App
-          </h2>
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Sign in or create an account to continue
+          </p>
         </div>
+
         {children}
       </div>
     </div>

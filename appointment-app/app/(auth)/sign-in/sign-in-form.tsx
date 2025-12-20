@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,7 +17,6 @@ import { authClient } from "@/lib/auth-client";
 import { redirectToDashboard } from "../actions";
 
 export function SignInForm() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -37,7 +35,6 @@ export function SignInForm() {
 
       if (result.error) {
         setError(result.error.message || "Invalid email or password");
-        setIsLoading(false);
         return;
       }
 
@@ -45,6 +42,7 @@ export function SignInForm() {
       await redirectToDashboard();
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
+    } finally {
       setIsLoading(false);
     }
   };
@@ -73,6 +71,7 @@ export function SignInForm() {
               name="email"
               type="email"
               placeholder="name@example.com"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -94,6 +93,7 @@ export function SignInForm() {
               id="password"
               name="password"
               type="password"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -105,7 +105,7 @@ export function SignInForm() {
         <CardFooter className="flex flex-col gap-4">
           <Button
             type="submit"
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="w-full"
             disabled={isLoading}
           >
             {isLoading ? "Signing in..." : "Sign In"}
