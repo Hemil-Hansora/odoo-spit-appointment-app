@@ -25,7 +25,6 @@ model User {
   accounts      Account[]
 
   members     Member[]
-  invitations Invitation[]
   bookings    Booking[]
 
   @@unique([email])
@@ -261,7 +260,44 @@ model Answer {
 
   bookingId String
   booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+ onDelete: Cascade)
 
   @@index([bookingId])
   @@map("answer")
+}
+
+ @@map("booking")
+}
+
+  @@map("slot")
+}
+
+dule")
+}
+
+resource")
+}
+
+
+  @@map("service")
+}
+
+
+}
+
+
+[inviterId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("invitation")
+}stgresql"
+fier String
+  value      String
+  expiresAt  DateTime
+ [inviterId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("invitation")
 }
