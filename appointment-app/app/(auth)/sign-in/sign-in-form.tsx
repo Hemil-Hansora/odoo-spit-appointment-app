@@ -98,7 +98,7 @@ export function SignInForm() {
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={isLoading}
-              className="border-border"
+              className="border-border mb-3"
             />
           </div>
         </CardContent>

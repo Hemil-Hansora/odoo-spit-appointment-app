@@ -75,7 +75,7 @@ export default function LandingPage() {
       <header className="border-b border-border bg-background">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="text-xl font-bold">
+            <div className="text-xl font-semibold tracking-tight">
               <span>Book</span>
               <span className="text-primary">It</span>
             </div>
@@ -202,7 +202,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl px-6 py-12">
           <div className="grid gap-8 md:grid-cols-4">
             <div>
-              <div className="text-xl font-bold mb-4">
+              <div className="text-xl font-semibold tracking-tight mb-4">
                 <span>Book</span>
                 <span className="text-primary">It</span>
               </div>

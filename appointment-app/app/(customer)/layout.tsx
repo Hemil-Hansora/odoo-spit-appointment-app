@@ -10,10 +10,11 @@ export default function CustomerLayout({
   return (
     <div className="min-h-screen bg-muted/30">
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <Link href="/book" className="text-xl font-bold tracking-tight text-foreground">
-              Bookit
+            <Link href="/" className="text-xl font-bold">
+              <span>Book</span>
+              <span className="text-primary">It</span>
             </Link>
             <nav className="hidden md:flex gap-6">
               <Link
@@ -32,7 +33,7 @@ export default function CustomerLayout({
           </div>
           <div className="flex items-center gap-4">
             <Link
-              href="/sign-in"
+              href="/"
               className={cn(
                 buttonVariants({ variant: "ghost" }),
                 "text-muted-foreground hover:text-foreground"
