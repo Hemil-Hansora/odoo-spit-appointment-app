@@ -96,9 +96,9 @@ export function SignUpForm() {
 
       // Redirect based on account type and role
       if (result.accountType === "customer") {
-        router.push("/customer");
+        router.push("/book");
       } else if (result.role === "owner") {
-        router.push("/admin");
+        router.push("/organiser");
       } else {
         router.push("/organiser");
       }
@@ -231,7 +231,7 @@ export function SignUpForm() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               disabled={isLoading}
-              className="border-border"
+              className="border-border mb-3"
             />
           </div>
         </CardContent>

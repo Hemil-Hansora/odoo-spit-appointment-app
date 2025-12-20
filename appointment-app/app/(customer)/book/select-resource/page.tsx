@@ -28,7 +28,7 @@ export default function SelectResourcePage() {
 
   const handleContinue = () => {
     if (selectedId) {
-      router.push(`/customer/book/select-slot?service=${serviceId}&${selectionType.toLowerCase()}=${selectedId}`)
+      router.push(`/book/select-slot?service=${serviceId}&${selectionType.toLowerCase()}=${selectedId}`)
     }
   }
 

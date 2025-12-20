@@ -24,11 +24,11 @@ export async function redirectToDashboard() {
   const hasOrg = !!user.organizationId;
 
   if (!hasOrg || accountType === "customer") {
-    redirect("/customer");
+    redirect("/book");
   }
 
   if (role === "owner") {
-    redirect("/admin");
+    redirect("/organiser");
   }
 
   redirect("/organiser");

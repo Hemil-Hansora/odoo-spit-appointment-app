@@ -91,7 +91,7 @@ export default function ServiceSelectionPage() {
           {filteredServices.map((service) => (
             <Link
               key={service.id}
-              href={`/customer/book/select-resource?service=${service.id}`}
+              href={`/book/select-resource?service=${service.id}`}
               className="block"
             >
               <div className="rounded border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md">
