@@ -3,6 +3,9 @@ import { Resend } from 'resend';
 // Initialize Resend with API key
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Check if we're in development mode
+const isDev = process.env.NODE_ENV !== 'production';
+
 export interface SendOTPEmailParams {
   email: string;
   otp: string;
@@ -23,6 +26,16 @@ export async function sendOTPEmail({ email, otp, name }: SendOTPEmailParams) {
 
     if (error) {
       console.error('Email sending error:', error);
+      
+      // In development, don't throw - just log the OTP
+      if (isDev) {
+        console.log(`\n${"=".repeat(50)}`);
+        console.log(`📧 DEV MODE - Email would be sent to: ${email}`);
+        console.log(`🔑 OTP CODE: ${otp}`);
+        console.log(`${"=".repeat(50)}\n`);
+        return { id: 'dev-mode', email };
+      }
+      
       throw new Error(`Failed to send email: ${error.message}`);
     }
 
@@ -30,6 +43,16 @@ export async function sendOTPEmail({ email, otp, name }: SendOTPEmailParams) {
     return data;
   } catch (error) {
     console.error('Failed to send OTP email:', error);
+    
+    // In development, don't throw - just log the OTP
+    if (isDev) {
+      console.log(`\n${"=".repeat(50)}`);
+      console.log(`📧 DEV MODE - Email would be sent to: ${email}`);
+      console.log(`🔑 OTP CODE: ${otp}`);
+      console.log(`${"=".repeat(50)}\n`);
+      return { id: 'dev-mode', email };
+    }
+    
     throw error;
   }
 }

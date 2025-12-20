@@ -68,16 +68,19 @@ export async function POST(request: NextRequest) {
         name: user.name,
       });
       console.log(`✅ OTP resent successfully to ${user.email}`);
-      console.log(`📧 New OTP for ${user.email}: ${otp}`);
     } catch (error) {
+      // In development, just log the OTP to console
       console.error(`❌ Failed to resend OTP email:`, error);
-      console.log(`📧 Fallback - New OTP for ${user.email}: ${otp}`);
-      // Don't throw - the OTP is stored, user can still use it
+      console.log(`\n${"=".repeat(50)}`);
+      console.log(`📧 DEVELOPMENT MODE - New OTP for ${user.email}`);
+      console.log(`🔑 OTP CODE: ${otp}`);
+      console.log(`${"=".repeat(50)}\n`);
+      // Don't throw - the OTP is stored in DB, user can still use it
     }
 
     return NextResponse.json({
       success: true,
-      message: "OTP resent successfully",
+      message: "OTP sent successfully. Check your email or console for the code.",
     });
   } catch (error) {
     console.error("Resend OTP error:", error);

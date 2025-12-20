@@ -1,12 +1,35 @@
 import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { auth } from "@/lib/auth";
+import db from "@/lib/db";
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Check if user is authenticated
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    redirect("/sign-in");
+  }
+
+  // Check if user has ADMIN role
+  const user = await db.user.findUnique({
+    where: { id: session.user.id },
+    select: { role: true },
+  });
+
+  if (user?.role !== "ADMIN") {
+    redirect("/"); // Redirect non-admins to home page
+  }
+
   return (
     <div className="min-h-screen flex bg-muted/30">
       {/* Sidebar */}
@@ -15,6 +38,9 @@ export default function AdminLayout({
           <h2 className="text-xl font-bold tracking-tight">
             Admin Panel
           </h2>
+          <p className="text-xs text-primary-foreground/60 mt-1">
+            {session.user.email}
+          </p>
         </div>
         <nav className="flex-1 p-4 space-y-1">
           <Link
