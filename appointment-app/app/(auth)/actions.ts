@@ -14,15 +14,15 @@ export async function redirectToDashboard() {
   }
   
   const user = session.user as any;
-  const hasOrg = user.activeOrganizationId || user.organizationId;
+  const accountType = user.accountType;
   const role = user.role;
   
   // Customer (no organization)
-  if (!hasOrg) {
+  if (accountType === "customer" || !user.organizationId) {
     redirect("/customer");
   }
   
-  // Organization members
+  // Organization members - redirect based on role
   if (role === "owner") {
     redirect("/admin");
   } else if (role === "admin") {
@@ -41,16 +41,18 @@ export async function redirectToDashboard() {
 export async function getUserRole(): Promise<{
   role: string | null;
   hasOrg: boolean;
+  accountType: string;
 }> {
   const session = await getSession();
   
   if (!session?.user) {
-    return { role: null, hasOrg: false };
+    return { role: null, hasOrg: false, accountType: "customer" };
   }
   
   const user = session.user as any;
-  const hasOrg = !!(user.activeOrganizationId || user.organizationId);
+  const hasOrg = !!(user.organizationId);
   const role = user.role || "customer";
+  const accountType = user.accountType || "customer";
   
-  return { role, hasOrg };
+  return { role, hasOrg, accountType };
 }

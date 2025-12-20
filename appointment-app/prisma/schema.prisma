@@ -146,6 +146,7 @@ model Service {
   maxCapacity    Int?
   manualConfirm  Boolean @default(false)
   advancePayment Boolean @default(false)
+  metadata       String? // JSON field for extended configuration
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
