@@ -19,6 +19,7 @@ interface Service {
   description: string | null;
   durationMinutes: number;
   isPublished: boolean;
+  shareToken?: string | null;
   schedules?: Array<{
     id: string;
     dayOfWeek: number;
@@ -50,6 +51,8 @@ export default function ServicesPage() {
   const [loading, setLoading] = useState(true);
   const [organizationId, setOrganizationId] = useState<string>("");
   const [viewingService, setViewingService] = useState<Service | null>(null);
+  const [shareLoading, setShareLoading] = useState<string | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   // Fetch organization ID from session
   useEffect(() => {
@@ -93,6 +96,38 @@ export default function ServicesPage() {
 
     fetchServices();
   }, [organizationId]);
+
+  // Generate or get share link
+  const handleShare = async (serviceId: string) => {
+    try {
+      setShareLoading(serviceId);
+      const response = await fetch(`/api/organiser/services/${serviceId}/share`, {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const shareUrl = data.shareUrl;
+        
+        // Copy to clipboard
+        await navigator.clipboard.writeText(shareUrl);
+        setCopiedId(serviceId);
+        
+        // Update the service in the list with the share token
+        setServices(prev => 
+          prev.map(s => s.id === serviceId ? { ...s, shareToken: data.shareToken } : s)
+        );
+        
+        // Reset copied state after 2 seconds
+        setTimeout(() => setCopiedId(null), 2000);
+      }
+    } catch (err) {
+      console.error("Failed to generate share link:", err);
+      alert("Failed to generate share link");
+    } finally {
+      setShareLoading(null);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -186,6 +221,28 @@ export default function ServicesPage() {
                     </div>
                   </div>
                   <div className="mt-4 sm:mt-0 flex items-center gap-3">
+                    {!service.isPublished && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                        onClick={() => handleShare(service.id)}
+                        disabled={shareLoading === service.id}
+                      >
+                        {shareLoading === service.id ? (
+                          "Generating..."
+                        ) : copiedId === service.id ? (
+                          "✓ Copied!"
+                        ) : (
+                          <>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                            </svg>
+                            Share Link
+                          </>
+                        )}
+                      </Button>
+                    )}
                     <Button
                       variant="outline"
                       size="sm"

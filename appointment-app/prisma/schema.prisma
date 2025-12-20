@@ -150,6 +150,7 @@ model Service {
   durationMinutes Int
 
   isPublished    Boolean @default(false)
+  shareToken     String? @unique // For sharing unpublished services
   maxCapacity    Int?
   manualConfirm  Boolean @default(false)
   advancePayment Boolean @default(false)

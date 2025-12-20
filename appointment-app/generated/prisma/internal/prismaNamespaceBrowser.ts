@@ -186,6 +186,7 @@ export const ServiceScalarFieldEnum = {
   description: 'description',
   durationMinutes: 'durationMinutes',
   isPublished: 'isPublished',
+  shareToken: 'shareToken',
   maxCapacity: 'maxCapacity',
   manualConfirm: 'manualConfirm',
   advancePayment: 'advancePayment',
