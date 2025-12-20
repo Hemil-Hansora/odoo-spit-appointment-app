@@ -1,67 +1,28 @@
-export const PERMISSIONS = {
-  SERVICE: {
-    CREATE: "service:create",
-    READ: "service:read",
-    UPDATE: "service:update",
-    DELETE: "service:delete",
-  },
-  APPOINTMENT: {
-    CREATE: "appointment:create",
-    READ: "appointment:read",
-    UPDATE: "appointment:update",
-    DELETE: "appointment:delete",
-  },
-  ORGANIZATION: {
-    CREATE: "organization:create",
-    READ: "organization:read",
-    UPDATE: "organization:update",
-    DELETE: "organization:delete",
-    INVITE_MEMBER: "organization:invite",
-    MANAGE_ROLE: "organization:manage-role",
-  },
-  USER: {
-    READ: "user:read",
-    UPDATE: "user:update",
-    DELETE: "user:delete",
-  },
-};
+import { createAccessControl } from "better-auth/plugins/access";
 
-export const ROLE_PERMISSIONS: Record<string, string[]> = {
-  owner: [
-    PERMISSIONS.SERVICE.CREATE,
-    PERMISSIONS.SERVICE.READ,
-    PERMISSIONS.SERVICE.UPDATE,
-    PERMISSIONS.SERVICE.DELETE,
-    PERMISSIONS.APPOINTMENT.READ,
-    PERMISSIONS.APPOINTMENT.UPDATE,
-    PERMISSIONS.APPOINTMENT.DELETE,
-    PERMISSIONS.ORGANIZATION.CREATE,
-    PERMISSIONS.ORGANIZATION.READ,
-    PERMISSIONS.ORGANIZATION.UPDATE,
-    PERMISSIONS.ORGANIZATION.DELETE,
-    PERMISSIONS.ORGANIZATION.INVITE_MEMBER,
-    PERMISSIONS.ORGANIZATION.MANAGE_ROLE,
-  ],
-  admin: [
-    PERMISSIONS.SERVICE.CREATE,
-    PERMISSIONS.SERVICE.READ,
-    PERMISSIONS.SERVICE.UPDATE,
-    PERMISSIONS.SERVICE.DELETE,
-    PERMISSIONS.APPOINTMENT.READ,
-    PERMISSIONS.APPOINTMENT.UPDATE,
-    PERMISSIONS.APPOINTMENT.DELETE,
-    PERMISSIONS.ORGANIZATION.READ,
-    PERMISSIONS.ORGANIZATION.UPDATE,
-    PERMISSIONS.ORGANIZATION.INVITE_MEMBER,
-  ],
-  member: [
-    PERMISSIONS.APPOINTMENT.READ,
-    PERMISSIONS.APPOINTMENT.UPDATE,
-    PERMISSIONS.ORGANIZATION.READ,
-  ],
-  customer: [
-    PERMISSIONS.APPOINTMENT.CREATE,
-    PERMISSIONS.APPOINTMENT.READ,
-    PERMISSIONS.SERVICE.READ,
-  ],
-};
+const statement = {
+  service: ["create", "update", "publish", "delete"],
+  slot: ["create", "update", "delete"],
+  booking: ["read", "update", "cancel"],
+} as const;
+
+export const ac = createAccessControl(statement);
+
+// Provider / Staff
+export const member = ac.newRole({
+  booking: ["read", "update"], // mark completed
+});
+
+// Organiser
+export const admin = ac.newRole({
+  service: ["create", "update", "publish"],
+  slot: ["create", "update"],
+  booking: ["read", "update", "cancel"],
+});
+
+// Org Owner
+export const owner = ac.newRole({
+  service: ["create", "update", "publish", "delete"],
+  slot: ["create", "update", "delete"],
+  booking: ["read", "update", "cancel"],
+});
