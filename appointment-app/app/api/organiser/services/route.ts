@@ -92,6 +92,7 @@ export async function POST(req: NextRequest) {
       maxCapacity,
       manualConfirm = false,
       advancePayment = false,
+      metadata,
       resourceIds = [],
       schedules = [],
       questions = [],
@@ -138,6 +139,7 @@ export async function POST(req: NextRequest) {
         maxCapacity,
         manualConfirm,
         advancePayment,
+        metadata: metadata ? JSON.stringify(metadata) : null,
         resources: resourceIds.length
           ? {
               connect: resourceIds.map((id: string) => ({ id })),
