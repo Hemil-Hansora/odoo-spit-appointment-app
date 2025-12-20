@@ -36,6 +36,12 @@ export default function OrganiserLayout({
             Services
           </Link>
           <Link
+            href="/organiser/resources"
+            className="flex items-center px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground rounded-md"
+          >
+            Resources
+          </Link>
+          <Link
             href="/organiser/calendar"
             className="flex items-center px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground rounded-md"
           >

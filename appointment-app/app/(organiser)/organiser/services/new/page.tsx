@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+interface Schedule {
+  dayOfWeek: number;
+  startTime: string;
+  endTime: string;
+}
+
+interface Question {
+  label: string;
+  type: string;
+  required: boolean;
+}
+
+interface Resource {
+  id: string;
+  name: string;
+  isActive: boolean;
+}
+
+const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
 export default function CreateServicePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,6 +55,90 @@ export default function CreateServicePage() {
   const [price, setPrice] = useState("");
   const [capacity, setCapacity] = useState("1");
   const [buffer, setBuffer] = useState("0");
+
+  // Schedules state
+  const [schedules, setSchedules] = useState<Schedule[]>([
+    { dayOfWeek: 1, startTime: "09:00", endTime: "17:00" }, // Monday
+    { dayOfWeek: 2, startTime: "09:00", endTime: "17:00" }, // Tuesday
+    { dayOfWeek: 3, startTime: "09:00", endTime: "17:00" }, // Wednesday
+    { dayOfWeek: 4, startTime: "09:00", endTime: "17:00" }, // Thursday
+    { dayOfWeek: 5, startTime: "09:00", endTime: "17:00" }, // Friday
+  ]);
+
+  // Questions state
+  const [questions, setQuestions] = useState<Question[]>([
+    { label: "Full Name", type: "text", required: true },
+    { label: "Email", type: "email", required: true },
+    { label: "Phone", type: "tel", required: false },
+  ]);
+
+  // Resources state
+  const [availableResources, setAvailableResources] = useState<Resource[]>([]);
+  const [selectedResourceIds, setSelectedResourceIds] = useState<string[]>([]);
+
+  // Load resources on mount
+  useEffect(() => {
+    async function loadResources() {
+      try {
+        // Get organization ID from session
+        const sessionRes = await fetch("/api/auth/session");
+        if (sessionRes.ok) {
+          const sessionData = await sessionRes.json();
+          const orgId = sessionData.session?.user?.activeOrganizationId;
+          
+          if (orgId) {
+            const response = await fetch(`/api/organiser/resources?organizationId=${orgId}`);
+            if (response.ok) {
+              const data = await response.json();
+              setAvailableResources(data.resources || []);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load resources:", err);
+      }
+    }
+    loadResources();
+  }, []);
+
+  // Schedule handlers
+  const addSchedule = () => {
+    setSchedules([...schedules, { dayOfWeek: 1, startTime: "09:00", endTime: "17:00" }]);
+  };
+
+  const removeSchedule = (index: number) => {
+    setSchedules(schedules.filter((_, i) => i !== index));
+  };
+
+  const updateSchedule = (index: number, field: keyof Schedule, value: any) => {
+    const updated = [...schedules];
+    updated[index] = { ...updated[index], [field]: value };
+    setSchedules(updated);
+  };
+
+  // Question handlers
+  const addQuestion = () => {
+    setQuestions([...questions, { label: "", type: "text", required: false }]);
+  };
+
+  const removeQuestion = (index: number) => {
+    setQuestions(questions.filter((_, i) => i !== index));
+  };
+
+  const updateQuestion = (index: number, field: keyof Question, value: any) => {
+    const updated = [...questions];
+    updated[index] = { ...updated[index], [field]: value };
+    setQuestions(updated);
+  };
+
+  // Resource handlers
+  const toggleResource = (resourceId: string) => {
+    setSelectedResourceIds(prev =>
+      prev.includes(resourceId)
+        ? prev.filter(id => id !== resourceId)
+        : [...prev, resourceId]
+    );
+  };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -80,6 +184,54 @@ export default function CreateServicePage() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to create service");
+      }
+
+      const { service } = await response.json();
+      const serviceId = service.id;
+
+      // Create schedules if any
+      if (schedules.length > 0) {
+        await fetch("/api/organiser/schedules/batch", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            serviceId,
+            schedules: schedules.map(s => ({
+              dayOfWeek: s.dayOfWeek,
+              startTime: s.startTime,
+              endTime: s.endTime,
+            })),
+          }),
+        });
+      }
+
+      // Create questions if any
+      if (questions.length > 0 && questions.some(q => q.label)) {
+        await fetch("/api/organiser/questions/batch", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            serviceId,
+            questions: questions.filter(q => q.label).map(q => ({
+              label: q.label,
+              type: q.type,
+              required: q.required,
+            })),
+          }),
+        });
+      }
+
+      // Link resources if any selected
+      if (selectedResourceIds.length > 0) {
+        await Promise.all(
+          selectedResourceIds.map(resourceId =>
+            fetch(`/api/organiser/resources/${resourceId}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ serviceIds: [serviceId] }),
+            })
+          )
+        );
       }
 
       // Success - redirect to services page
@@ -190,13 +342,61 @@ export default function CreateServicePage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid gap-2">
-              <Label>Weekly Schedule</Label>
-              <div className="text-sm text-muted-foreground border border-border p-4 rounded-md bg-muted">
-                <p>Mon - Fri: 9:00 AM - 5:00 PM</p>
-                <p className="mt-1 text-xs text-muted-foreground/70">
-                  (Default schedule applied. Edit in settings.)
-                </p>
+            <div className="grid gap-4">
+              <div className="flex items-center justify-between">
+                <Label>Weekly Schedule</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={addSchedule}
+                  disabled={loading}
+                >
+                  + Add Time Slot
+                </Button>
+              </div>
+              <div className="space-y-3">
+                {schedules.map((schedule, index) => (
+                  <div key={index} className="grid grid-cols-[140px_1fr_1fr_auto] gap-2 items-center">
+                    <Select
+                      value={schedule.dayOfWeek.toString()}
+                      onValueChange={(value) => updateSchedule(index, "dayOfWeek", parseInt(value))}
+                      disabled={loading}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {DAYS.map((day, idx) => (
+                          <SelectItem key={idx} value={idx.toString()}>
+                            {day}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Input
+                      type="time"
+                      value={schedule.startTime}
+                      onChange={(e) => updateSchedule(index, "startTime", e.target.value)}
+                      disabled={loading}
+                    />
+                    <Input
+                      type="time"
+                      value={schedule.endTime}
+                      onChange={(e) => updateSchedule(index, "endTime", e.target.value)}
+                      disabled={loading}
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeSchedule(index)}
+                      disabled={loading}
+                    >
+                      ✕
+                    </Button>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -234,6 +434,109 @@ export default function CreateServicePage() {
               </div>
             </div>
           </CardContent>
+        </Card>
+
+        <Card className="mt-6 border-border shadow-sm">
+          <CardHeader>
+            <CardTitle>Booking Questions</CardTitle>
+            <CardDescription>
+              Information to collect from customers when booking.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label>Questions</Label>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addQuestion}
+                disabled={loading}
+              >
+                + Add Question
+              </Button>
+            </div>
+            <div className="space-y-3">
+              {questions.map((question, index) => (
+                <div key={index} className="grid grid-cols-[2fr_1fr_auto_auto] gap-2 items-center">
+                  <Input
+                    placeholder="Question label"
+                    value={question.label}
+                    onChange={(e) => updateQuestion(index, "label", e.target.value)}
+                    disabled={loading}
+                  />
+                  <Select
+                    value={question.type}
+                    onValueChange={(value) => updateQuestion(index, "type", value)}
+                    disabled={loading}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="text">Text</SelectItem>
+                      <SelectItem value="email">Email</SelectItem>
+                      <SelectItem value="tel">Phone</SelectItem>
+                      <SelectItem value="textarea">Long Text</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <label className="flex items-center gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={question.required}
+                      onChange={(e) => updateQuestion(index, "required", e.target.checked)}
+                      disabled={loading}
+                    />
+                    Required
+                  </label>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeQuestion(index)}
+                    disabled={loading}
+                  >
+                    ✕
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {availableResources.length > 0 && (
+          <Card className="mt-6 border-border shadow-sm">
+            <CardHeader>
+              <CardTitle>Resources</CardTitle>
+              <CardDescription>
+                Select which resources (people/rooms) can provide this service.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-2">
+                {availableResources.map((resource) => (
+                  <label
+                    key={resource.id}
+                    className="flex items-center gap-3 p-3 border rounded hover:bg-muted cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedResourceIds.includes(resource.id)}
+                      onChange={() => toggleResource(resource.id)}
+                      disabled={loading}
+                    />
+                    <span>{resource.name}</span>
+                    {!resource.isActive && (
+                      <span className="text-xs text-muted-foreground">(Inactive)</span>
+                    )}
+                  </label>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        <Card className="mt-6 border-border shadow-sm">
           <CardFooter className="flex justify-between bg-muted/50 border-t border-border p-6">
             <Button
               variant="outline"

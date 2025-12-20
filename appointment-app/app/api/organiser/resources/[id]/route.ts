@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import  db  from "@/lib/db";
+import db from "@/lib/db";
 import { auth } from "@/lib/auth";
 
 // GET /api/organiser/resources/[id] - Get resource by ID
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+    
     const session = await auth.api.getSession({
       headers: req.headers,
     });
@@ -17,7 +19,7 @@ export async function GET(
     }
 
     const resource = await db.resource.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         organization: {
           select: {
@@ -76,9 +78,11 @@ export async function GET(
 // PATCH /api/organiser/resources/[id] - Update resource
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+    
     const session = await auth.api.getSession({
       headers: req.headers,
     });
@@ -92,7 +96,7 @@ export async function PATCH(
 
     // Check if resource exists
     const existingResource = await db.resource.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingResource) {
@@ -123,7 +127,7 @@ export async function PATCH(
     if (isActive !== undefined) updateData.isActive = isActive;
 
     const resource = await db.resource.update({
-      where: { id: params.id },
+      where: { id },
       data: updateData,
       include: {
         organization: {
@@ -149,9 +153,11 @@ export async function PATCH(
 // DELETE /api/organiser/resources/[id] - Delete resource
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+    
     const session = await auth.api.getSession({
       headers: req.headers,
     });
@@ -162,7 +168,7 @@ export async function DELETE(
 
     // Check if resource exists
     const existingResource = await db.resource.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         _count: {
           select: {
@@ -210,7 +216,7 @@ export async function DELETE(
     }
 
     await db.resource.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json(

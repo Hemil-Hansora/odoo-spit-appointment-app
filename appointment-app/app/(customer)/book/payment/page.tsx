@@ -11,6 +11,12 @@ export default function PaymentPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const serviceId = searchParams.get("service")
+  const slotId = searchParams.get("slotId")
+  const startTime = searchParams.get("startTime")
+  const endTime = searchParams.get("endTime")
+  const capacity = searchParams.get("capacity")
+  const resourceId = searchParams.get("resourceId")
+  const answersJson = searchParams.get("answers")
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("credit")
   const [cardDetails, setCardDetails] = useState({
@@ -22,13 +28,57 @@ export default function PaymentPage() {
   const [upiDetails, setUpiDetails] = useState({
     upiId: "",
   })
+  const [processing, setProcessing] = useState(false)
+  const [error, setError] = useState("")
 
-  const handlePayment = () => {
-    // Mock payment processing
-    router.push(`/book/confirmation?service=${serviceId}&paid=true`)
+  const handlePayment = async () => {
+    try {
+      setProcessing(true)
+      setError("")
+
+      const answers = answersJson ? JSON.parse(answersJson) : []
+
+      // Extract guest email and name from answers
+      const emailAnswer = answers.find((a: any) =>
+        a.value.includes("@")
+      )
+      const guestEmail = emailAnswer?.value || ""
+      const guestName = cardDetails.name || "Guest User"
+
+      const response = await fetch("/api/customer/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          serviceId,
+          slotId,
+          startTime,
+          endTime,
+          resourceId: resourceId || undefined,
+          answers,
+          capacity: parseInt(capacity || "1", 10),
+          guestEmail,
+          guestName,
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Failed to create booking")
+      }
+
+      const data = await response.json()
+      router.push(`/book/confirmation?bookingId=${data.bookingId}`)
+    } catch (err: any) {
+      setError(err.message || "Failed to process booking. Please try again.")
+      console.error("Error creating booking:", err)
+    } finally {
+      setProcessing(false)
+    }
   }
 
-  const isFormValid = 
+  const isFormValid =
     paymentMethod === "upi"
       ? upiDetails.upiId.trim()
       : cardDetails.name.trim() &&
@@ -40,8 +90,14 @@ export default function PaymentPage() {
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-6xl px-6 py-12">
         <h2 className="mb-8 text-center text-xl font-bold text-gray-900">
-          Payment
+          Complete Your Booking
         </h2>
+
+        {error && (
+          <div className="mb-6 rounded border border-red-200 bg-red-50 p-4 text-center text-red-600">
+            {error}
+          </div>
+        )}
 
         <div className="rounded border border-gray-200 bg-white p-8 shadow-sm">
           <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
@@ -254,15 +310,15 @@ export default function PaymentPage() {
 
                 <button
                   onClick={handlePayment}
-                  disabled={!isFormValid}
+                  disabled={!isFormValid || processing}
                   className={cn(
                     "mt-6 w-full rounded border py-3 transition-colors",
-                    isFormValid
+                    isFormValid && !processing
                       ? "border-gray-900 bg-gray-900 text-white hover:bg-gray-800"
                       : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
                   )}
                 >
-                  Pay Now
+                  {processing ? "Processing..." : "Confirm Booking"}
                 </button>
               </div>
             </div>
