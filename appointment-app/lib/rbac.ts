@@ -1,6 +1,4 @@
-import { admin } from "better-auth/plugins";
-import { member, owner } from "./permissions";
-
+import { admin, member, owner } from "./permissions";
 
 
 export function getRolePermissions(role: string) {
