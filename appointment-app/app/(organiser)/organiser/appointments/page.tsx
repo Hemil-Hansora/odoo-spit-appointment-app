@@ -136,6 +136,8 @@ export default function AppointmentsPage() {
   
   // Bookings data
   const [bookings, setBookings] = useState<Booking[]>([])
+  const [viewingBooking, setViewingBooking] = useState<Booking | null>(null)
+  const [cancellingId, setCancellingId] = useState<string | null>(null)
   
   // Schedules
   const [schedules, setSchedules] = useState<DaySchedule[]>([])
@@ -517,6 +519,31 @@ export default function AppointmentsPage() {
     setQuestions((prev) => prev.filter((_, idx) => idx !== index));
   };
 
+  const handleCancelBooking = async (bookingId: string) => {
+    if (!confirm("Are you sure you want to cancel this booking?")) {
+      return;
+    }
+
+    try {
+      setCancellingId(bookingId);
+      const response = await fetch(`/api/organiser/bookings/${bookingId}/cancel`, {
+        method: "PATCH",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to cancel booking");
+      }
+
+      await fetchBookings();
+      alert("Booking cancelled successfully");
+    } catch (err) {
+      console.error("Error cancelling booking:", err);
+      alert("Failed to cancel booking. Please try again.");
+    } finally {
+      setCancellingId(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -637,13 +664,27 @@ export default function AppointmentsPage() {
                             </Badge>
                           </td>
                           <td className="px-6 py-4 text-right align-middle">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-gray-600 hover:text-gray-900"
-                            >
-                              View
-                            </Button>
+                            <div className="flex gap-2 justify-end">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                                onClick={() => setViewingBooking(booking)}
+                              >
+                                View
+                              </Button>
+                              {booking.status !== "CANCELLED" && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                  onClick={() => handleCancelBooking(booking.id)}
+                                  disabled={cancellingId === booking.id}
+                                >
+                                  {cancellingId === booking.id ? "Cancelling..." : "Cancel"}
+                                </Button>
+                              )}
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -1065,6 +1106,74 @@ export default function AppointmentsPage() {
           </div>
         )}
       </div>
+
+      {/* View Booking Modal */}
+      {viewingBooking && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setViewingBooking(null)}>
+          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-gray-900">Booking Details</h2>
+                <button onClick={() => setViewingBooking(null)} className="text-gray-400 hover:text-gray-600">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Customer Name</p>
+                  <p className="text-gray-900">{viewingBooking.user.name}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Email</p>
+                  <p className="text-gray-900">{viewingBooking.user.email}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Service</p>
+                  <p className="text-gray-900">{viewingBooking.service.title}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Date & Time</p>
+                  <p className="text-gray-900">{formatBookingTime(viewingBooking.slot.date, viewingBooking.slot.startTime)}</p>
+                </div>
+                <div className="col-span-2">
+                  <p className="text-sm font-medium text-gray-600">Status</p>
+                  <Badge
+                    variant="outline"
+                    className={
+                      viewingBooking.status === "CONFIRMED"
+                        ? "border-green-200 bg-green-50 text-green-700"
+                        : viewingBooking.status === "PENDING"
+                        ? "border-yellow-200 bg-yellow-50 text-yellow-700"
+                        : "border-red-200 bg-red-50 text-red-700"
+                    }
+                  >
+                    {viewingBooking.status.charAt(0) + viewingBooking.status.slice(1).toLowerCase()}
+                  </Badge>
+                </div>
+              </div>
+            </div>
+            <div className="p-6 border-t border-gray-200 flex justify-end gap-3">
+              {viewingBooking.status !== "CANCELLED" && (
+                <Button
+                  variant="outline"
+                  className="border-red-300 text-red-600 hover:bg-red-50"
+                  onClick={() => {
+                    setViewingBooking(null);
+                    handleCancelBooking(viewingBooking.id);
+                  }}
+                >
+                  Cancel Booking
+                </Button>
+              )}
+              <Button onClick={() => setViewingBooking(null)}>Close</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

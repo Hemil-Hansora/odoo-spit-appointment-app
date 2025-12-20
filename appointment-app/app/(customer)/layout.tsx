@@ -1,12 +1,21 @@
+"use client";
+
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 export default function CustomerLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  const isActive = (path: string) => {
+    return pathname?.startsWith(path);
+  };
+
   return (
     <div className="min-h-screen bg-muted/30">
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-sm">
@@ -19,13 +28,23 @@ export default function CustomerLayout({
             <nav className="hidden md:flex gap-6">
               <Link
                 href="/book"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+                className={cn(
+                  "text-sm font-medium transition-colors relative pb-1",
+                  isActive("/book")
+                    ? "text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
               >
                 Services
               </Link>
               <Link
                 href="/book/my-appointments"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+                className={cn(
+                  "text-sm font-medium transition-colors relative pb-1",
+                  isActive("/book/my-appointments")
+                    ? "text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
               >
                 My Appointments
               </Link>
@@ -35,8 +54,7 @@ export default function CustomerLayout({
             <Link
               href="/"
               className={cn(
-                buttonVariants({ variant: "ghost" }),
-                "text-muted-foreground hover:text-foreground"
+                buttonVariants({ variant: "ghost" })
               )}
             >
               Sign Out
