@@ -5,7 +5,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ProtectedRoute } from "@/components/protected-route";
 import { signOut } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function OrganiserLayout({
   children,
@@ -13,6 +13,7 @@ export default function OrganiserLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleSignOut = async () => {
     await signOut();
@@ -20,72 +21,104 @@ export default function OrganiserLayout({
     router.refresh();
   };
 
+  const isActive = (path: string) => {
+    if (path === "/organiser") {
+      return pathname === path;
+    }
+    return pathname?.startsWith(path);
+  };
+
   return (
     <ProtectedRoute requiredRole="admin">
-    <div className="min-h-screen flex bg-muted/30">
-      {/* Sidebar */}
-      <aside className="w-64 bg-background border-r border-border hidden md:flex flex-col">
-        <div className="p-6 border-b border-border">
-          <h2 className="text-xl font-bold tracking-tight text-foreground">
-            Organiser
-          </h2>
-        </div>
-        <nav className="flex-1 p-4 space-y-1">
-          <Link
-            href="/organiser"
-            className="flex items-center px-4 py-2 text-sm font-medium text-foreground bg-muted rounded-md"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="/organiser/appointments"
-            className="flex items-center px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground rounded-md"
-          >
-            Appointments
-          </Link>
-          <Link
-            href="/organiser/services"
-            className="flex items-center px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground rounded-md"
-          >
-            Services
-          </Link>
-          <Link
-            href="/organiser/resources"
-            className="flex items-center px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground rounded-md"
-          >
-            Resources
-          </Link>
-          <Link
-            href="/organiser/calendar"
-            className="flex items-center px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground rounded-md"
-          >
-            Calendar
-          </Link>
-          <Link
-            href="/organiser/reporting"
-            className="flex items-center px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground rounded-md"
-          >
-            Reporting
-          </Link>
-        </nav>
-        <div className="p-4 border-t border-border">
-          <Button
-            variant="ghost"
-            onClick={handleSignOut}
-            className="w-full justify-start text-muted-foreground hover:text-foreground"
-          >
-            Sign Out
-          </Button>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto">
-        <div className="p-8">
+      <div className="min-h-screen bg-muted/30">
+        <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-sm">
+          <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <Link href="/organiser" className="text-xl font-bold">
+                <span>Book</span>
+                <span className="text-primary">It</span>
+              </Link>
+              <nav className="hidden md:flex gap-6">
+                <Link
+                  href="/organiser"
+                  className={cn(
+                    "text-sm font-medium transition-colors relative pb-1",
+                    isActive("/organiser")
+                      ? "text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/organiser/appointments"
+                  className={cn(
+                    "text-sm font-medium transition-colors relative pb-1",
+                    isActive("/organiser/appointments")
+                      ? "text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Appointments
+                </Link>
+                <Link
+                  href="/organiser/services"
+                  className={cn(
+                    "text-sm font-medium transition-colors relative pb-1",
+                    isActive("/organiser/services")
+                      ? "text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Services
+                </Link>
+                <Link
+                  href="/organiser/resources"
+                  className={cn(
+                    "text-sm font-medium transition-colors relative pb-1",
+                    isActive("/organiser/resources")
+                      ? "text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Resources
+                </Link>
+                <Link
+                  href="/organiser/reporting"
+                  className={cn(
+                    "text-sm font-medium transition-colors relative pb-1",
+                    isActive("/organiser/reporting")
+                      ? "text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Reporting
+                </Link>
+              </nav>
+            </div>
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                onClick={handleSignOut}
+              >
+                Sign Out
+              </Button>
+              <Link
+                href="/organiser/profile"
+                className={cn(
+                  buttonVariants(),
+                  "bg-primary text-primary-foreground hover:bg-primary/90"
+                )}
+              >
+                Profile
+              </Link>
+            </div>
+          </div>
+        </header>
+        <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
           {children}
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
     </ProtectedRoute>
   );
 }

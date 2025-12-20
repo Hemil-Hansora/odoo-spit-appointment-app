@@ -19,18 +19,37 @@ interface Service {
   description: string | null;
   durationMinutes: number;
   isPublished: boolean;
+  schedules?: Array<{
+    id: string;
+    dayOfWeek: number;
+    startTime: string;
+    endTime: string;
+  }>;
+  resources?: Array<{
+    id: string;
+    name: string;
+  }>;
+  questions?: Array<{
+    id: string;
+    label: string;
+    required: boolean;
+  }>;
   _count?: {
     bookings: number;
   };
   metadata?: {
     price?: number | string;
+    capacity?: number;
   };
 }
+
+const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 export default function ServicesPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [organizationId, setOrganizationId] = useState<string>("");
+  const [viewingService, setViewingService] = useState<Service | null>(null);
 
   // Fetch organization ID from session
   useEffect(() => {
@@ -181,11 +200,9 @@ export default function ServicesPage() {
                       variant="ghost"
                       size="sm"
                       className="text-gray-600 hover:text-gray-900"
-                      asChild
+                      onClick={() => setViewingService(service)}
                     >
-                      <Link href={`/organiser/services/${service.id}`}>
-                        View
-                      </Link>
+                      View
                     </Button>
                   </div>
                 </div>
@@ -194,6 +211,161 @@ export default function ServicesPage() {
           </div>
         )}
       </div>
+
+      {/* View Service Modal */}
+      {viewingService && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          onClick={() => setViewingService(null)}
+        >
+          <div
+            className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-lg bg-white p-6 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-4 flex items-start justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {viewingService.title}
+                </h2>
+                <div className="mt-1 flex items-center gap-2">
+                  {viewingService.isPublished ? (
+                    <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800">
+                      Published
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-800">
+                      Draft
+                    </span>
+                  )}
+                </div>
+              </div>
+              <button
+                onClick={() => setViewingService(null)}
+                className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              {/* Basic Details */}
+              <div className="grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4">
+                <div>
+                  <p className="text-sm text-gray-600">Duration</p>
+                  <p className="mt-1 font-medium text-gray-900">
+                    {viewingService.durationMinutes} minutes
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Total Bookings</p>
+                  <p className="mt-1 font-medium text-gray-900">
+                    {viewingService._count?.bookings || 0}
+                  </p>
+                </div>
+                {viewingService.metadata?.price && (
+                  <div>
+                    <p className="text-sm text-gray-600">Price</p>
+                    <p className="mt-1 font-medium text-gray-900">
+                      ₹{viewingService.metadata.price}
+                    </p>
+                  </div>
+                )}
+                {viewingService.metadata?.capacity && (
+                  <div>
+                    <p className="text-sm text-gray-600">Capacity</p>
+                    <p className="mt-1 font-medium text-gray-900">
+                      {viewingService.metadata.capacity} people
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Description */}
+              {viewingService.description && (
+                <div>
+                  <h3 className="mb-2 font-semibold text-gray-900">Description</h3>
+                  <p className="rounded-lg bg-gray-50 p-4 text-sm text-gray-700">
+                    {viewingService.description}
+                  </p>
+                </div>
+              )}
+
+              {/* Schedules */}
+              {viewingService.schedules && viewingService.schedules.length > 0 && (
+                <div>
+                  <h3 className="mb-2 font-semibold text-gray-900">Schedules</h3>
+                  <div className="space-y-2">
+                    {viewingService.schedules.map((schedule) => (
+                      <div
+                        key={schedule.id}
+                        className="flex items-center justify-between rounded-lg bg-gray-50 p-3"
+                      >
+                        <span className="font-medium text-gray-900">
+                          {DAYS[schedule.dayOfWeek]}
+                        </span>
+                        <span className="text-sm text-gray-600">
+                          {schedule.startTime} - {schedule.endTime}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Resources */}
+              {viewingService.resources && viewingService.resources.length > 0 && (
+                <div>
+                  <h3 className="mb-2 font-semibold text-gray-900">Resources</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {viewingService.resources.map((resource) => (
+                      <span
+                        key={resource.id}
+                        className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800"
+                      >
+                        {resource.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Questions */}
+              {viewingService.questions && viewingService.questions.length > 0 && (
+                <div>
+                  <h3 className="mb-2 font-semibold text-gray-900">Booking Questions</h3>
+                  <div className="space-y-2">
+                    {viewingService.questions.map((question) => (
+                      <div
+                        key={question.id}
+                        className="flex items-center justify-between rounded-lg bg-gray-50 p-3"
+                      >
+                        <span className="text-sm text-gray-900">{question.label}</span>
+                        {question.required && (
+                          <span className="text-xs text-red-600">Required</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-6 flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setViewingService(null)}
+              >
+                Close
+              </Button>
+              <Button asChild>
+                <Link href={`/organiser/services/${viewingService.id}/edit`}>
+                  Edit Service
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
