@@ -26,6 +26,7 @@ model User {
 
   members     Member[]
   invitations Invitation[]
+  bookings    Booking[]
 
   @@unique([email])
   @@map("user")
@@ -90,6 +91,8 @@ model Organization {
   metadata    String?
   members     Member[]
   invitations Invitation[]
+  services    Service[]
+  resources   Resource[]
 
   @@unique([slug])
   @@map("organization")
@@ -124,4 +127,141 @@ model Invitation {
   @@index([organizationId])
   @@index([email])
   @@map("invitation")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model Service {
+  id              String  @id @default(cuid())
+  title           String
+  description     String?
+  durationMinutes Int
+
+  isPublished    Boolean @default(false)
+  maxCapacity    Int?
+  manualConfirm  Boolean @default(false)
+  advancePayment Boolean @default(false)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  resources Resource[]
+  schedules Schedule[]
+  slots     Slot[]
+  bookings  Booking[]
+  questions Question[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId])
+  @@map("service")
+}
+
+model Resource {
+  id       String  @id @default(cuid())
+  name     String
+  isActive Boolean @default(true)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  services Service[]
+  slots    Slot[]
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId])
+  @@map("resource")
+}
+
+model Schedule {
+  id        String @id @default(cuid())
+  dayOfWeek Int // 0 = Sunday, 6 = Saturday
+  startTime String // "09:00"
+  endTime   String // "17:00"
+
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@index([serviceId])
+  @@map("schedule")
+}
+
+model Slot {
+  id        String   @id @default(cuid())
+  date      DateTime
+  startTime DateTime
+  endTime   DateTime
+
+  capacity    Int
+  bookedCount Int @default(0)
+
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  resourceId String?
+  resource   Resource? @relation(fields: [resourceId], references: [id], onDelete: SetNull)
+
+  bookings Booking[]
+
+  @@unique([serviceId, resourceId, startTime, endTime])
+  @@index([serviceId])
+  @@map("slot")
+}
+
+model Booking {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  slotId String
+  slot   Slot   @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+  status BookingStatus @default(PENDING)
+  notes  String?
+
+  answers Answer[]
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([serviceId])
+  @@map("booking")
+}
+
+model Question {
+  id       String  @id @default(cuid())
+  label    String
+  required Boolean @default(false)
+
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  answers Answer[]
+
+  @@map("question")
+}
+
+model Answer {
+  id    String @id @default(cuid())
+  value String
+
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  bookingId String
+  booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([bookingId])
+  @@map("answer")
 }
