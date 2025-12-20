@@ -33,7 +33,6 @@ export default function RootLayout({
               <span className="font-semibold">Appointment App</span>
             </div>
             <nav className="flex items-center gap-2 text-sm">
-              <a href="/landing" className="rounded-md px-2 py-1 hover:bg-muted">Landing</a>
               <a href="/" className="rounded-md px-2 py-1 hover:bg-muted">Home</a>
               <a href="/auth/login" className="rounded-md px-2 py-1 hover:bg-muted">Login</a>
               <a href="/customer" className="rounded-md px-2 py-1 hover:bg-muted">My Profile</a>
