@@ -12,18 +12,18 @@ export default function CustomerLayout({
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-sm">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
-            <Link href="/customer" className="text-xl font-bold tracking-tight text-foreground">
-              Appointment App
+            <Link href="/book" className="text-xl font-bold tracking-tight text-foreground">
+              Bookit
             </Link>
             <nav className="hidden md:flex gap-6">
               <Link
-                href="/customer"
+                href="/book"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground"
               >
                 Services
               </Link>
               <Link
-                href="/customer/profile"
+                href="/book"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground"
               >
                 My Appointments

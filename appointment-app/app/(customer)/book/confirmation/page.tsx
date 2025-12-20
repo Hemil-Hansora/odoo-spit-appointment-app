@@ -14,7 +14,7 @@ export default function ConfirmationPage() {
   const manageCapacity = true
 
   const handleCancel = () => {
-    router.push("/customer/book")
+    router.push("/customer")
   }
 
   return (

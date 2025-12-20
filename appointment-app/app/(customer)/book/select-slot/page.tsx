@@ -28,7 +28,7 @@ export default function SelectSlotPage() {
 
   const handleContinue = () => {
     if (selectedSlot) {
-      router.push(`/customer/book/questions?service=${serviceId}&slot=${selectedSlot}&capacity=${capacity}`)
+      router.push(`/book/questions?service=${serviceId}&slot=${selectedSlot}&capacity=${capacity}`)
     }
   }
 

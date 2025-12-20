@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
-type PaymentMethod = "credit" | "debit" | "upi" | "paypal"
+type PaymentMethod = "credit" | "debit" | "upi"
 
 export default function PaymentPage() {
   const router = useRouter()
@@ -19,17 +19,22 @@ export default function PaymentPage() {
     expiry: "",
     cvv: "",
   })
+  const [upiDetails, setUpiDetails] = useState({
+    upiId: "",
+  })
 
   const handlePayment = () => {
     // Mock payment processing
-    router.push(`/customer/book/confirmation?service=${serviceId}&paid=true`)
+    router.push(`/book/confirmation?service=${serviceId}&paid=true`)
   }
 
   const isFormValid = 
-    cardDetails.name.trim() &&
-    cardDetails.number.trim() &&
-    cardDetails.expiry.trim() &&
-    cardDetails.cvv.trim()
+    paymentMethod === "upi"
+      ? upiDetails.upiId.trim()
+      : cardDetails.name.trim() &&
+        cardDetails.number.trim() &&
+        cardDetails.expiry.trim() &&
+        cardDetails.cvv.trim()
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -63,42 +68,54 @@ export default function PaymentPage() {
                 {paymentMethod === "credit" && (
                   <div className="ml-7 space-y-4 rounded border border-gray-200 bg-gray-50 p-4">
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">Name on Card</label>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">
+                        Name on Card <span className="text-red-500">*</span>
+                      </label>
                       <Input
-                        placeholder="Placeholder"
+                        placeholder="John Doe"
                         value={cardDetails.name}
                         onChange={(e) => setCardDetails({ ...cardDetails, name: e.target.value })}
                         className="border-gray-300 bg-white"
+                        required
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">Card Number</label>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">
+                        Card Number <span className="text-red-500">*</span>
+                      </label>
                       <Input
-                        placeholder="•••• •••• •••• ••••"
+                        placeholder="1234 5678 9012 3456"
                         value={cardDetails.number}
                         onChange={(e) => setCardDetails({ ...cardDetails, number: e.target.value })}
                         className="border-gray-300 bg-white"
+                        required
                       />
                     </div>
 
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
-                        <label className="mb-2 block text-sm font-medium text-gray-700">Expiration Date</label>
+                        <label className="mb-2 block text-sm font-medium text-gray-700">
+                          Expiration Date <span className="text-red-500">*</span>
+                        </label>
                         <Input
                           placeholder="MM/YY"
                           value={cardDetails.expiry}
                           onChange={(e) => setCardDetails({ ...cardDetails, expiry: e.target.value })}
                           className="border-gray-300 bg-white"
+                          required
                         />
                       </div>
                       <div>
-                        <label className="mb-2 block text-sm font-medium text-gray-700">Security Code</label>
+                        <label className="mb-2 block text-sm font-medium text-gray-700">
+                          Security Code <span className="text-red-500">*</span>
+                        </label>
                         <Input
                           placeholder="CVV"
                           value={cardDetails.cvv}
                           onChange={(e) => setCardDetails({ ...cardDetails, cvv: e.target.value })}
                           className="border-gray-300 bg-white"
+                          required
                         />
                       </div>
                     </div>
@@ -118,6 +135,63 @@ export default function PaymentPage() {
                   Debit Card
                 </label>
 
+                {paymentMethod === "debit" && (
+                  <div className="ml-7 space-y-4 rounded border border-gray-200 bg-gray-50 p-4">
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">
+                        Name on Card <span className="text-red-500">*</span>
+                      </label>
+                      <Input
+                        placeholder="John Doe"
+                        value={cardDetails.name}
+                        onChange={(e) => setCardDetails({ ...cardDetails, name: e.target.value })}
+                        className="border-gray-300 bg-white"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">
+                        Card Number <span className="text-red-500">*</span>
+                      </label>
+                      <Input
+                        placeholder="1234 5678 9012 3456"
+                        value={cardDetails.number}
+                        onChange={(e) => setCardDetails({ ...cardDetails, number: e.target.value })}
+                        className="border-gray-300 bg-white"
+                        required
+                      />
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div>
+                        <label className="mb-2 block text-sm font-medium text-gray-700">
+                          Expiration Date <span className="text-red-500">*</span>
+                        </label>
+                        <Input
+                          placeholder="MM/YY"
+                          value={cardDetails.expiry}
+                          onChange={(e) => setCardDetails({ ...cardDetails, expiry: e.target.value })}
+                          className="border-gray-300 bg-white"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-2 block text-sm font-medium text-gray-700">
+                          Security Code <span className="text-red-500">*</span>
+                        </label>
+                        <Input
+                          placeholder="CVV"
+                          value={cardDetails.cvv}
+                          onChange={(e) => setCardDetails({ ...cardDetails, cvv: e.target.value })}
+                          className="border-gray-300 bg-white"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* UPI Pay */}
                 <label className="flex items-center gap-3 text-sm text-gray-700">
                   <input
@@ -131,18 +205,22 @@ export default function PaymentPage() {
                   UPI Pay
                 </label>
 
-                {/* PayPal */}
-                <label className="flex items-center gap-3 text-sm text-gray-700">
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="paypal"
-                    checked={paymentMethod === "paypal"}
-                    onChange={() => setPaymentMethod("paypal")}
-                    className="h-4 w-4 border-gray-300"
-                  />
-                  Paypal
-                </label>
+                {paymentMethod === "upi" && (
+                  <div className="ml-7 space-y-4 rounded border border-gray-200 bg-gray-50 p-4">
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-gray-700">
+                        UPI ID <span className="text-red-500">*</span>
+                      </label>
+                      <Input
+                        placeholder="yourname@upi"
+                        value={upiDetails.upiId}
+                        onChange={(e) => setUpiDetails({ ...upiDetails, upiId: e.target.value })}
+                        className="border-gray-300 bg-white"
+                        required
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 

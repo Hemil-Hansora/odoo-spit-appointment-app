@@ -33,9 +33,9 @@ export default function QuestionsPage() {
 
     if (allRequiredAnswered) {
       if (isPaid) {
-        router.push(`/customer/book/payment?service=${serviceId}`)
+        router.push(`/book/payment?service=${serviceId}`)
       } else {
-        router.push(`/customer/book/confirmation?service=${serviceId}`)
+        router.push(`/book/confirmation?service=${serviceId}`)
       }
     }
   }
