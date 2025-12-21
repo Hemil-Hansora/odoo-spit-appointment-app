@@ -1454,19 +1454,21 @@
        AI AUTOMATION SECTION
        ======================================== */
     .ai-grid {
-      display: grid;
+      display: flex;
+      justify-content: center;
       gap: 2rem;
     }
 
     @media (min-width: 1024px) {
       .ai-grid {
-        grid-template-columns: repeat(2, 1fr);
         gap: 3rem;
       }
     }
 
     .ai-card {
       padding: 1.5rem;
+      max-width: 600px;
+      width: 100%;
     }
 
     .ai-card-header {
@@ -2233,10 +2235,10 @@
     <div class="container-custom hero-content">
       <div class="hero-grid">
         <div class="hero-text">
-          <div class="hero-badge">
+          <!-- <div class="hero-badge">
             <span class="hero-badge-dot"></span>
             <span class="hero-badge-text">Now with AI-powered scheduling</span>
-          </div>
+          </div> -->
 
           <h1 class="hero-title">
             The Perfect
@@ -2584,47 +2586,6 @@
         <div class="feature-card card-premium">
           <div class="feature-header">
             <div class="feature-icon">
-              <i data-lucide="link" style="width: 1.25rem; height: 1.25rem;"></i>
-            </div>
-            <div class="feature-text">
-              <h3>Shareable Links</h3>
-              <p>One-click booking links for each service. Embed anywhere.</p>
-            </div>
-          </div>
-          <div class="feature-preview">
-            <div class="share-link">
-              <span>app.book/dr-smith/consultation</span>
-              <button>Copy</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="feature-card card-premium">
-          <div class="feature-header">
-            <div class="feature-icon">
-              <i data-lucide="bar-chart-3" style="width: 1.25rem; height: 1.25rem;"></i>
-            </div>
-            <div class="feature-text">
-              <h3>Analytics & Reports</h3>
-              <p>Track bookings, no-shows, and revenue with actionable insights.</p>
-            </div>
-          </div>
-          <div class="feature-preview">
-            <div class="analytics-bars">
-              <div class="analytics-bar" style="height: 40%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
-              <div class="analytics-bar" style="height: 65%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
-              <div class="analytics-bar" style="height: 45%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
-              <div class="analytics-bar" style="height: 80%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
-              <div class="analytics-bar" style="height: 55%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
-              <div class="analytics-bar" style="height: 90%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
-              <div class="analytics-bar" style="height: 70%;"><div class="analytics-bar-inner" style="height: 70%;"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="feature-card card-premium">
-          <div class="feature-header">
-            <div class="feature-icon">
               <i data-lucide="shield" style="width: 1.25rem; height: 1.25rem;"></i>
             </div>
             <div class="feature-text">
@@ -2643,33 +2604,6 @@
           </div>
         </div>
 
-        <div class="feature-card card-premium">
-          <div class="feature-header">
-            <div class="feature-icon">
-              <i data-lucide="zap" style="width: 1.25rem; height: 1.25rem;"></i>
-            </div>
-            <div class="feature-text">
-              <h3>Instant Notifications</h3>
-              <p>Email and SMS confirmations, reminders, and updates automatically.</p>
-            </div>
-          </div>
-          <div class="feature-preview">
-            <div class="notification-list">
-              <div class="notification-item">
-                <div class="notification-dot green"></div>
-                <span>Confirmation sent</span>
-              </div>
-              <div class="notification-item">
-                <div class="notification-dot amber"></div>
-                <span>Reminder in 24h</span>
-              </div>
-              <div class="notification-item">
-                <div class="notification-dot blue"></div>
-                <span>Follow-up queued</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -2686,24 +2620,6 @@
       </div>
 
       <div class="ai-grid">
-        <div class="ai-card card-premium">
-          <div class="ai-card-header">
-            <div class="ai-card-icon">
-              <i data-lucide="bot" style="width: 1rem; height: 1rem;"></i>
-            </div>
-            <div class="ai-card-info">
-              <h4>AI Assistant</h4>
-              <p>Natural language scheduling</p>
-            </div>
-            <div class="ai-card-header-right">
-              <i data-lucide="sparkles" style="width: 1rem; height: 1rem;"></i>
-            </div>
-          </div>
-          <div class="chat-messages" id="chat-messages">
-            <!-- Messages will be added by JavaScript -->
-          </div>
-        </div>
-
         <div class="ai-card card-premium">
           <div class="ai-card-header">
             <div class="ai-card-icon">

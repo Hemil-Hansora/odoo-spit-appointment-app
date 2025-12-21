@@ -17,8 +17,7 @@ export default function CustomerLayout({
 
   const handleSignOut = async () => {
     await signOut();
-    router.push("/");
-    router.refresh();
+    window.location.href = "/landing.html";
   };
 
   const isActive = (path: string) => {
