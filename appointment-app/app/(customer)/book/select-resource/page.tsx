@@ -63,26 +63,42 @@ export default function SelectResourcePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-4xl px-6 py-12">
         {/* Main Container */}
-        <div className="rounded border border-gray-200 bg-white p-8 shadow-sm">
+        <div
+          className="rounded-2xl p-8"
+          style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)'
+          }}
+        >
           {/* Heading */}
-          <h1 className="mb-8 text-center text-2xl font-bold text-gray-900">
-            Select Resource
+          <h1 className="mb-8 text-center text-4xl font-bold">
+            <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+              Select Resource
+            </span>
           </h1>
 
           {/* Loading State */}
           {loading && (
-            <div className="py-12 text-center text-gray-600">
-              Loading resources...
+            <div className="py-12 text-center">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-gray-600 border-t-purple-500"></div>
+              <p className="mt-4 text-gray-400">Loading resources...</p>
             </div>
           )}
 
           {/* Error State */}
           {error && (
-            <div className="py-12 text-center text-red-600">
-              {error}
+            <div
+              className="py-12 text-center rounded-2xl"
+              style={{
+                background: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.2)'
+              }}
+            >
+              <p className="text-red-400">{error}</p>
             </div>
           )}
 
@@ -97,28 +113,42 @@ export default function SelectResourcePage() {
                       key={item.id}
                       onClick={() => setSelectedId(item.id)}
                       className={cn(
-                        "rounded border p-8 text-center transition-all",
+                        "rounded-2xl p-8 text-center transition-all",
                         selectedId === item.id
-                          ? "border-gray-900 bg-gray-900 text-white shadow-md"
-                          : "border-gray-300 bg-white text-gray-900 hover:bg-gray-50"
+                          ? "shadow-lg"
+                          : "hover:shadow-md"
                       )}
+                      style={{
+                        background: selectedId === item.id
+                          ? 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)'
+                          : 'rgba(255, 255, 255, 0.05)',
+                        border: selectedId === item.id
+                          ? '2px solid rgb(168, 85, 247)'
+                          : '1px solid rgba(255, 255, 255, 0.1)'
+                      }}
                     >
-                      <div className="text-2xl font-bold">{item.name}</div>
+                      <div className="text-2xl font-bold text-white">{item.name}</div>
                       {item.type && (
-                        <div className="mt-2 text-sm opacity-80">{item.type}</div>
+                        <div className="mt-2 text-sm text-gray-300">{item.type}</div>
                       )}
                     </button>
                   ))}
                 </div>
               ) : (
-                <div className="mb-8 py-12 text-center text-gray-600">
+                <div className="mb-8 py-12 text-center text-gray-400">
                   No resources configured for this service. Click continue to proceed with booking.
                 </div>
               )}
 
               {/* Introduction Message */}
               {items.length > 0 && (
-                <div className="rounded border border-gray-200 bg-gray-50 p-4 text-center text-sm text-gray-600">
+                <div
+                  className="rounded-xl p-4 text-center text-sm text-gray-400"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}
+                >
                   Select a resource to continue booking your appointment
                 </div>
               )}
@@ -129,11 +159,19 @@ export default function SelectResourcePage() {
                   onClick={handleContinue}
                   disabled={items.length > 0 && !selectedId}
                   className={cn(
-                    "rounded border px-8 py-3 transition-colors",
+                    "rounded-xl px-8 py-3 font-medium transition-all",
                     (items.length === 0 || selectedId)
-                      ? "border-gray-900 bg-gray-900 text-white hover:bg-gray-800"
-                      : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
+                      ? "text-white shadow-lg hover:shadow-xl"
+                      : "cursor-not-allowed text-gray-500"
                   )}
+                  style={{
+                    background: (items.length === 0 || selectedId)
+                      ? 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)'
+                      : 'rgba(255, 255, 255, 0.05)',
+                    border: (items.length === 0 || selectedId)
+                      ? 'none'
+                      : '1px solid rgba(255, 255, 255, 0.1)'
+                  }}
                 >
                   Continue
                 </button>

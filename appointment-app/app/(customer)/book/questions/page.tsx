@@ -97,44 +97,65 @@ export default function QuestionsPage() {
     .every((q) => answers[q.id]?.trim())
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-3xl px-6 py-12">
-        <h2 className="mb-8 text-center text-xl font-bold text-gray-900">
-          Booking Details
+        <h2 className="mb-8 text-center text-4xl font-bold">
+          <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+            Booking Details
+          </span>
         </h2>
 
-        <div className="rounded border border-gray-200 bg-white p-8 shadow-sm">
+        <div
+          className="rounded-2xl p-8"
+          style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)'
+          }}
+        >
           {loading && (
-            <div className="py-12 text-center text-gray-600">Loading questions...</div>
+            <div className="py-12 text-center">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-gray-600 border-t-purple-500"></div>
+              <p className="mt-4 text-gray-400">Loading questions...</p>
+            </div>
           )}
 
           {error && (
-            <div className="mb-6 rounded border border-red-200 bg-red-50 p-4 text-center text-red-600">
+            <div
+              className="mb-6 rounded-2xl p-4 text-center text-red-400"
+              style={{
+                background: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.2)'
+              }}
+            >
               {error}
             </div>
           )}
 
           {!loading && !error && (
             <>
-              <h3 className="mb-6 text-lg font-semibold text-gray-900">Details</h3>
+              <h3 className="mb-6 text-lg font-semibold text-white">Details</h3>
 
               {questions.length === 0 ? (
-                <div className="mb-6 py-8 text-center text-gray-600">
+                <div className="mb-6 py-8 text-center text-gray-400">
                   No additional information required
                 </div>
               ) : (
                 <div className="space-y-6">
                   {questions.map((question) => (
                     <div key={question.id}>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
+                      <label className="mb-2 block text-sm font-medium text-gray-400">
                         {question.label}
-                        {question.required && <span className="ml-1 text-red-500">*</span>}
+                        {question.required && <span className="ml-1 text-red-400">*</span>}
                       </label>
                       {question.type === "textarea" ? (
                         <Textarea
                           value={answers[question.id] || ""}
                           onChange={(e) => handleAnswer(question.id, e.target.value)}
-                          className="border-gray-300 bg-white"
+                          className="border-0 text-white placeholder:text-gray-500"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.05)'
+                          }}
                           rows={3}
                         />
                       ) : (
@@ -142,7 +163,10 @@ export default function QuestionsPage() {
                           type={question.type}
                           value={answers[question.id] || ""}
                           onChange={(e) => handleAnswer(question.id, e.target.value)}
-                          className="border-gray-300 bg-white"
+                          className="border-0 text-white placeholder:text-gray-500"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.05)'
+                          }}
                         />
                       )}
                     </div>
@@ -155,11 +179,19 @@ export default function QuestionsPage() {
                   onClick={handleContinue}
                   disabled={!allRequiredFilled && questions.length > 0}
                   className={cn(
-                    "rounded border px-8 py-3 transition-colors",
+                    "rounded-xl px-8 py-3 font-medium transition-all",
                     (allRequiredFilled || questions.length === 0)
-                      ? "border-gray-900 bg-gray-900 text-white hover:bg-gray-800"
-                      : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
+                      ? "text-white shadow-lg hover:shadow-xl"
+                      : "cursor-not-allowed text-gray-500"
                   )}
+                  style={{
+                    background: (allRequiredFilled || questions.length === 0)
+                      ? 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)'
+                      : 'rgba(255, 255, 255, 0.05)',
+                    border: (allRequiredFilled || questions.length === 0)
+                      ? 'none'
+                      : '1px solid rgba(255, 255, 255, 0.1)'
+                  }}
                 >
                   {advancePayment ? "Proceed to Payment" : "Confirm Booking"}
                 </button>

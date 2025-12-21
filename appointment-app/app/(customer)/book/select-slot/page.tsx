@@ -98,17 +98,32 @@ export default function SelectSlotPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-6xl px-6 py-12">
         {manageCapacity && (
-          <h2 className="mb-8 text-center text-xl font-bold text-gray-900">
-            Select Your Appointment Time
+          <h2 className="mb-8 text-center text-4xl font-bold">
+            <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+              Select Your Appointment Time
+            </span>
           </h2>
         )}
 
-        <div className="rounded border border-gray-200 bg-white p-8 shadow-sm">
+        <div
+          className="rounded-2xl p-8"
+          style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)'
+          }}
+        >
           {error && (
-            <div className="mb-6 rounded border border-red-200 bg-red-50 p-4 text-center text-red-600">
+            <div
+              className="mb-6 rounded-2xl p-4 text-center text-red-400"
+              style={{
+                background: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.2)'
+              }}
+            >
               {error}
             </div>
           )}
@@ -116,20 +131,26 @@ export default function SelectSlotPage() {
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Date Picker */}
             <div>
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">Select Date</h3>
-              <div className="rounded border border-gray-200 bg-white p-4">
-                <div className="mb-4 flex items-center justify-between border-b border-gray-200 pb-4">
+              <h3 className="mb-4 text-lg font-semibold text-white">Select Date</h3>
+              <div
+                className="rounded-2xl p-4"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}
+              >
+                <div className="mb-4 flex items-center justify-between pb-4" style={{borderBottom: '1px solid rgba(255, 255, 255, 0.1)'}}>
                   <button
                     onClick={() =>
                       setCurrentMonth(
                         new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1)
                       )
                     }
-                    className="text-gray-600 hover:text-gray-900"
+                    className="text-gray-400 hover:text-white transition-colors"
                   >
                     ←
                   </button>
-                  <div className="font-medium text-gray-900">
+                  <div className="font-medium text-white">
                     {currentMonth.toLocaleDateString("en-US", {
                       month: "long",
                       year: "numeric",
@@ -141,14 +162,14 @@ export default function SelectSlotPage() {
                         new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1)
                       )
                     }
-                    className="text-gray-600 hover:text-gray-900"
+                    className="text-gray-400 hover:text-white transition-colors"
                   >
                     →
                   </button>
                 </div>
                 <div className="grid grid-cols-7 gap-2 text-center text-sm">
                   {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
-                    <div key={day} className="text-gray-500 font-medium">
+                    <div key={day} className="text-gray-400 font-medium">
                       {day}
                     </div>
                   ))}
@@ -170,13 +191,23 @@ export default function SelectSlotPage() {
                         key={day}
                         onClick={() => handleDateSelect(day)}
                         className={cn(
-                          "rounded p-2 transition-colors",
+                          "rounded-xl p-2 transition-all",
                           isSelected
-                            ? "border border-gray-900 bg-gray-900 text-white"
+                            ? "text-white shadow-lg"
                             : isToday
-                            ? "border border-gray-300 text-gray-900"
-                            : "text-gray-600 hover:bg-gray-100"
+                            ? "text-white"
+                            : "text-gray-400 hover:text-white"
                         )}
+                        style={{
+                          background: isSelected
+                            ? 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)'
+                            : isToday
+                            ? 'rgba(168, 85, 247, 0.2)'
+                            : 'transparent',
+                          border: isSelected || isToday
+                            ? '1px solid rgb(168, 85, 247)'
+                            : 'none'
+                        }}
                       >
                         {day}
                       </button>
@@ -188,12 +219,15 @@ export default function SelectSlotPage() {
 
             {/* Slots */}
             <div>
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">Available Slots</h3>
+              <h3 className="mb-4 text-lg font-semibold text-white">Available Slots</h3>
 
               {loading ? (
-                <div className="py-12 text-center text-gray-600">Loading slots...</div>
+                <div className="py-12 text-center">
+                  <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-gray-600 border-t-purple-500"></div>
+                  <p className="mt-4 text-gray-400">Loading slots...</p>
+                </div>
               ) : slots.length === 0 ? (
-                <div className="py-12 text-center text-gray-600">
+                <div className="py-12 text-center text-gray-400">
                   No slots available for this date
                 </div>
               ) : (
@@ -204,13 +238,24 @@ export default function SelectSlotPage() {
                       onClick={() => slot.available && setSelectedSlot(slot.id)}
                       disabled={!slot.available}
                       className={cn(
-                        "w-full rounded border px-4 py-3 text-center transition-colors",
+                        "w-full rounded-xl px-4 py-3 text-center transition-all",
                         !slot.available
-                          ? "cursor-not-allowed border-gray-200 bg-gray-50 text-gray-400 line-through"
+                          ? "cursor-not-allowed line-through"
                           : selectedSlot === slot.id
-                          ? "border-gray-900 bg-gray-900 text-white"
-                          : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                          ? "text-white shadow-lg"
+                          : "text-white"
                       )}
+                      style={{
+                        background: !slot.available
+                          ? 'rgba(255, 255, 255, 0.02)'
+                          : selectedSlot === slot.id
+                          ? 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)'
+                          : 'rgba(255, 255, 255, 0.05)',
+                        border: !slot.available
+                          ? '1px solid rgba(255, 255, 255, 0.05)'
+                          : '1px solid rgba(255, 255, 255, 0.1)',
+                        color: !slot.available ? 'rgb(107, 114, 128)' : 'inherit'
+                      }}
                     >
                       <div className="flex items-center justify-between">
                         <span>{slot.time}</span>
@@ -227,22 +272,36 @@ export default function SelectSlotPage() {
 
               {/* Number of People */}
               {manageCapacity && selectedSlot && (
-                <div className="mt-6 rounded border border-gray-200 bg-gray-50 p-4">
-                  <div className="mb-2 text-sm font-medium text-gray-700">Number of people</div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div
+                  className="mt-6 rounded-2xl p-4"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}
+                >
+                  <div className="mb-2 text-sm font-medium text-white">Number of people</div>
+                  <div className="flex items-center gap-2 text-sm text-gray-400">
                     Capacity selected according to booking capacity rules
                   </div>
                   <div className="mt-4 flex items-center gap-4">
                     <button
                       onClick={() => setCapacity(Math.max(1, capacity - 1))}
-                      className="rounded border border-gray-300 bg-white px-3 py-1 text-gray-900 hover:bg-gray-50"
+                      className="rounded-xl px-3 py-1 text-white transition-all"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                      }}
                     >
                       -
                     </button>
-                    <span className="text-xl font-medium text-gray-900">{capacity}</span>
+                    <span className="text-xl font-medium text-white">{capacity}</span>
                     <button
                       onClick={() => setCapacity(capacity + 1)}
-                      className="rounded border border-gray-300 bg-white px-3 py-1 text-gray-900 hover:bg-gray-50"
+                      className="rounded-xl px-3 py-1 text-white transition-all"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                      }}
                     >
                       +
                     </button>
@@ -258,11 +317,19 @@ export default function SelectSlotPage() {
               onClick={handleContinue}
               disabled={!selectedSlot}
               className={cn(
-                "rounded border px-8 py-3 transition-colors",
+                "rounded-xl px-8 py-3 font-medium transition-all",
                 selectedSlot
-                  ? "border-gray-900 bg-gray-900 text-white hover:bg-gray-800"
-                  : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
+                  ? "text-white shadow-lg hover:shadow-xl"
+                  : "cursor-not-allowed text-gray-500"
               )}
+              style={{
+                background: selectedSlot
+                  ? 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)'
+                  : 'rgba(255, 255, 255, 0.05)',
+                border: selectedSlot
+                  ? 'none'
+                  : '1px solid rgba(255, 255, 255, 0.1)'
+              }}
             >
               Continue
             </button>

@@ -148,7 +148,6 @@ export default function ServicesPage() {
         </Link>
       </div>
 
-<<<<<<< HEAD
       {loading ? (
         <div className="text-center py-12">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
@@ -195,103 +194,16 @@ export default function ServicesPage() {
                       {service.title}
                     </h3>
                     <Badge
-=======
-        {loading ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500">Loading services...</p>
-          </div>
-        ) : services.length === 0 ? (
-          <Card className="border-gray-200 bg-white shadow-sm">
-            <CardContent className="text-center py-12">
-              <p className="text-gray-500 mb-4">No services yet</p>
-              <Link
-                href="/organiser/services/new"
-                className={cn(
-                  buttonVariants(),
-                  "bg-gray-900 hover:bg-gray-800 text-white"
-                )}
-              >
-                Create Your First Service
-              </Link>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="space-y-4">
-            {services.map((service) => (
-              <Card
-                key={service.id}
-                className="overflow-hidden border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md"
-              >
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-6">
-                  <div className="flex-1 space-y-1">
-                    <div className="flex items-center gap-3">
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {service.title}
-                      </h3>
-                      <Badge
-                        variant="outline"
-                        className={
-                          service.isPublished
-                            ? "border-green-200 bg-green-50 text-green-700"
-                            : "border-gray-200 bg-gray-50 text-gray-600"
-                        }
-                      >
-                        {service.isPublished ? "published" : "draft"}
-                      </Badge>
-                    </div>
-                    {service.description && (
-                      <p className="text-sm text-gray-600">
-                        {service.description}
-                      </p>
-                    )}
-                    <div className="flex items-center gap-4 text-sm text-gray-500 mt-2">
-                      <span>Duration: {service.durationMinutes} min</span>
-                      <span>•</span>
-                      <span>Bookings: {service._count?.bookings || 0}</span>
-                      {service.metadata?.price && (
-                        <>
-                          <span>•</span>
-                          <span>
-                            Price:{" "}
-                            {typeof service.metadata.price === "number"
-                              ? `₹${service.metadata.price}`
-                              : service.metadata.price}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  <div className="mt-4 sm:mt-0 flex items-center gap-3">
-                    {!service.isPublished && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-blue-300 text-blue-700 hover:bg-blue-50"
-                        onClick={() => handleShare(service.id)}
-                        disabled={shareLoading === service.id}
-                      >
-                        {shareLoading === service.id ? (
-                          "Generating..."
-                        ) : copiedId === service.id ? (
-                          "✓ Copied!"
-                        ) : (
-                          <>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                            </svg>
-                            Share Link
-                          </>
-                        )}
-                      </Button>
-                    )}
-                    <Button
->>>>>>> 029c2a47b2babbac22a4899868ad858454a7a8ac
                       variant="outline"
-                      className={
-                        service.isPublished
-                          ? "border-green-500/50 bg-green-500/10 text-green-400"
-                          : "border-gray-500/50 bg-gray-500/10 text-gray-400"
-                      }
+                      className="border-0"
+                      style={{
+                        background: service.isPublished
+                          ? "rgba(34, 197, 94, 0.2)"
+                          : "rgba(156, 163, 175, 0.2)",
+                        color: service.isPublished
+                          ? "rgb(34, 197, 94)"
+                          : "rgb(156, 163, 175)"
+                      }}
                     >
                       {service.isPublished ? "published" : "draft"}
                     </Badge>
@@ -344,8 +256,6 @@ export default function ServicesPage() {
           ))}
         </div>
       )}
-
-      {/* View Service Modal */}
       {viewingService && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4"

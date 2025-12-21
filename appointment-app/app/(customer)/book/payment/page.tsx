@@ -130,94 +130,130 @@ export default function PaymentPage() {
   const total = subtotal + tax
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-6xl px-6 py-12">
-        <h2 className="mb-8 text-center text-xl font-bold text-gray-900">
-          Complete Your Booking
+        <h2 className="mb-8 text-center text-4xl font-bold">
+          <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+            Complete Your Booking
+          </span>
         </h2>
 
         {error && (
-          <div className="mb-6 rounded border border-red-200 bg-red-50 p-4 text-center text-red-600">
+          <div
+            className="mb-6 rounded-2xl p-4 text-center text-red-400"
+            style={{
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.2)'
+            }}
+          >
             {error}
           </div>
         )}
 
         {loading ? (
-          <div className="py-12 text-center text-gray-600">Loading...</div>
+          <div className="py-12 text-center">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-gray-600 border-t-purple-500"></div>
+            <p className="mt-4 text-gray-400">Loading...</p>
+          </div>
         ) : (
 
-        <div className="rounded border border-gray-200 bg-white p-8 shadow-sm">
+        <div
+          className="rounded-2xl p-8"
+          style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)'
+          }}
+        >
           <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
             {/* Payment Methods */}
             <div>
-              <h3 className="mb-6 text-lg font-semibold text-gray-900">
+              <h3 className="mb-6 text-lg font-semibold text-white">
                 Choose a payment method
               </h3>
 
               <div className="space-y-4">
                 {/* Credit Card */}
-                <label className="flex items-center gap-3 text-sm text-gray-700">
+                <label className="flex items-center gap-3 text-sm text-gray-400">
                   <input
                     type="radio"
                     name="payment"
                     value="credit"
                     checked={paymentMethod === "credit"}
                     onChange={() => setPaymentMethod("credit")}
-                    className="h-4 w-4 border-gray-300"
+                    className="h-4 w-4"
                   />
                   Credit Card
                 </label>
 
                 {paymentMethod === "credit" && (
-                  <div className="ml-7 space-y-4 rounded border border-gray-200 bg-gray-50 p-4">
+                  <div
+                    className="ml-7 space-y-4 rounded-2xl p-4"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}
+                  >
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
-                        Name on Card <span className="text-red-500">*</span>
+                      <label className="mb-2 block text-sm font-medium text-gray-400">
+                        Name on Card <span className="text-red-400">*</span>
                       </label>
                       <Input
                         placeholder="John Doe"
                         value={cardDetails.name}
                         onChange={(e) => setCardDetails({ ...cardDetails, name: e.target.value })}
-                        className="border-gray-300 bg-white"
+                        className="border-0 text-white placeholder:text-gray-500"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.05)'
+                        }}
                         required
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
-                        Card Number <span className="text-red-500">*</span>
+                      <label className="mb-2 block text-sm font-medium text-gray-400">
+                        Card Number <span className="text-red-400">*</span>
                       </label>
                       <Input
                         placeholder="1234 5678 9012 3456"
                         value={cardDetails.number}
                         onChange={(e) => setCardDetails({ ...cardDetails, number: e.target.value })}
-                        className="border-gray-300 bg-white"
+                        className="border-0 text-white placeholder:text-gray-500"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.05)'
+                        }}
                         required
                       />
                     </div>
 
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
-                        <label className="mb-2 block text-sm font-medium text-gray-700">
-                          Expiration Date <span className="text-red-500">*</span>
+                        <label className="mb-2 block text-sm font-medium text-gray-400">
+                          Expiration Date <span className="text-red-400">*</span>
                         </label>
                         <Input
                           placeholder="MM/YY"
                           value={cardDetails.expiry}
                           onChange={(e) => setCardDetails({ ...cardDetails, expiry: e.target.value })}
-                          className="border-gray-300 bg-white"
+                          className="border-0 text-white placeholder:text-gray-500"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.05)'
+                          }}
                           required
                         />
                       </div>
                       <div>
-                        <label className="mb-2 block text-sm font-medium text-gray-700">
-                          Security Code <span className="text-red-500">*</span>
+                        <label className="mb-2 block text-sm font-medium text-gray-400">
+                          Security Code <span className="text-red-400">*</span>
                         </label>
                         <Input
                           placeholder="CVV"
                           value={cardDetails.cvv}
                           onChange={(e) => setCardDetails({ ...cardDetails, cvv: e.target.value })}
-                          className="border-gray-300 bg-white"
+                          className="border-0 text-white placeholder:text-gray-500"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.05)'
+                          }}
                           required
                         />
                       </div>
@@ -226,68 +262,86 @@ export default function PaymentPage() {
                 )}
 
                 {/* Debit Card */}
-                <label className="flex items-center gap-3 text-sm text-gray-700">
+                <label className="flex items-center gap-3 text-sm text-gray-400">
                   <input
                     type="radio"
                     name="payment"
                     value="debit"
                     checked={paymentMethod === "debit"}
                     onChange={() => setPaymentMethod("debit")}
-                    className="h-4 w-4 border-gray-300"
+                    className="h-4 w-4"
                   />
                   Debit Card
                 </label>
 
                 {paymentMethod === "debit" && (
-                  <div className="ml-7 space-y-4 rounded border border-gray-200 bg-gray-50 p-4">
+                  <div
+                    className="ml-7 space-y-4 rounded-2xl p-4"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}
+                  >
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
-                        Name on Card <span className="text-red-500">*</span>
+                      <label className="mb-2 block text-sm font-medium text-gray-400">
+                        Name on Card <span className="text-red-400">*</span>
                       </label>
                       <Input
                         placeholder="John Doe"
                         value={cardDetails.name}
                         onChange={(e) => setCardDetails({ ...cardDetails, name: e.target.value })}
-                        className="border-gray-300 bg-white"
+                        className="border-0 text-white placeholder:text-gray-500"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.05)'
+                        }}
                         required
                       />
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
-                        Card Number <span className="text-red-500">*</span>
+                      <label className="mb-2 block text-sm font-medium text-gray-400">
+                        Card Number <span className="text-red-400">*</span>
                       </label>
                       <Input
                         placeholder="1234 5678 9012 3456"
                         value={cardDetails.number}
                         onChange={(e) => setCardDetails({ ...cardDetails, number: e.target.value })}
-                        className="border-gray-300 bg-white"
+                        className="border-0 text-white placeholder:text-gray-500"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.05)'
+                        }}
                         required
                       />
                     </div>
 
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
-                        <label className="mb-2 block text-sm font-medium text-gray-700">
-                          Expiration Date <span className="text-red-500">*</span>
+                        <label className="mb-2 block text-sm font-medium text-gray-400">
+                          Expiration Date <span className="text-red-400">*</span>
                         </label>
                         <Input
                           placeholder="MM/YY"
                           value={cardDetails.expiry}
                           onChange={(e) => setCardDetails({ ...cardDetails, expiry: e.target.value })}
-                          className="border-gray-300 bg-white"
+                          className="border-0 text-white placeholder:text-gray-500"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.05)'
+                          }}
                           required
                         />
                       </div>
                       <div>
-                        <label className="mb-2 block text-sm font-medium text-gray-700">
-                          Security Code <span className="text-red-500">*</span>
+                        <label className="mb-2 block text-sm font-medium text-gray-400">
+                          Security Code <span className="text-red-400">*</span>
                         </label>
                         <Input
                           placeholder="CVV"
                           value={cardDetails.cvv}
                           onChange={(e) => setCardDetails({ ...cardDetails, cvv: e.target.value })}
-                          className="border-gray-300 bg-white"
+                          className="border-0 text-white placeholder:text-gray-500"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.05)'
+                          }}
                           required
                         />
                       </div>
@@ -296,29 +350,38 @@ export default function PaymentPage() {
                 )}
 
                 {/* UPI Pay */}
-                <label className="flex items-center gap-3 text-sm text-gray-700">
+                <label className="flex items-center gap-3 text-sm text-gray-400">
                   <input
                     type="radio"
                     name="payment"
                     value="upi"
                     checked={paymentMethod === "upi"}
                     onChange={() => setPaymentMethod("upi")}
-                    className="h-4 w-4 border-gray-300"
+                    className="h-4 w-4"
                   />
                   UPI Pay
                 </label>
 
                 {paymentMethod === "upi" && (
-                  <div className="ml-7 space-y-4 rounded border border-gray-200 bg-gray-50 p-4">
+                  <div
+                    className="ml-7 space-y-4 rounded-2xl p-4"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}
+                  >
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-gray-700">
-                        UPI ID <span className="text-red-500">*</span>
+                      <label className="mb-2 block text-sm font-medium text-gray-400">
+                        UPI ID <span className="text-red-400">*</span>
                       </label>
                       <Input
                         placeholder="yourname@upi"
                         value={upiDetails.upiId}
                         onChange={(e) => setUpiDetails({ ...upiDetails, upiId: e.target.value })}
-                        className="border-gray-300 bg-white"
+                        className="border-0 text-white placeholder:text-gray-500"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.05)'
+                        }}
                         required
                       />
                     </div>
@@ -328,30 +391,36 @@ export default function PaymentPage() {
             </div>
 
             {/* Order Summary */}
-            <div className="rounded border border-gray-200 bg-white p-6 shadow-sm">
-              <h3 className="mb-6 text-lg font-semibold text-gray-900">Order Summary</h3>
+            <div
+              className="rounded-2xl p-6"
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
+              }}
+            >
+              <h3 className="mb-6 text-lg font-semibold text-white">Order Summary</h3>
 
               <div className="space-y-4">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">{serviceData?.title || "Service"}</span>
-                  <span className="text-gray-900">₹{subtotal.toFixed(2)}</span>
+                  <span className="text-gray-400">{serviceData?.title || "Service"}</span>
+                  <span className="text-white">₹{subtotal.toFixed(2)}</span>
                 </div>
 
-                <div className="border-t border-gray-200 pt-4">
+                <div style={{borderTop: '1px solid rgba(255, 255, 255, 0.1)'}} className="pt-4">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Subtotal</span>
-                    <span className="text-gray-900">₹{subtotal.toFixed(2)}</span>
+                    <span className="text-gray-400">Subtotal</span>
+                    <span className="text-white">₹{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="mt-2 flex justify-between text-sm">
-                    <span className="text-gray-600">Taxes (10%)</span>
-                    <span className="text-gray-900">₹{tax.toFixed(2)}</span>
+                    <span className="text-gray-400">Taxes (10%)</span>
+                    <span className="text-white">₹{tax.toFixed(2)}</span>
                   </div>
                 </div>
 
-                <div className="border-t border-gray-200 pt-4">
+                <div style={{borderTop: '1px solid rgba(255, 255, 255, 0.1)'}} className="pt-4">
                   <div className="flex justify-between font-semibold">
-                    <span className="text-gray-900">Total</span>
-                    <span className="text-gray-900">₹{total.toFixed(2)}</span>
+                    <span className="text-white">Total</span>
+                    <span className="text-white">₹{total.toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -359,11 +428,19 @@ export default function PaymentPage() {
                   onClick={handlePayment}
                   disabled={!isFormValid || processing}
                   className={cn(
-                    "mt-6 w-full rounded border py-3 transition-colors",
+                    "mt-6 w-full rounded-xl py-3 font-medium transition-all",
                     isFormValid && !processing
-                      ? "border-gray-900 bg-gray-900 text-white hover:bg-gray-800"
-                      : "cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400"
+                      ? "text-white shadow-lg hover:shadow-xl"
+                      : "cursor-not-allowed text-gray-500"
                   )}
+                  style={{
+                    background: isFormValid && !processing
+                      ? 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)'
+                      : 'rgba(255, 255, 255, 0.05)',
+                    border: isFormValid && !processing
+                      ? 'none'
+                      : '1px solid rgba(255, 255, 255, 0.1)'
+                  }}
                 >
                   {processing ? "Processing..." : "Confirm Booking"}
                 </button>

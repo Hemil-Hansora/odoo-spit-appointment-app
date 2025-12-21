@@ -52,25 +52,36 @@ export default function ServiceSelectionPage() {
   })
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-7xl px-6 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Book an Appointment</h1>
-          <p className="text-gray-600">Select a service to get started</p>
+          <h1 className="text-4xl font-bold tracking-tight mb-2">
+            <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+              Book an Appointment
+            </span>
+          </h1>
+          <p className="text-gray-400 text-lg">Select a service to get started</p>
         </div>
 
         {/* Loading State */}
         {loading && (
-          <div className="py-12 text-center text-gray-600">
-            Loading services...
+          <div className="py-12 text-center">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+            <p className="text-gray-400 mt-4">Loading services...</p>
           </div>
         )}
 
         {/* Error State */}
         {error && (
-          <div className="py-12 text-center text-red-600">
-            {error}
+          <div 
+            className="py-4 px-6 rounded-xl"
+            style={{
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.3)'
+            }}
+          >
+            <p className="text-red-400 text-center">{error}</p>
           </div>
         )}
 
@@ -83,10 +94,18 @@ export default function ServiceSelectionPage() {
                 placeholder="Search services..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="border-gray-300 bg-white"
+                className="border-0 text-white placeholder:text-gray-500"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)'
+                }}
               />
               <Select value={filter} onValueChange={setFilter}>
-                <SelectTrigger className="border-gray-300 bg-white">
+                <SelectTrigger 
+                  className="border-0 text-white"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.05)'
+                  }}
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -105,29 +124,43 @@ export default function ServiceSelectionPage() {
                   href={`/book/select-resource?service=${service.id}`}
                   className="block"
                 >
-                  <div className="rounded border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-md">
+                  <div 
+                    className="rounded-2xl p-6 transition-all hover:scale-[1.01] hover:shadow-xl"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      backdropFilter: 'blur(10px)'
+                    }}
+                  >
                     <div className="mb-4 flex items-start justify-between">
                       <div className="flex items-center gap-4">
                         <div className="text-4xl">{service.image || "📅"}</div>
                         <div>
-                          <h3 className="text-xl font-semibold text-gray-900">{service.name}</h3>
-                          <p className="text-sm text-gray-600">
+                          <h3 className="text-xl font-semibold text-white">{service.name}</h3>
+                          <p className="text-sm text-gray-400">
                             {service.duration} min • {service.location || "Location TBD"}
                           </p>
                         </div>
                       </div>
-                      <div className="rounded border border-gray-300 bg-gray-50 px-3 py-1 text-sm text-gray-700">
+                      <div 
+                        className="rounded-lg px-3 py-1 text-sm font-medium"
+                        style={{
+                          background: service.price === 0 ? 'rgba(34, 197, 94, 0.2)' : 'rgba(168, 85, 247, 0.2)',
+                          color: service.price === 0 ? 'rgb(34, 197, 94)' : 'rgb(168, 85, 247)',
+                          border: service.price === 0 ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(168, 85, 247, 0.3)'
+                        }}
+                      >
                         {service.price === 0 ? "Free" : `₹${service.price}`}
                       </div>
                     </div>
-                    <p className="text-sm text-gray-600">{service.description}</p>
+                    <p className="text-sm text-gray-400">{service.description}</p>
                   </div>
                 </Link>
               ))}
             </div>
 
             {filteredServices.length === 0 && (
-              <div className="py-12 text-center text-gray-600">
+              <div className="py-12 text-center text-gray-400">
                 No services found matching your criteria
               </div>
             )}
