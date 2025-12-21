@@ -24,6 +24,21 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    // Verify user has access to this organization
+    const member = await db.member.findFirst({
+      where: {
+        organizationId,
+        userId: session.user.id,
+      },
+    });
+
+    if (!member) {
+      return NextResponse.json(
+        { error: "You don't have access to this organization" },
+        { status: 403 }
+      );
+    }
+
     // Build query filters
     const where: any = { organizationId };
     if (isActive !== null && isActive !== undefined) {
