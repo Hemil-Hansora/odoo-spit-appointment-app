@@ -64,6 +64,15 @@ export async function GET(req: NextRequest) {
 
     const existingSlots = await db.slot.findMany({
       where: whereSlot,
+      include: {
+        bookings: {
+          where: {
+            status: {
+              in: ["PENDING", "CONFIRMED"],
+            },
+          },
+        },
+      },
     })
 
     // Generate available slots based on schedules
@@ -94,9 +103,13 @@ export async function GET(req: NextRequest) {
             slot.endTime.getTime() === slotEndTime.getTime()
         )
 
-        const capacity = service.maxCapacity || 1
+        // For exclusive booking: slot is unavailable if there's any active booking
+        const hasActiveBooking = existingSlot?.bookings?.some(
+          (booking: any) => booking.status === "PENDING" || booking.status === "CONFIRMED"
+        ) || false
         const bookedCount = existingSlot?.bookedCount || 0
-        const available = bookedCount < capacity
+        const capacity = 1 // Set to 1 for exclusive booking (one user per slot)
+        const available = !hasActiveBooking && bookedCount < capacity
 
         availableSlots.push({
           id: existingSlot?.id || `new-${currentTime.getTime()}`,

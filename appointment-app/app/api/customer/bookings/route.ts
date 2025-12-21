@@ -205,6 +205,15 @@ export async function POST(req: NextRequest) {
       // Existing slot
       slot = await db.slot.findUnique({
         where: { id: slotId },
+        include: {
+          bookings: {
+            where: {
+              status: {
+                in: ["PENDING", "CONFIRMED"],
+              },
+            },
+          },
+        },
       })
 
       if (!slot) {
@@ -214,7 +223,15 @@ export async function POST(req: NextRequest) {
         )
       }
 
-      // Check slot availability
+      // Check if slot is already booked (exclusive booking - one user per slot)
+      if (slot.bookings && slot.bookings.length > 0) {
+        return NextResponse.json(
+          { error: "This time slot is already booked by another user" },
+          { status: 400 }
+        )
+      }
+
+      // Double-check slot availability using bookedCount
       if (slot.bookedCount >= slot.capacity) {
         return NextResponse.json(
           { error: "Slot is fully booked" },
@@ -222,14 +239,14 @@ export async function POST(req: NextRequest) {
         )
       }
     } else {
-      // Create new slot
+      // Create new slot with capacity of 1 for exclusive booking
       const slotData: any = {
         id: nanoid(),
         serviceId,
         date: new Date(startTime),
         startTime: new Date(startTime),
         endTime: new Date(endTime),
-        capacity: service.maxCapacity || 1,
+        capacity: 1, // Set to 1 for exclusive booking (one user per slot)
         bookedCount: 0,
       }
 
@@ -270,12 +287,12 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Update slot booked count
+    // Update slot booked count (increment by 1 for exclusive booking)
     await db.slot.update({
       where: { id: slot.id },
       data: {
         bookedCount: {
-          increment: capacity,
+          increment: 1,
         },
       },
     })
