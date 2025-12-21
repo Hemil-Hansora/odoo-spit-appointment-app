@@ -24,11 +24,13 @@ export function ProtectedRoute({
     const checkAccess = async () => {
       if (isPending) return;
 
+      // If no session, redirect to sign-in
       if (!session) {
-        router.push(fallbackUrl);
+        router.push(`/sign-in?redirect=${encodeURIComponent(pathname || "/")}`);
         return;
       }
 
+      // If no role required, allow access
       if (!requiredRole) {
         setIsChecking(false);
         return;
@@ -37,7 +39,7 @@ export function ProtectedRoute({
       // Fetch user role info from server
       const response = await fetch("/api/auth/session");
       if (!response.ok) {
-        router.push(fallbackUrl);
+        router.push("/sign-in");
         return;
       }
 
@@ -45,35 +47,47 @@ export function ProtectedRoute({
       const user = data.session?.user;
       
       if (!user) {
-        router.push(fallbackUrl);
+        router.push("/sign-in");
         return;
       }
 
-      const hasOrg = user.organizationId || user.activeOrganizationId;
+      const role = user.role;
       const accountType = user.accountType;
 
-      // Customer trying to access customer pages but has org -> redirect to organiser
-      if (requiredRole === "customer" && hasOrg && accountType === "organiser") {
-        router.push("/organiser");
-        return;
-      }
-      
-      // Organiser trying to access organiser pages but has no org -> redirect to customer
-      if (requiredRole === "admin" && !hasOrg) {
-        router.push("/book");
-        return;
-      }
-
-      // Customer account type trying to access organiser pages -> redirect to customer
-      if (requiredRole === "admin" && accountType === "customer") {
-        router.push("/book");
-        return;
+      // Admin access - only users with admin role in organization
+      if (requiredRole === "admin") {
+        if (role !== "admin") {
+          // Redirect to appropriate dashboard based on account type
+          if (accountType === "organiser") {
+            router.push("/organiser");
+          } else {
+            router.push("/customer");
+          }
+          return;
+        }
       }
 
-      // Organiser account type trying to access customer pages -> redirect to organiser
-      if (requiredRole === "customer" && accountType === "organiser" && hasOrg) {
-        router.push("/organiser");
-        return;
+      // Organiser/Owner/Member access (organization members)
+      if (requiredRole === "owner" || requiredRole === "member") {
+        if (accountType !== "organiser") {
+          // Non-organisers trying to access organiser pages
+          router.push("/customer");
+          return;
+        }
+        // Additional check for owner role if required
+        if (requiredRole === "owner" && role !== "owner") {
+          router.push("/organiser");
+          return;
+        }
+      }
+
+      // Customer access
+      if (requiredRole === "customer") {
+        if (accountType === "organiser") {
+          // Organisers trying to access customer pages
+          router.push("/organiser");
+          return;
+        }
       }
 
       setIsChecking(false);

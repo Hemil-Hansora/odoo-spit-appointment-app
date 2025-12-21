@@ -2,13 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -132,95 +125,136 @@ export default function ResourcesPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Resources</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-4xl font-bold tracking-tight mb-2">
+          <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+            Resources
+          </span>
+        </h1>
+        <p className="text-gray-400 text-lg">
           Manage people, rooms, and equipment for your services.
         </p>
       </div>
 
       {/* Create New Resource */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Create New Resource</CardTitle>
-          <CardDescription>
+      <div className="rounded-2xl p-8"
+        style={{
+          background: 'rgba(255, 255, 255, 0.03)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)'
+        }}
+      >
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold text-white mb-2">Create New Resource</h2>
+          <p className="text-gray-400">
             Add a person, room, or equipment that can be booked.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-3">
-            <div className="flex-1">
-              <Label htmlFor="resourceName" className="sr-only">
-                Resource Name
-              </Label>
-              <Input
-                id="resourceName"
-                placeholder="e.g. Meeting Room A, Dr. Smith"
-                value={newResourceName}
-                onChange={(e) => setNewResourceName(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && createResource()}
-                disabled={creating}
-              />
-            </div>
-            <Button onClick={createResource} disabled={creating || !newResourceName.trim()}>
-              {creating ? "Creating..." : "Create"}
-            </Button>
+          </p>
+        </div>
+        
+        <div className="flex gap-3">
+          <div className="flex-1">
+            <Label htmlFor="resourceName" className="sr-only">
+              Resource Name
+            </Label>
+            <Input
+              id="resourceName"
+              placeholder="e.g. Meeting Room A, Dr. Smith"
+              value={newResourceName}
+              onChange={(e) => setNewResourceName(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && createResource()}
+              disabled={creating}
+              className="bg-white/5 border-white/10 text-white placeholder:text-gray-500"
+            />
           </div>
-        </CardContent>
-      </Card>
+          <button
+            onClick={createResource}
+            disabled={creating || !newResourceName.trim()}
+            className="px-6 py-2 rounded-lg font-medium text-white transition-all shadow-lg hover:shadow-xl disabled:opacity-50"
+            style={{
+              background: creating || !newResourceName.trim()
+                ? 'rgba(168, 85, 247, 0.5)'
+                : 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)'
+            }}
+          >
+            {creating ? "Creating..." : "Create"}
+          </button>
+        </div>
+      </div>
 
       {/* Resources List */}
-      <Card>
-        <CardHeader>
-          <CardTitle>All Resources ({resources.length})</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {loading && <p className="text-center py-8 text-muted-foreground">Loading...</p>}
-          {error && <p className="text-center py-8 text-red-600">{error}</p>}
-          {!loading && !error && resources.length === 0 && (
-            <p className="text-center py-8 text-muted-foreground">
-              No resources yet. Create one above.
-            </p>
-          )}
-          {!loading && !error && resources.length > 0 && (
-            <div className="space-y-3">
-              {resources.map((resource) => (
-                <div
-                  key={resource.id}
-                  className="flex items-center justify-between p-4 border rounded-lg"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={`w-3 h-3 rounded-full ${resource.isActive ? 'bg-green-500' : 'bg-gray-300'}`} />
-                    <div>
-                      <p className="font-medium">{resource.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {resource.isActive ? "Active" : "Inactive"}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => toggleResourceStatus(resource.id, resource.isActive)}
-                    >
-                      {resource.isActive ? "Deactivate" : "Activate"}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => deleteResource(resource.id)}
-                    >
-                      Delete
-                    </Button>
+      <div className="rounded-2xl p-8"
+        style={{
+          background: 'rgba(255, 255, 255, 0.03)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)'
+        }}
+      >
+        <h2 className="text-2xl font-semibold text-white mb-6">All Resources ({resources.length})</h2>
+        
+        {loading && (
+          <div className="text-center py-12">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+            <p className="text-gray-400 mt-4">Loading...</p>
+          </div>
+        )}
+        {error && (
+          <div className="text-center py-8 rounded-xl" style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+            <p style={{ color: 'rgb(239, 68, 68)' }}>{error}</p>
+          </div>
+        )}
+        {!loading && !error && resources.length === 0 && (
+          <p className="text-center py-12 text-gray-400 text-lg">
+            No resources yet. Create one above.
+          </p>
+        )}
+        {!loading && !error && resources.length > 0 && (
+          <div className="space-y-3">
+            {resources.map((resource) => (
+              <div
+                key={resource.id}
+                className="flex items-center justify-between p-6 rounded-xl transition-all hover:scale-[1.01]"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}
+              >
+                <div className="flex items-center gap-4">
+                  <div className={`w-3 h-3 rounded-full ${resource.isActive ? 'bg-green-500' : 'bg-gray-500'}`} />
+                  <div>
+                    <p className="font-semibold text-white text-lg">{resource.name}</p>
+                    <p className="text-sm text-gray-400">
+                      {resource.isActive ? "Active" : "Inactive"}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => toggleResourceStatus(resource.id, resource.isActive)}
+                    className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                    style={{
+                      background: 'rgba(168, 85, 247, 0.2)',
+                      border: '1px solid rgba(168, 85, 247, 0.3)',
+                      color: 'rgb(168, 85, 247)'
+                    }}
+                  >
+                    {resource.isActive ? "Deactivate" : "Activate"}
+                  </button>
+                  <button
+                    onClick={() => deleteResource(resource.id)}
+                    className="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 transition-all hover:bg-white/5"
+                    style={{
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

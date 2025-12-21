@@ -17,17 +17,18 @@ export async function redirectToDashboard() {
   const accountType = user.accountType as string | undefined;
   const role = user.role as string | undefined;
 
-  // 3 user dashboards:
-  // - Customer (no org) -> /book
-  // - Org Owner -> /organiser
-  // - Other org users -> /organiser
-  const hasOrg = !!(user.organizationId || user.activeOrganizationId);
-
-  if (!hasOrg || accountType === "customer") {
-    redirect("/book");
+  // Admin role -> /admin
+  if (role === "admin") {
+    redirect("/admin");
   }
 
-  redirect("/organiser");
+  // Organiser account type -> /organiser
+  if (accountType === "organiser") {
+    redirect("/organiser");
+  }
+
+  // Customer account type -> /customer
+  redirect("/book");
 }
 
 /**

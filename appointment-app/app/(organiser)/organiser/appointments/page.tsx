@@ -2,16 +2,8 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import {
   Select,
   SelectContent,
@@ -19,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { cn } from "@/lib/utils"
 
 type TabType = "bookings" | "config"
 type ConfigTabType = "Schedule" | "Questions" | "Options" | "Misc"
@@ -545,330 +536,422 @@ export default function AppointmentsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-bold tracking-tight mb-2">
+            <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
               Appointments
-            </h1>
-            <p className="mt-2 text-sm text-gray-600">
-              Manage bookings and configure appointment settings
+            </span>
+          </h1>
+          <p className="text-gray-400 text-lg">
+            Manage bookings and configure appointment settings
+          </p>
+        </div>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setActiveTab("bookings")}
+            className={`px-6 py-2.5 rounded-xl font-medium transition-all ${
+              activeTab === "bookings"
+                ? "text-white shadow-lg"
+                : "text-gray-400 hover:bg-white/5"
+            }`}
+            style={activeTab === "bookings" ? {
+              background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)',
+              border: '1px solid rgba(168, 85, 247, 0.3)'
+            } : {
+              border: '1px solid rgba(255, 255, 255, 0.1)'
+            }}
+          >
+            Bookings
+          </button>
+          <button
+            onClick={() => setActiveTab("config")}
+            className={`px-6 py-2.5 rounded-xl font-medium transition-all ${
+              activeTab === "config"
+                ? "text-white shadow-lg"
+                : "text-gray-400 hover:bg-white/5"
+            }`}
+            style={activeTab === "config" ? {
+              background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)',
+              border: '1px solid rgba(168, 85, 247, 0.3)'
+            } : {
+              border: '1px solid rgba(255, 255, 255, 0.1)'
+            }}
+          >
+            Configuration
+          </button>
+        </div>
+      </div>
+
+      {error && (
+        <div 
+          className="rounded-xl p-4"
+          style={{
+            background: 'rgba(239, 68, 68, 0.1)',
+            border: '1px solid rgba(239, 68, 68, 0.3)'
+          }}
+        >
+          <p className="text-sm text-red-400">{error}</p>
+        </div>
+      )}
+
+      {/* Bookings Tab */}
+      {activeTab === "bookings" && (
+        <div
+          className="rounded-2xl overflow-hidden"
+          style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)'
+          }}
+        >
+          <div className="p-6 border-b" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+            <h2 className="text-xl font-semibold text-white mb-1">
+              All Bookings
+            </h2>
+            <p className="text-sm text-gray-400">
+              A list of all appointments including customer details and status
             </p>
           </div>
-          <div className="flex gap-2">
-            <Button
-              variant={activeTab === "bookings" ? "default" : "outline"}
-              onClick={() => setActiveTab("bookings")}
-              className="shadow-sm"
-            >
-              Bookings
-            </Button>
-            <Button
-              variant={activeTab === "config" ? "default" : "outline"}
-              onClick={() => setActiveTab("config")}
-              className="shadow-sm"
-            >
-              Configuration
-            </Button>
+          <div>
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+                <p className="text-gray-400 ml-4">Loading bookings...</p>
+              </div>
+            ) : bookings.length === 0 ? (
+              <div className="flex items-center justify-center py-12">
+                <p className="text-gray-400">No bookings found</p>
+              </div>
+            ) : (
+              <div className="relative w-full overflow-auto">
+                <table className="w-full caption-bottom text-sm">
+                  <thead>
+                    <tr className="border-b" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                      <th className="h-12 px-6 text-left align-middle font-medium text-gray-300">
+                        Customer
+                      </th>
+                      <th className="h-12 px-6 text-left align-middle font-medium text-gray-300">
+                        Service
+                      </th>
+                      <th className="h-12 px-6 text-left align-middle font-medium text-gray-300">
+                        Time
+                      </th>
+                      <th className="h-12 px-6 text-left align-middle font-medium text-gray-300">
+                        Status
+                      </th>
+                      <th className="h-12 px-6 text-right align-middle font-medium text-gray-300">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bookings.map((booking, index) => (
+                      <tr
+                        key={booking.id}
+                        className={`border-b transition-colors hover:bg-white/5 ${
+                          index === bookings.length - 1 ? "border-b-0" : ""
+                        }`}
+                        style={{ borderColor: 'rgba(255, 255, 255, 0.05)' }}
+                      >
+                        <td className="px-6 py-4 align-middle">
+                          <div className="font-medium text-white">
+                            {booking.user.name}
+                          </div>
+                          <div className="text-sm text-gray-400">
+                            {booking.user.email}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 align-middle text-gray-300">
+                          {booking.service.title}
+                        </td>
+                        <td className="px-6 py-4 align-middle text-gray-300">
+                          {formatBookingTime(
+                            booking.slot.date,
+                            booking.slot.startTime
+                          )}
+                        </td>
+                        <td className="px-6 py-4 align-middle">
+                          <Badge
+                            variant="outline"
+                            className="border-0"
+                            style={{
+                              background: booking.status === "CONFIRMED"
+                                ? "rgba(34, 197, 94, 0.2)"
+                                : booking.status === "PENDING"
+                                ? "rgba(250, 204, 21, 0.2)"
+                                : "rgba(239, 68, 68, 0.2)",
+                              color: booking.status === "CONFIRMED"
+                                ? "rgb(34, 197, 94)"
+                                : booking.status === "PENDING"
+                                ? "rgb(250, 204, 21)"
+                                : "rgb(239, 68, 68)"
+                            }}
+                          >
+                            {booking.status.charAt(0) +
+                              booking.status.slice(1).toLowerCase()}
+                          </Badge>
+                        </td>
+                        <td className="px-6 py-4 text-right align-middle">
+                          <div className="flex gap-2 justify-end">
+                            <button
+                              className="px-3 py-1.5 text-sm rounded-lg transition-all hover:bg-white/5"
+                              style={{
+                                color: 'rgb(34, 211, 238)',
+                                border: '1px solid rgba(34, 211, 238, 0.3)'
+                              }}
+                              onClick={() => setViewingBooking(booking)}
+                            >
+                              View
+                            </button>
+                            {booking.status !== "CANCELLED" && (
+                              <button
+                                className="px-3 py-1.5 text-sm rounded-lg transition-all hover:bg-white/5"
+                                style={{
+                                  color: 'rgb(239, 68, 68)',
+                                  border: '1px solid rgba(239, 68, 68, 0.3)'
+                                }}
+                                onClick={() => handleCancelBooking(booking.id)}
+                                disabled={cancellingId === booking.id}
+                              >
+                                {cancellingId === booking.id ? "Cancelling..." : "Cancel"}
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
-
-        {error && (
-          <div className="mb-4 rounded-md bg-red-50 p-4">
-            <p className="text-sm text-red-800">{error}</p>
-          </div>
-        )}
-
-        {/* Bookings Tab */}
-        {activeTab === "bookings" && (
-          <Card className="overflow-hidden border-gray-200 bg-white shadow-sm">
-            <CardHeader className="border-b border-gray-100 bg-white">
-              <CardTitle className="text-lg font-semibold text-gray-900">
-                All Bookings
-              </CardTitle>
-              <CardDescription className="text-sm text-gray-600">
-                A list of all appointments including customer details and status
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
-              {loading ? (
-                <div className="flex items-center justify-center py-12">
-                  <p className="text-sm text-gray-500">Loading bookings...</p>
+      )}
+      {/* Configuration Tab */}
+      {activeTab === "config" && (
+        <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
+          {/* Left Column */}
+        <div className="space-y-6">
+            {/* Appointment Details Card */}
+            <div
+              className="rounded-2xl overflow-hidden"
+              style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)'
+              }}
+            >
+              <div className="p-6 border-b" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                <h2 className="text-xl font-semibold text-white mb-1">
+                  Appointment Details
+                </h2>
+                <p className="text-sm text-gray-400">
+                  Configure your appointment settings
+                </p>
+              </div>
+              <div className="space-y-6 p-6">
+                {/* Appointment Title */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Appointment title
+                  </label>
+                  <Input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Enter appointment title"
+                    className="border-0 text-white placeholder:text-gray-500"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)'
+                    }}
+                  />
                 </div>
-              ) : bookings.length === 0 ? (
-                <div className="flex items-center justify-center py-12">
-                  <p className="text-sm text-gray-500">No bookings found</p>
-                </div>
-              ) : (
-                <div className="relative w-full overflow-auto">
-                  <table className="w-full caption-bottom text-sm">
-                    <thead>
-                      <tr className="border-b border-gray-200 bg-gray-50">
-                        <th className="h-12 px-6 text-left align-middle font-medium text-gray-700">
-                          Customer
-                        </th>
-                        <th className="h-12 px-6 text-left align-middle font-medium text-gray-700">
-                          Service
-                        </th>
-                        <th className="h-12 px-6 text-left align-middle font-medium text-gray-700">
-                          Time
-                        </th>
-                        <th className="h-12 px-6 text-left align-middle font-medium text-gray-700">
-                          Status
-                        </th>
-                        <th className="h-12 px-6 text-right align-middle font-medium text-gray-700">
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {bookings.map((booking, index) => (
-                        <tr
-                          key={booking.id}
-                          className={`border-b border-gray-100 transition-colors hover:bg-gray-50 ${
-                            index === bookings.length - 1 ? "border-b-0" : ""
-                          }`}
-                        >
-                          <td className="px-6 py-4 align-middle">
-                            <div className="font-medium text-gray-900">
-                              {booking.user.name}
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              {booking.user.email}
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 align-middle text-gray-600">
-                            {booking.service.title}
-                          </td>
-                          <td className="px-6 py-4 align-middle text-gray-600">
-                            {formatBookingTime(
-                              booking.slot.date,
-                              booking.slot.startTime
-                            )}
-                          </td>
-                          <td className="px-6 py-4 align-middle">
-                            <Badge
-                              variant="outline"
-                              className={
-                                booking.status === "CONFIRMED"
-                                  ? "border-green-200 bg-green-50 text-green-700"
-                                  : booking.status === "PENDING"
-                                  ? "border-yellow-200 bg-yellow-50 text-yellow-700"
-                                  : "border-red-200 bg-red-50 text-red-700"
-                              }
-                            >
-                              {booking.status.charAt(0) +
-                                booking.status.slice(1).toLowerCase()}
-                            </Badge>
-                          </td>
-                          <td className="px-6 py-4 text-right align-middle">
-                            <div className="flex gap-2 justify-end">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                                onClick={() => setViewingBooking(booking)}
-                              >
-                                View
-                              </Button>
-                              {booking.status !== "CANCELLED" && (
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                  onClick={() => handleCancelBooking(booking.id)}
-                                  disabled={cancellingId === booking.id}
-                                >
-                                  {cancellingId === booking.id ? "Cancelling..." : "Cancel"}
-                                </Button>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
 
-        {/* Configuration Tab */}
-        {activeTab === "config" && (
-          <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
-            {/* Left Column */}
-            <div className="space-y-6">
-              {/* Appointment Details Card */}
-              <Card className="border-gray-200 bg-white shadow-sm">
-                <CardHeader className="border-b border-gray-100">
-                  <CardTitle className="text-lg font-semibold text-gray-900">
-                    Appointment Details
-                  </CardTitle>
-                  <CardDescription className="text-sm text-gray-600">
-                    Configure your appointment settings
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6 pt-6">
-                  {/* Appointment Title */}
+                {/* Description */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Description
+                  </label>
+                  <Textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Enter appointment description"
+                    rows={3}
+                    className="border-0 text-white placeholder:text-gray-500"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)'
+                    }}
+                  />
+                </div>
+
+                {/* Duration and Location */}
+                <div className="grid gap-6 md:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Appointment title
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Duration (minutes)
+                    </label>
+                    <Select value={duration} onValueChange={(value) => value && setDuration(value)}>
+                      <SelectTrigger 
+                        className="border-0 text-white"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.05)'
+                        }}
+                      >
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="15">15 Minutes</SelectItem>
+                        <SelectItem value="30">30 Minutes</SelectItem>
+                        <SelectItem value="45">45 Minutes</SelectItem>
+                        <SelectItem value="60">1 Hour</SelectItem>
+                        <SelectItem value="90">1.5 Hours</SelectItem>
+                        <SelectItem value="120">2 Hours</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Location
                     </label>
                     <Input
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                      placeholder="Enter appointment title"
-                      className="border-gray-300 bg-white"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      placeholder="Enter location"
+                      className="border-0 text-white placeholder:text-gray-500"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.05)'
+                      }}
                     />
                   </div>
+                </div>
 
-                  {/* Description */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Description
-                    </label>
-                    <Textarea
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      placeholder="Enter appointment description"
-                      rows={3}
-                      className="border-gray-300 bg-white"
-                    />
-                  </div>
-
-                  {/* Duration and Location */}
-                  <div className="grid gap-6 md:grid-cols-2">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Duration (minutes)
-                      </label>
-                      <Select value={duration} onValueChange={(value) => value && setDuration(value)}>
-                        <SelectTrigger className="border-gray-300 bg-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="15">15 Minutes</SelectItem>
-                          <SelectItem value="30">30 Minutes</SelectItem>
-                          <SelectItem value="45">45 Minutes</SelectItem>
-                          <SelectItem value="60">1 Hour</SelectItem>
-                          <SelectItem value="90">1.5 Hours</SelectItem>
-                          <SelectItem value="120">2 Hours</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Location
-                      </label>
-                      <Input
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        placeholder="Enter location"
-                        className="border-gray-300 bg-white"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Book Type */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                      Book
-                    </label>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => setBookType("User")}
-                        className={cn(
-                          "rounded border px-4 py-2 text-sm transition-colors",
-                          bookType === "User"
-                            ? "border-gray-900 bg-gray-900 text-white"
-                            : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                        )}
-                      >
-                        User
-                      </button>
-                      <button
-                        onClick={() => setBookType("Resources")}
-                        className={cn(
-                          "rounded border px-4 py-2 text-sm transition-colors",
-                          bookType === "Resources"
-                            ? "border-gray-900 bg-gray-900 text-white"
-                            : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                        )}
-                      >
-                        Resources
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Assignment */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                      Assignment
-                    </label>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => setAssignment("Automatically")}
-                        className={cn(
-                          "rounded border px-4 py-2 text-sm transition-colors",
-                          assignment === "Automatically"
-                            ? "border-gray-900 bg-gray-900 text-white"
-                            : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                        )}
-                      >
-                        Automatically
-                      </button>
-                      <button
-                        onClick={() => setAssignment("By visitor")}
-                        className={cn(
-                          "rounded border px-4 py-2 text-sm transition-colors",
-                          assignment === "By visitor"
-                            ? "border-gray-900 bg-gray-900 text-white"
-                            : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                        )}
-                      >
-                        By visitor
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Manage Capacity */}
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300"
-                    />
-                    <label className="text-sm text-gray-700">
-                      Allow {maxSimultaneous} Simultaneous Appointment(s) per
-                      user
-                    </label>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Configuration Tabs Card */}
-              <Card className="border-gray-200 bg-white shadow-sm">
-                <CardHeader className="border-b border-gray-100">
+                {/* Book Type */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-3">
+                    Book
+                  </label>
                   <div className="flex gap-2">
-                    {(["Schedule", "Questions", "Options", "Misc"] as ConfigTabType[]).map((tab) => (
-                      <Button
-                        key={tab}
-                        variant={configTab === tab ? "default" : "outline"}
-                        onClick={() => setConfigTab(tab)}
-                        size="sm"
-                      >
-                        {tab}
-                      </Button>
-                    ))}
+                    <button
+                      onClick={() => setBookType("User")}
+                      className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                        bookType === "User" ? "text-white" : "text-gray-400 hover:bg-white/5"
+                      }`}
+                      style={bookType === "User" ? {
+                        background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)',
+                        border: '1px solid rgba(168, 85, 247, 0.3)'
+                      } : {
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                      }}
+                    >
+                      User
+                    </button>
+                    <button
+                      onClick={() => setBookType("Resources")}
+                      className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                        bookType === "Resources" ? "text-white" : "text-gray-400 hover:bg-white/5"
+                      }`}
+                      style={bookType === "Resources" ? {
+                        background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)',
+                        border: '1px solid rgba(168, 85, 247, 0.3)'
+                      } : {
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                      }}
+                    >
+                      Resources
+                    </button>
                   </div>
-                </CardHeader>
-                <CardContent className="pt-6">
+                </div>
+
+                {/* Assignment */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-3">
+                    Assignment
+                  </label>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setAssignment("Automatically")}
+                      className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                        assignment === "Automatically" ? "text-white" : "text-gray-400 hover:bg-white/5"
+                      }`}
+                      style={assignment === "Automatically" ? {
+                        background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)',
+                        border: '1px solid rgba(168, 85, 247, 0.3)'
+                      } : {
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                      }}
+                    >
+                      Automatically
+                    </button>
+                    <button
+                      onClick={() => setAssignment("By visitor")}
+                      className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                        assignment === "By visitor" ? "text-white" : "text-gray-400 hover:bg-white/5"
+                      }`}
+                      style={assignment === "By visitor" ? {
+                        background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)',
+                        border: '1px solid rgba(168, 85, 247, 0.3)'
+                      } : {
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                      }}
+                    >
+                      By visitor
+                    </button>
+                  </div>
+                </div>
+
+                {/* Manage Capacity */}
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 rounded"
+                    style={{
+                      accentColor: 'rgb(168, 85, 247)'
+                    }}
+                  />
+                  <label className="text-sm text-gray-300">
+                    Allow {maxSimultaneous} Simultaneous Appointment(s) per user
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            {/* Configuration Tabs Card */}
+            <div
+              className="rounded-2xl overflow-hidden"
+              style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)'
+              }}
+            >
+              <div className="p-6 border-b" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                <div className="flex gap-2">
+                  {(["Schedule", "Questions", "Options", "Misc"] as ConfigTabType[]).map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setConfigTab(tab)}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                        configTab === tab ? "text-white" : "text-gray-400 hover:bg-white/5"
+                      }`}
+                      style={configTab === tab ? {
+                        background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)',
+                        border: '1px solid rgba(168, 85, 247, 0.3)'
+                      } : {
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                      }}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="p-6">
                   {configTab === "Schedule" && (
                     <div className="space-y-4">
-                      <div className="grid grid-cols-[120px_1fr_80px] gap-4 border-b border-gray-200 pb-2 text-sm font-medium text-gray-700">
+                      <div className="grid grid-cols-[120px_1fr_80px] gap-4 border-b pb-2 text-sm font-medium text-gray-400" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
                         <div>Every</div>
                         <div>From - To</div>
                         <div></div>
@@ -877,7 +960,7 @@ export default function AppointmentsPage() {
                         <div key={daySchedule.id} className="space-y-2">
                           {daySchedule.slots.map((slot, idx) => (
                             <div key={idx} className="grid grid-cols-[120px_1fr_80px] gap-4 items-center">
-                              {idx === 0 && <div className="text-sm font-medium text-gray-900">{DAY_NAMES[daySchedule.dayOfWeek as keyof typeof DAY_NAMES]}</div>}
+                              {idx === 0 && <div className="text-sm font-medium text-white">{DAY_NAMES[daySchedule.dayOfWeek as keyof typeof DAY_NAMES]}</div>}
                               {idx > 0 && <div></div>}
                               <div className="flex gap-2 items-center">
                                 <Input
@@ -885,7 +968,10 @@ export default function AppointmentsPage() {
                                   value={slot.start}
                                   onChange={(e) => updateSlot(daySchedule.id, idx, "start", e.target.value)}
                                   placeholder="09:00"
-                                  className="border-gray-300 bg-white text-sm"
+                                  className="border-0 text-white text-sm"
+                                  style={{
+                                    background: 'rgba(255, 255, 255, 0.05)'
+                                  }}
                                 />
                                 <span className="text-gray-400">-</span>
                                 <Input
@@ -893,12 +979,15 @@ export default function AppointmentsPage() {
                                   value={slot.end}
                                   onChange={(e) => updateSlot(daySchedule.id, idx, "end", e.target.value)}
                                   placeholder="17:00"
-                                  className="border-gray-300 bg-white text-sm"
+                                  className="border-0 text-white text-sm"
+                                  style={{
+                                    background: 'rgba(255, 255, 255, 0.05)'
+                                  }}
                                 />
                               </div>
                               <button
                                 onClick={() => removeSlot(daySchedule.id, idx)}
-                                className="text-red-600 hover:text-red-700 font-semibold"
+                                className="text-red-400 hover:text-red-300 font-semibold"
                               >
                                 ✕
                               </button>
@@ -906,7 +995,8 @@ export default function AppointmentsPage() {
                           ))}
                           <button
                             onClick={() => addSlot(daySchedule.id)}
-                            className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 ml-[120px]"
+                            className="flex items-center gap-2 text-sm ml-[120px] transition-colors"
+                            style={{ color: 'rgb(168, 85, 247)' }}
                           >
                             <span className="text-lg">+</span> Add hours
                           </button>
@@ -917,7 +1007,7 @@ export default function AppointmentsPage() {
 
                   {configTab === "Questions" && (
                     <div className="space-y-4">
-                      <div className="grid grid-cols-[1fr_200px_120px_80px] gap-4 border-b border-gray-200 pb-2 text-sm font-medium text-gray-700">
+                      <div className="grid grid-cols-[1fr_200px_120px_80px] gap-4 border-b pb-2 text-sm font-medium text-gray-400" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
                         <div>Question</div>
                         <div>Answer Type</div>
                         <div>Answer</div>
@@ -929,13 +1019,21 @@ export default function AppointmentsPage() {
                             value={question.label}
                             onChange={(e) => updateQuestion(idx, "label", e.target.value)}
                             placeholder="Question"
-                            className="border-gray-300 bg-white text-sm"
+                            className="border-0 text-white text-sm placeholder:text-gray-500"
+                            style={{
+                              background: 'rgba(255, 255, 255, 0.05)'
+                            }}
                           />
                           <Select
                             value={question.answerType}
                             onValueChange={(value) => updateQuestion(idx, "answerType", value)}
                           >
-                            <SelectTrigger className="border-gray-300 bg-white text-sm">
+                            <SelectTrigger 
+                              className="border-0 text-white text-sm"
+                              style={{
+                                background: 'rgba(255, 255, 255, 0.05)'
+                              }}
+                            >
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -947,7 +1045,10 @@ export default function AppointmentsPage() {
                           </Select>
                           <Input
                             placeholder="Answer"
-                            className="border-gray-300 bg-white text-sm"
+                            className="border-0 text-gray-500 text-sm"
+                            style={{
+                              background: 'rgba(255, 255, 255, 0.05)'
+                            }}
                             disabled
                           />
                           <div className="flex items-center gap-4">
@@ -955,11 +1056,14 @@ export default function AppointmentsPage() {
                               type="checkbox"
                               checked={question.mandatory}
                               onChange={(e) => updateQuestion(idx, "mandatory", e.target.checked)}
-                              className="h-4 w-4 rounded border-gray-300"
+                              className="h-4 w-4 rounded"
+                              style={{
+                                accentColor: 'rgb(168, 85, 247)'
+                              }}
                             />
                             <button
                               onClick={() => removeQuestion(idx)}
-                              className="text-red-600 hover:text-red-700 font-semibold"
+                              className="text-red-400 hover:text-red-300 font-semibold"
                             >
                               ✕
                             </button>
@@ -968,7 +1072,8 @@ export default function AppointmentsPage() {
                       ))}
                       <button
                         onClick={addQuestion}
-                        className="text-sm text-blue-600 hover:text-blue-700"
+                        className="text-sm transition-colors"
+                        style={{ color: 'rgb(168, 85, 247)' }}
                       >
                         + Add a question
                       </button>
@@ -983,9 +1088,12 @@ export default function AppointmentsPage() {
                             type="checkbox"
                             checked={manualConfirmation}
                             onChange={(e) => setManualConfirmation(e.target.checked)}
-                            className="h-4 w-4 rounded border-gray-300"
+                            className="h-4 w-4 rounded"
+                            style={{
+                              accentColor: 'rgb(168, 85, 247)'
+                            }}
                           />
-                          <label className="text-sm text-gray-700">Manual confirmation</label>
+                          <label className="text-sm text-gray-300">Manual confirmation</label>
                           <span className="text-xs text-gray-500">(Up to 50% of capacity)</span>
                         </div>
 
@@ -994,21 +1102,24 @@ export default function AppointmentsPage() {
                             type="checkbox"
                             checked={paidBooking}
                             onChange={(e) => setPaidBooking(e.target.checked)}
-                            className="h-4 w-4 rounded border-gray-300"
+                            className="h-4 w-4 rounded"
+                            style={{
+                              accentColor: 'rgb(168, 85, 247)'
+                            }}
                           />
-                          <label className="text-sm text-gray-700">Paid Booking</label>
-                          <span className="text-sm text-gray-600">(Rs 200 per booking)</span>
+                          <label className="text-sm text-gray-300">Paid Booking</label>
+                          <span className="text-sm text-gray-400">(Rs 200 per booking)</span>
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700">Cancellation</label>
-                        <p className="text-sm text-gray-600">Up to 01:00 hours before the booking</p>
+                        <label className="text-sm font-medium text-gray-300">Cancellation</label>
+                        <p className="text-sm text-gray-400">Up to 01:00 hours before the booking</p>
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-700">Time Slot Duration</label>
-                        <p className="text-sm text-gray-600">00:30 hours</p>
+                        <label className="text-sm font-medium text-gray-300">Time Slot Duration</label>
+                        <p className="text-sm text-gray-400">00:30 hours</p>
                       </div>
                     </div>
                   )}
@@ -1016,40 +1127,59 @@ export default function AppointmentsPage() {
                   {configTab === "Misc" && (
                     <div className="space-y-6">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Introduction page message</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Introduction page message</label>
                         <Textarea
                           value={introMessage}
                           onChange={(e) => setIntroMessage(e.target.value)}
                           placeholder="Schedule your visit today and experience expert dental care brought right to your doorstep."
                           rows={3}
-                          className="border-gray-300 bg-white"
+                          className="border-0 text-white placeholder:text-gray-500"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.05)'
+                          }}
                         />
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Confirmation page message</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Confirmation page message</label>
                         <Textarea
                           value={confirmationMessage}
                           onChange={(e) => setConfirmationMessage(e.target.value)}
                           placeholder="Thank you for your trust we look forward to meeting you"
                           rows={3}
-                          className="border-gray-300 bg-white"
+                          className="border-0 text-white placeholder:text-gray-500"
+                          style={{
+                            background: 'rgba(255, 255, 255, 0.05)'
+                          }}
                         />
                       </div>
                     </div>
                   )}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
 
             {/* Right Column - Picture Upload */}
             <div className="space-y-6">
-              <Card className="border-gray-200 bg-white shadow-sm">
-                <CardHeader className="border-b border-gray-100">
-                  <CardTitle className="text-sm font-semibold text-gray-900">Picture</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="aspect-square rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-6 flex flex-col items-center justify-center gap-4">
+              <div
+                className="rounded-2xl overflow-hidden"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <div className="p-6 border-b" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                  <h3 className="text-sm font-semibold text-white">Picture</h3>
+                </div>
+                <div className="p-6">
+                  <div 
+                    className="aspect-square rounded-lg border-2 border-dashed p-6 flex flex-col items-center justify-center gap-4"
+                    style={{
+                      borderColor: 'rgba(255, 255, 255, 0.2)',
+                      background: 'rgba(255, 255, 255, 0.02)'
+                    }}
+                  >
                     {imageUrl ? (
                       <img
                         src={imageUrl}
@@ -1057,7 +1187,7 @@ export default function AppointmentsPage() {
                         className="h-full w-full object-cover rounded-lg"
                       />
                     ) : (
-                      <div className="text-4xl text-gray-400">📷</div>
+                      <div className="text-4xl text-gray-500">📷</div>
                     )}
                     <div className="flex gap-2">
                       <input
@@ -1067,54 +1197,84 @@ export default function AppointmentsPage() {
                         onChange={handleImageUpload}
                         className="hidden"
                       />
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-gray-300"
+                      <button
+                        className="px-4 py-2 rounded-lg text-sm font-medium transition-all hover:bg-white/5"
+                        style={{
+                          color: 'rgb(168, 85, 247)',
+                          border: '1px solid rgba(168, 85, 247, 0.3)'
+                        }}
                         onClick={() => fileInputRef.current?.click()}
                       >
                         Upload
-                      </Button>
+                      </button>
                       {imageUrl && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="border-gray-300 text-red-600 hover:text-red-700"
+                        <button
+                          className="px-4 py-2 rounded-lg text-sm font-medium transition-all hover:bg-white/5"
+                          style={{
+                            color: 'rgb(239, 68, 68)',
+                            border: '1px solid rgba(239, 68, 68, 0.3)'
+                          }}
                           onClick={handleRemoveImage}
                         >
                           Remove
-                        </Button>
+                        </button>
                       )}
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
               <div className="flex flex-col gap-2">
-                <Button
-                  className="w-full shadow-sm"
+                <button
+                  className="w-full px-6 py-3 rounded-xl font-medium text-white transition-all shadow-lg hover:shadow-xl"
+                  style={{
+                    background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)'
+                  }}
                   onClick={handleSaveChanges}
                   disabled={saving}
                 >
                   {saving ? "Saving..." : "Save Changes"}
-                </Button>
-                <Button variant="outline" className="w-full border-gray-300">
+                </button>
+                <button 
+                  className="w-full px-6 py-3 rounded-xl font-medium text-gray-300 transition-all hover:bg-white/5"
+                  style={{
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                  }}
+                >
                   Preview
-                </Button>
+                </button>
               </div>
             </div>
           </div>
         )}
-      </div>
 
       {/* View Booking Modal */}
       {viewingBooking && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setViewingBooking(null)}>
-          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="p-6 border-b border-gray-200">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4" 
+          style={{ background: 'rgba(0, 0, 0, 0.8)' }}
+          onClick={() => setViewingBooking(null)}
+        >
+          <div 
+            className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl"
+            style={{
+              background: 'rgba(20, 20, 20, 0.95)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6 border-b" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-900">Booking Details</h2>
-                <button onClick={() => setViewingBooking(null)} className="text-gray-400 hover:text-gray-600">
+                <h2 className="text-2xl font-bold">
+                  <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+                    Booking Details
+                  </span>
+                </h2>
+                <button 
+                  onClick={() => setViewingBooking(null)} 
+                  className="text-gray-400 hover:text-white transition-colors hover:bg-white/5 rounded-lg p-2"
+                >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
@@ -1124,52 +1284,69 @@ export default function AppointmentsPage() {
             <div className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Customer Name</p>
-                  <p className="text-gray-900">{viewingBooking.user.name}</p>
+                  <p className="text-sm font-medium text-gray-400 mb-1">Customer Name</p>
+                  <p className="text-white text-lg">{viewingBooking.user.name}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Email</p>
-                  <p className="text-gray-900">{viewingBooking.user.email}</p>
+                  <p className="text-sm font-medium text-gray-400 mb-1">Email</p>
+                  <p className="text-white text-lg">{viewingBooking.user.email}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Service</p>
-                  <p className="text-gray-900">{viewingBooking.service.title}</p>
+                  <p className="text-sm font-medium text-gray-400 mb-1">Service</p>
+                  <p className="text-white text-lg">{viewingBooking.service.title}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Date & Time</p>
-                  <p className="text-gray-900">{formatBookingTime(viewingBooking.slot.date, viewingBooking.slot.startTime)}</p>
+                  <p className="text-sm font-medium text-gray-400 mb-1">Date & Time</p>
+                  <p className="text-white text-lg">{formatBookingTime(viewingBooking.slot.date, viewingBooking.slot.startTime)}</p>
                 </div>
                 <div className="col-span-2">
-                  <p className="text-sm font-medium text-gray-600">Status</p>
+                  <p className="text-sm font-medium text-gray-400 mb-2">Status</p>
                   <Badge
                     variant="outline"
-                    className={
-                      viewingBooking.status === "CONFIRMED"
-                        ? "border-green-200 bg-green-50 text-green-700"
+                    className="border-0"
+                    style={{
+                      background: viewingBooking.status === "CONFIRMED"
+                        ? "rgba(34, 197, 94, 0.2)"
                         : viewingBooking.status === "PENDING"
-                        ? "border-yellow-200 bg-yellow-50 text-yellow-700"
-                        : "border-red-200 bg-red-50 text-red-700"
-                    }
+                        ? "rgba(250, 204, 21, 0.2)"
+                        : "rgba(239, 68, 68, 0.2)",
+                      color: viewingBooking.status === "CONFIRMED"
+                        ? "rgb(34, 197, 94)"
+                        : viewingBooking.status === "PENDING"
+                        ? "rgb(250, 204, 21)"
+                        : "rgb(239, 68, 68)"
+                    }}
                   >
                     {viewingBooking.status.charAt(0) + viewingBooking.status.slice(1).toLowerCase()}
                   </Badge>
                 </div>
               </div>
             </div>
-            <div className="p-6 border-t border-gray-200 flex justify-end gap-3">
+            <div className="p-6 border-t flex justify-end gap-3" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
               {viewingBooking.status !== "CANCELLED" && (
-                <Button
-                  variant="outline"
-                  className="border-red-300 text-red-600 hover:bg-red-50"
+                <button
+                  className="px-6 py-2.5 rounded-xl font-medium transition-all hover:bg-white/5"
+                  style={{
+                    color: 'rgb(239, 68, 68)',
+                    border: '1px solid rgba(239, 68, 68, 0.3)'
+                  }}
                   onClick={() => {
                     setViewingBooking(null);
                     handleCancelBooking(viewingBooking.id);
                   }}
                 >
                   Cancel Booking
-                </Button>
+                </button>
               )}
-              <Button onClick={() => setViewingBooking(null)}>Close</Button>
+              <button 
+                className="px-6 py-2.5 rounded-xl font-medium text-white transition-all shadow-lg hover:shadow-xl"
+                style={{
+                  background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)'
+                }}
+                onClick={() => setViewingBooking(null)}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>

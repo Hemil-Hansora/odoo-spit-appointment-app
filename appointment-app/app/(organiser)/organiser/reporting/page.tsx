@@ -1,10 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 interface Appointment {
   id: string;
@@ -133,75 +131,85 @@ export default function ReportingPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-          Reporting
+        <h1 className="text-4xl font-bold tracking-tight mb-2">
+          <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+            Reporting
+          </span>
         </h1>
-        <p className="text-gray-600 mt-1">
+        <p className="text-gray-400 text-lg">
           View today's appointments and customer bookings
         </p>
       </div>
 
       {error && (
-        <div className="rounded-md bg-red-50 p-4">
-          <p className="text-sm text-red-800">{error}</p>
+        <div className="rounded-xl p-4" style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+          <p className="text-sm" style={{ color: 'rgb(239, 68, 68)' }}>{error}</p>
         </div>
       )}
 
       {/* Stats Cards */}
       <div className="grid gap-6 md:grid-cols-4">
-        <Card className="border-gray-200 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Total Appointments
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-900">
-              {loading ? "..." : stats.total}
-            </div>
-          </CardContent>
-        </Card>
+        <div className="rounded-2xl p-6 transition-all hover:scale-105"
+          style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)'
+          }}
+        >
+          <div className="text-sm font-medium text-gray-400 mb-2">
+            Total Appointments
+          </div>
+          <div className="text-4xl font-bold text-white">
+            {loading ? "..." : stats.total}
+          </div>
+        </div>
 
-        <Card className="border-gray-200 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Confirmed
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">
-              {loading ? "..." : stats.confirmed}
-            </div>
-          </CardContent>
-        </Card>
+        <div className="rounded-2xl p-6 transition-all hover:scale-105"
+          style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)'
+          }}
+        >
+          <div className="text-sm font-medium text-gray-400 mb-2">
+            Confirmed
+          </div>
+          <div className="text-4xl font-bold" style={{ color: 'rgb(34, 197, 94)' }}>
+            {loading ? "..." : stats.confirmed}
+          </div>
+        </div>
 
-        <Card className="border-gray-200 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Pending
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">
-              {loading ? "..." : stats.pending}
-            </div>
-          </CardContent>
-        </Card>
+        <div className="rounded-2xl p-6 transition-all hover:scale-105"
+          style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)'
+          }}
+        >
+          <div className="text-sm font-medium text-gray-400 mb-2">
+            Pending
+          </div>
+          <div className="text-4xl font-bold" style={{ color: 'rgb(250, 204, 21)' }}>
+            {loading ? "..." : stats.pending}
+          </div>
+        </div>
 
-        <Card className="border-gray-200 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Cancelled
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">
-              {loading ? "..." : stats.cancelled}
-            </div>
-          </CardContent>
-        </Card>
+        <div className="rounded-2xl p-6 transition-all hover:scale-105"
+          style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)'
+          }}
+        >
+          <div className="text-sm font-medium text-gray-400 mb-2">
+            Cancelled
+          </div>
+          <div className="text-4xl font-bold" style={{ color: 'rgb(239, 68, 68)' }}>
+            {loading ? "..." : stats.cancelled}
+          </div>
+        </div>
       </div>
 
       {/* Search and Filter */}
@@ -210,169 +218,197 @@ export default function ReportingPage() {
           placeholder="Search by customer, service, or resource..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="max-w-md border-gray-300 bg-white"
+          className="max-w-md bg-white/5 border-white/10 text-white placeholder:text-gray-500"
         />
         {selectedAppointments.length > 0 && (
-          <Badge variant="secondary" className="text-sm">
+          <span className="rounded-full px-4 py-2 text-sm font-medium"
+            style={{
+              background: 'rgba(168, 85, 247, 0.2)',
+              border: '1px solid rgba(168, 85, 247, 0.3)',
+              color: 'rgb(168, 85, 247)'
+            }}
+          >
             {selectedAppointments.length} selected
-          </Badge>
+          </span>
         )}
       </div>
 
       {/* Appointments Table */}
-      <Card className="border-gray-200 shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900">
-            Today's Appointments
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <p className="text-sm text-gray-500">Loading appointments...</p>
+      <div className="rounded-2xl p-8 overflow-hidden"
+        style={{
+          background: 'rgba(255, 255, 255, 0.03)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)'
+        }}
+      >
+        <h2 className="text-2xl font-semibold text-white mb-6">Today's Appointments</h2>
+        
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+              <p className="text-gray-400 mt-4">Loading appointments...</p>
             </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="border-b border-gray-200">
-                  <tr>
-                    <th className="pb-3 text-left text-sm font-medium text-gray-700">
-                      Name
-                    </th>
-                    <th className="pb-3 text-left text-sm font-medium text-gray-700">
-                      Service
-                    </th>
-                    <th className="pb-3 text-left text-sm font-medium text-gray-700">
-                      Time
-                    </th>
-                    <th className="pb-3 text-left text-sm font-medium text-gray-700">
-                      Resource
-                    </th>
-                    <th className="pb-3 text-left text-sm font-medium text-gray-700">
-                      Contact
-                    </th>
-                    <th className="pb-3 text-left text-sm font-medium text-gray-700">
-                      Status
-                    </th>
-                    <th className="pb-3 text-left text-sm font-medium text-gray-700">
-                      Capacity
-                    </th>
-                    <th className="pb-3 text-left text-sm font-medium text-gray-700">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {filteredAppointments.map((appointment) => (
-                  <tr key={appointment.id} className="hover:bg-gray-50">
-                    <td className="py-4">
-                      <div>
-                        <div className="font-medium text-gray-900">
-                          {appointment.customerName}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {appointment.customerEmail}
-                        </div>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="border-b border-white/10">
+                <tr>
+                  <th className="pb-3 text-left text-sm font-medium text-gray-400">
+                    Name
+                  </th>
+                  <th className="pb-3 text-left text-sm font-medium text-gray-400">
+                    Service
+                  </th>
+                  <th className="pb-3 text-left text-sm font-medium text-gray-400">
+                    Time
+                  </th>
+                  <th className="pb-3 text-left text-sm font-medium text-gray-400">
+                    Resource
+                  </th>
+                  <th className="pb-3 text-left text-sm font-medium text-gray-400">
+                    Contact
+                  </th>
+                  <th className="pb-3 text-left text-sm font-medium text-gray-400">
+                    Status
+                  </th>
+                  <th className="pb-3 text-left text-sm font-medium text-gray-400">
+                    Capacity
+                  </th>
+                  <th className="pb-3 text-left text-sm font-medium text-gray-400">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/10">
+                {filteredAppointments.map((appointment) => (
+                <tr key={appointment.id} className="hover:bg-white/5 transition-colors">
+                  <td className="py-4">
+                    <div>
+                      <div className="font-medium text-white">
+                        {appointment.customerName}
                       </div>
-                    </td>
-                    <td className="py-4 text-sm text-gray-900">
-                      {appointment.serviceName}
-                    </td>
-                    <td className="py-4">
-                      <div>
-                        <div className="text-sm font-medium text-gray-900">
-                          {appointment.slotDate}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {appointment.slotTime}
-                        </div>
+                      <div className="text-sm text-gray-400">
+                        {appointment.customerEmail}
                       </div>
-                    </td>
-                    <td className="py-4 text-sm text-gray-900">
-                      {appointment.resourceName}
-                    </td>
-                    <td className="py-4 text-sm text-gray-600">
-                      {appointment.customerPhone}
-                    </td>
-                    <td className="py-4">
-                      <Badge
-                        variant={
-                          appointment.status === "confirmed"
-                            ? "default"
-                            : appointment.status === "pending"
-                            ? "secondary"
-                            : "destructive"
-                        }
-                        className={
-                          appointment.status === "confirmed"
-                            ? "bg-green-100 text-green-700 hover:bg-green-100"
-                            : appointment.status === "pending"
-                            ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-100"
-                            : ""
-                        }
+                    </div>
+                  </td>
+                  <td className="py-4 text-sm text-white">
+                    {appointment.serviceName}
+                  </td>
+                  <td className="py-4">
+                    <div>
+                      <div className="text-sm font-medium text-white">
+                        {appointment.slotDate}
+                      </div>
+                      <div className="text-sm text-gray-400">
+                        {appointment.slotTime}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="py-4 text-sm text-white">
+                    {appointment.resourceName}
+                  </td>
+                  <td className="py-4 text-sm text-gray-400">
+                    {appointment.customerPhone}
+                  </td>
+                  <td className="py-4">
+                    <span
+                      className="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium"
+                      style={{
+                        background: appointment.status === "confirmed"
+                          ? 'rgba(34, 197, 94, 0.2)'
+                          : appointment.status === "pending"
+                          ? 'rgba(250, 204, 21, 0.2)'
+                          : 'rgba(239, 68, 68, 0.2)',
+                        border: appointment.status === "confirmed"
+                          ? '1px solid rgba(34, 197, 94, 0.3)'
+                          : appointment.status === "pending"
+                          ? '1px solid rgba(250, 204, 21, 0.3)'
+                          : '1px solid rgba(239, 68, 68, 0.3)',
+                        color: appointment.status === "confirmed"
+                          ? 'rgb(34, 197, 94)'
+                          : appointment.status === "pending"
+                          ? 'rgb(250, 204, 21)'
+                          : 'rgb(239, 68, 68)'
+                      }}
+                    >
+                      {appointment.status}
+                    </span>
+                  </td>
+                  <td className="py-4 text-sm text-white">
+                    {appointment.capacity}
+                  </td>
+                  <td className="py-4">
+                    <div className="flex gap-2">
+                      <button
+                        className="px-3 py-1 text-sm rounded-lg font-medium transition-all"
+                        style={{
+                          background: 'rgba(34, 211, 238, 0.2)',
+                          border: '1px solid rgba(34, 211, 238, 0.3)',
+                          color: 'rgb(34, 211, 238)'
+                        }}
+                        onClick={() => setViewingAppointment(appointment)}
                       >
-                        {appointment.status}
-                      </Badge>
-                    </td>
-                    <td className="py-4 text-sm text-gray-900">
-                      {appointment.capacity}
-                    </td>
-                    <td className="py-4">
-                      <div className="flex gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                          onClick={() => setViewingAppointment(appointment)}
+                        View
+                      </button>
+                      {appointment.status !== "cancelled" && (
+                        <button
+                          className="px-3 py-1 text-sm rounded-lg font-medium transition-all disabled:opacity-50"
+                          style={{
+                            background: 'rgba(239, 68, 68, 0.2)',
+                            border: '1px solid rgba(239, 68, 68, 0.3)',
+                            color: 'rgb(239, 68, 68)'
+                          }}
+                          onClick={() => handleCancelAppointment(appointment.id)}
+                          disabled={cancellingId === appointment.id}
                         >
-                          View
-                        </Button>
-                        {appointment.status !== "cancelled" && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                            onClick={() => handleCancelAppointment(appointment.id)}
-                            disabled={cancellingId === appointment.id}
-                          >
-                            {cancellingId === appointment.id ? "Cancelling..." : "Cancel"}
-                          </Button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-                </tbody>
-              </table>
+                          {cancellingId === appointment.id ? "Cancelling..." : "Cancel"}
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              </tbody>
+            </table>
 
-              {filteredAppointments.length === 0 && !loading && (
-                <div className="py-12 text-center text-gray-500">
-                  No appointments found for today
-                </div>
-              )}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+            {filteredAppointments.length === 0 && !loading && (
+              <div className="py-12 text-center text-gray-400 text-lg">
+                No appointments found for today
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* View Appointment Modal */}
       {viewingAppointment && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setViewingAppointment(null)}>
-          <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-900">Appointment Details</h2>
-                <button onClick={() => setViewingAppointment(null)} className="text-gray-400 hover:text-gray-600">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0, 0, 0, 0.8)' }} onClick={() => setViewingAppointment(null)}>
+          <div className="rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto p-8"
+            style={{
+              background: 'rgba(20, 20, 20, 0.95)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(20px)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-6 pb-6 border-b border-white/10">
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
+                Appointment Details
+              </h2>
+              <button onClick={() => setViewingAppointment(null)} className="text-gray-400 hover:text-white transition-all">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
-            <div className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Customer Name</p>
+                  <p className="text-sm font-medium text-gray-400 mb-2">Customer Name</p>
                   <p className="text-gray-900">{viewingAppointment.customerName}</p>
                 </div>
                 <div>
