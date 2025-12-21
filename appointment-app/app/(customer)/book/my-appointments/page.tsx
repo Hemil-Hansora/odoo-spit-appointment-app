@@ -226,8 +226,8 @@ export default function MyAppointmentsPage() {
                       <p className="text-gray-400">{appointment.resourceName}</p>
                     </div>
 
-                      {/* Details */}
-                      <div className="space-y-3">
+                    {/* Details */}
+                    <div className="space-y-3">
                         {/* Time */}
                         <div className="flex items-start gap-4">
                           <div className="w-32 font-medium text-gray-400">Time</div>
@@ -302,7 +302,6 @@ export default function MyAppointmentsPage() {
                           </div>
                         )}
                       </div>
-                    </div>
 
                     {/* Cancel Button */}
                     {appointment.status !== "cancelled" && (

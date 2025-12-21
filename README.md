@@ -1,1 +1,0 @@
-# odoo-spit-appointment-app
