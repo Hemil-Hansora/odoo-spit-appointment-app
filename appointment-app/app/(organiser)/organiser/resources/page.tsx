@@ -64,11 +64,17 @@ export default function ResourcesPage() {
   }
 
   async function createResource() {
-    if (!newResourceName.trim()) return;
+    if (!newResourceName.trim()) {
+      alert("Please enter a resource name");
+      return;
+    }
 
     setCreating(true);
+    setError("");
     try {
-      if (!organizationId) throw new Error("No organization found");
+      if (!organizationId) {
+        throw new Error("No organization found. Please try refreshing the page.");
+      }
 
       const response = await fetch("/api/organiser/resources", {
         method: "POST",
@@ -80,13 +86,20 @@ export default function ResourcesPage() {
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to create resource");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create resource");
+      }
 
       setNewResourceName("");
       await loadResources();
-    } catch (err) {
+      alert("Resource created successfully!");
+    } catch (err: any) {
       console.error("Failed to create resource:", err);
-      alert("Failed to create resource");
+      const errorMessage = err.message || "Failed to create resource";
+      setError(errorMessage);
+      alert(errorMessage);
     } finally {
       setCreating(false);
     }
@@ -169,15 +182,15 @@ export default function ResourcesPage() {
           </div>
           <button
             onClick={createResource}
-            disabled={creating || !newResourceName.trim()}
-            className="px-6 py-2 rounded-lg font-medium text-white transition-all shadow-lg hover:shadow-xl disabled:opacity-50"
+            disabled={creating}
+            className="px-6 py-2 rounded-lg font-medium text-white transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
-              background: creating || !newResourceName.trim()
+              background: creating
                 ? 'rgba(168, 85, 247, 0.5)'
                 : 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(147, 51, 234) 100%)'
             }}
           >
-            {creating ? "Creating..." : "Create"}
+            {creating ? "Creating..." : "Create Resource"}
           </button>
         </div>
       </div>
