@@ -1,3 +1,18 @@
+
+## 👥 Team Members
+
+- **Meet Soni** - Developer
+- **Hemil Hansora** - Developer
+- **Vrund Patel** - Developer
+
+## 🎥 Project Demo
+
+Watch our project demonstration video: [View Demo Video](https://drive.google.com/file/d/1oBYWmxd4RjWLn21sUQHXqjpvSweMERsk/view?usp=drivesdk)
+
+## 👨‍💼 Reviewer
+
+- **temo@odoo.com**
+
 # 📅 SPIT Appointment Booking System
 
 A modern, full-featured appointment booking platform built with Next.js 15, featuring role-based access control, real-time availability management, and a beautiful dark-themed UI with glass-morphism design.
@@ -384,19 +399,7 @@ border: 1px solid rgba(255, 255, 255, 0.1);
 - `POST /api/auth/sign-out` - User logout
 - `POST /api/auth/forgot-password` - Password reset
 
-## 👥 Team Members
 
-- **Meet Soni** - Developer
-- **Hemil Hansora** - Developer
-- **Vrund Patel** - Developer
-
-## 🎥 Project Demo
-
-Watch our project demonstration video: [View Demo Video](https://drive.google.com/file/d/1oBYWmxd4RjWLn21sUQHXqjpvSweMERsk/view?usp=drivesdk)
-
-## 👨‍💼 Reviewer
-
-- **temo@odoo.com**
 
 ## 🤝 Contributing
 
