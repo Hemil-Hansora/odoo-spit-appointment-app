@@ -13,12 +13,19 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  CUSTOMER
+  ORGANISER
+  ADMIN
+}
+
 model User {
   id            String    @id
   name          String
   email         String
   emailVerified Boolean   @default(false)
   image         String?
+  role          UserRole  @default(CUSTOMER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
@@ -143,6 +150,7 @@ model Service {
   durationMinutes Int
 
   isPublished    Boolean @default(false)
+  shareToken     String? @unique // For sharing unpublished services
   maxCapacity    Int?
   manualConfirm  Boolean @default(false)
   advancePayment Boolean @default(false)

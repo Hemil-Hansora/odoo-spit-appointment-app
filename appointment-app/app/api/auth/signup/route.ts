@@ -73,6 +73,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Update user role based on account type
+    await db.user.update({
+      where: { id: userId },
+      data: { role: accountType === "organiser" ? "ORGANISER" : "CUSTOMER" },
+    });
+
     // If organiser, create organization and add user as owner
     if (accountType === "organiser") {
       const orgName = organizationName || `${name}'s Organization`;

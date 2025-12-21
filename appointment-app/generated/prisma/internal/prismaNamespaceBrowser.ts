@@ -89,6 +89,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
+  role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -185,6 +186,7 @@ export const ServiceScalarFieldEnum = {
   description: 'description',
   durationMinutes: 'durationMinutes',
   isPublished: 'isPublished',
+  shareToken: 'shareToken',
   maxCapacity: 'maxCapacity',
   manualConfirm: 'manualConfirm',
   advancePayment: 'advancePayment',

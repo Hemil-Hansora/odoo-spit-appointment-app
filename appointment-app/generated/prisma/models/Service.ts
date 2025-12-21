@@ -42,6 +42,7 @@ export type ServiceMinAggregateOutputType = {
   description: string | null
   durationMinutes: number | null
   isPublished: boolean | null
+  shareToken: string | null
   maxCapacity: number | null
   manualConfirm: boolean | null
   advancePayment: boolean | null
@@ -57,6 +58,7 @@ export type ServiceMaxAggregateOutputType = {
   description: string | null
   durationMinutes: number | null
   isPublished: boolean | null
+  shareToken: string | null
   maxCapacity: number | null
   manualConfirm: boolean | null
   advancePayment: boolean | null
@@ -72,6 +74,7 @@ export type ServiceCountAggregateOutputType = {
   description: number
   durationMinutes: number
   isPublished: number
+  shareToken: number
   maxCapacity: number
   manualConfirm: number
   advancePayment: number
@@ -99,6 +102,7 @@ export type ServiceMinAggregateInputType = {
   description?: true
   durationMinutes?: true
   isPublished?: true
+  shareToken?: true
   maxCapacity?: true
   manualConfirm?: true
   advancePayment?: true
@@ -114,6 +118,7 @@ export type ServiceMaxAggregateInputType = {
   description?: true
   durationMinutes?: true
   isPublished?: true
+  shareToken?: true
   maxCapacity?: true
   manualConfirm?: true
   advancePayment?: true
@@ -129,6 +134,7 @@ export type ServiceCountAggregateInputType = {
   description?: true
   durationMinutes?: true
   isPublished?: true
+  shareToken?: true
   maxCapacity?: true
   manualConfirm?: true
   advancePayment?: true
@@ -231,6 +237,7 @@ export type ServiceGroupByOutputType = {
   description: string | null
   durationMinutes: number
   isPublished: boolean
+  shareToken: string | null
   maxCapacity: number | null
   manualConfirm: boolean
   advancePayment: boolean
@@ -269,6 +276,7 @@ export type ServiceWhereInput = {
   description?: Prisma.StringNullableFilter<"Service"> | string | null
   durationMinutes?: Prisma.IntFilter<"Service"> | number
   isPublished?: Prisma.BoolFilter<"Service"> | boolean
+  shareToken?: Prisma.StringNullableFilter<"Service"> | string | null
   maxCapacity?: Prisma.IntNullableFilter<"Service"> | number | null
   manualConfirm?: Prisma.BoolFilter<"Service"> | boolean
   advancePayment?: Prisma.BoolFilter<"Service"> | boolean
@@ -290,6 +298,7 @@ export type ServiceOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   durationMinutes?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  shareToken?: Prisma.SortOrderInput | Prisma.SortOrder
   maxCapacity?: Prisma.SortOrderInput | Prisma.SortOrder
   manualConfirm?: Prisma.SortOrder
   advancePayment?: Prisma.SortOrder
@@ -307,6 +316,7 @@ export type ServiceOrderByWithRelationInput = {
 
 export type ServiceWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  shareToken?: string
   AND?: Prisma.ServiceWhereInput | Prisma.ServiceWhereInput[]
   OR?: Prisma.ServiceWhereInput[]
   NOT?: Prisma.ServiceWhereInput | Prisma.ServiceWhereInput[]
@@ -327,7 +337,7 @@ export type ServiceWhereUniqueInput = Prisma.AtLeast<{
   slots?: Prisma.SlotListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
   questions?: Prisma.QuestionListRelationFilter
-}, "id">
+}, "id" | "shareToken">
 
 export type ServiceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -335,6 +345,7 @@ export type ServiceOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   durationMinutes?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  shareToken?: Prisma.SortOrderInput | Prisma.SortOrder
   maxCapacity?: Prisma.SortOrderInput | Prisma.SortOrder
   manualConfirm?: Prisma.SortOrder
   advancePayment?: Prisma.SortOrder
@@ -358,6 +369,7 @@ export type ServiceScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   durationMinutes?: Prisma.IntWithAggregatesFilter<"Service"> | number
   isPublished?: Prisma.BoolWithAggregatesFilter<"Service"> | boolean
+  shareToken?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   maxCapacity?: Prisma.IntNullableWithAggregatesFilter<"Service"> | number | null
   manualConfirm?: Prisma.BoolWithAggregatesFilter<"Service"> | boolean
   advancePayment?: Prisma.BoolWithAggregatesFilter<"Service"> | boolean
@@ -373,6 +385,7 @@ export type ServiceCreateInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -393,6 +406,7 @@ export type ServiceUncheckedCreateInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -413,6 +427,7 @@ export type ServiceUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -433,6 +448,7 @@ export type ServiceUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -453,6 +469,7 @@ export type ServiceCreateManyInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -468,6 +485,7 @@ export type ServiceUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -482,6 +500,7 @@ export type ServiceUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -507,6 +526,7 @@ export type ServiceCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   durationMinutes?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  shareToken?: Prisma.SortOrder
   maxCapacity?: Prisma.SortOrder
   manualConfirm?: Prisma.SortOrder
   advancePayment?: Prisma.SortOrder
@@ -527,6 +547,7 @@ export type ServiceMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   durationMinutes?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  shareToken?: Prisma.SortOrder
   maxCapacity?: Prisma.SortOrder
   manualConfirm?: Prisma.SortOrder
   advancePayment?: Prisma.SortOrder
@@ -542,6 +563,7 @@ export type ServiceMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   durationMinutes?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  shareToken?: Prisma.SortOrder
   maxCapacity?: Prisma.SortOrder
   manualConfirm?: Prisma.SortOrder
   advancePayment?: Prisma.SortOrder
@@ -719,6 +741,7 @@ export type ServiceCreateWithoutOrganizationInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -738,6 +761,7 @@ export type ServiceUncheckedCreateWithoutOrganizationInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -786,6 +810,7 @@ export type ServiceScalarWhereInput = {
   description?: Prisma.StringNullableFilter<"Service"> | string | null
   durationMinutes?: Prisma.IntFilter<"Service"> | number
   isPublished?: Prisma.BoolFilter<"Service"> | boolean
+  shareToken?: Prisma.StringNullableFilter<"Service"> | string | null
   maxCapacity?: Prisma.IntNullableFilter<"Service"> | number | null
   manualConfirm?: Prisma.BoolFilter<"Service"> | boolean
   advancePayment?: Prisma.BoolFilter<"Service"> | boolean
@@ -801,6 +826,7 @@ export type ServiceCreateWithoutResourcesInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -820,6 +846,7 @@ export type ServiceUncheckedCreateWithoutResourcesInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -860,6 +887,7 @@ export type ServiceCreateWithoutSchedulesInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -879,6 +907,7 @@ export type ServiceUncheckedCreateWithoutSchedulesInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -914,6 +943,7 @@ export type ServiceUpdateWithoutSchedulesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -933,6 +963,7 @@ export type ServiceUncheckedUpdateWithoutSchedulesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -952,6 +983,7 @@ export type ServiceCreateWithoutSlotsInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -971,6 +1003,7 @@ export type ServiceUncheckedCreateWithoutSlotsInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -1006,6 +1039,7 @@ export type ServiceUpdateWithoutSlotsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1025,6 +1059,7 @@ export type ServiceUncheckedUpdateWithoutSlotsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1044,6 +1079,7 @@ export type ServiceCreateWithoutBookingsInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -1063,6 +1099,7 @@ export type ServiceUncheckedCreateWithoutBookingsInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -1098,6 +1135,7 @@ export type ServiceUpdateWithoutBookingsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1117,6 +1155,7 @@ export type ServiceUncheckedUpdateWithoutBookingsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1136,6 +1175,7 @@ export type ServiceCreateWithoutQuestionsInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -1155,6 +1195,7 @@ export type ServiceUncheckedCreateWithoutQuestionsInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -1190,6 +1231,7 @@ export type ServiceUpdateWithoutQuestionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1209,6 +1251,7 @@ export type ServiceUncheckedUpdateWithoutQuestionsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1228,6 +1271,7 @@ export type ServiceCreateManyOrganizationInput = {
   description?: string | null
   durationMinutes: number
   isPublished?: boolean
+  shareToken?: string | null
   maxCapacity?: number | null
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -1242,6 +1286,7 @@ export type ServiceUpdateWithoutOrganizationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1261,6 +1306,7 @@ export type ServiceUncheckedUpdateWithoutOrganizationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1280,6 +1326,7 @@ export type ServiceUncheckedUpdateManyWithoutOrganizationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1294,6 +1341,7 @@ export type ServiceUpdateWithoutResourcesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1313,6 +1361,7 @@ export type ServiceUncheckedUpdateWithoutResourcesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1332,6 +1381,7 @@ export type ServiceUncheckedUpdateManyWithoutResourcesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  shareToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxCapacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   manualConfirm?: Prisma.BoolFieldUpdateOperationsInput | boolean
   advancePayment?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1414,6 +1464,7 @@ export type ServiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   description?: boolean
   durationMinutes?: boolean
   isPublished?: boolean
+  shareToken?: boolean
   maxCapacity?: boolean
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -1436,6 +1487,7 @@ export type ServiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   description?: boolean
   durationMinutes?: boolean
   isPublished?: boolean
+  shareToken?: boolean
   maxCapacity?: boolean
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -1452,6 +1504,7 @@ export type ServiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   description?: boolean
   durationMinutes?: boolean
   isPublished?: boolean
+  shareToken?: boolean
   maxCapacity?: boolean
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -1468,6 +1521,7 @@ export type ServiceSelectScalar = {
   description?: boolean
   durationMinutes?: boolean
   isPublished?: boolean
+  shareToken?: boolean
   maxCapacity?: boolean
   manualConfirm?: boolean
   advancePayment?: boolean
@@ -1477,7 +1531,7 @@ export type ServiceSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "durationMinutes" | "isPublished" | "maxCapacity" | "manualConfirm" | "advancePayment" | "metadata" | "organizationId" | "createdAt" | "updatedAt", ExtArgs["result"]["service"]>
+export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "durationMinutes" | "isPublished" | "shareToken" | "maxCapacity" | "manualConfirm" | "advancePayment" | "metadata" | "organizationId" | "createdAt" | "updatedAt", ExtArgs["result"]["service"]>
 export type ServiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   resources?: boolean | Prisma.Service$resourcesArgs<ExtArgs>
@@ -1510,6 +1564,7 @@ export type $ServicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     description: string | null
     durationMinutes: number
     isPublished: boolean
+    shareToken: string | null
     maxCapacity: number | null
     manualConfirm: boolean
     advancePayment: boolean
@@ -1951,6 +2006,7 @@ export interface ServiceFieldRefs {
   readonly description: Prisma.FieldRef<"Service", 'String'>
   readonly durationMinutes: Prisma.FieldRef<"Service", 'Int'>
   readonly isPublished: Prisma.FieldRef<"Service", 'Boolean'>
+  readonly shareToken: Prisma.FieldRef<"Service", 'String'>
   readonly maxCapacity: Prisma.FieldRef<"Service", 'Int'>
   readonly manualConfirm: Prisma.FieldRef<"Service", 'Boolean'>
   readonly advancePayment: Prisma.FieldRef<"Service", 'Boolean'>

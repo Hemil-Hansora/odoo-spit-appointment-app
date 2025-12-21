@@ -15,9 +15,21 @@ export const auth = betterAuth({
     emailAndPassword:{
         enabled: true,
         requireEmailVerification: true,
-        sendResetPassword: async ({ user, url }) => {
-            // TODO: Implement email sending logic for password reset
-            console.log(`Reset password URL for ${user.email}: ${url}`);
+        sendResetPassword: async ({ user, url, token }) => {
+            // For local development without a verified Resend domain
+            // Just log the reset URL to the console
+            console.log(`\n${"=".repeat(50)}`);
+            console.log(`🔐 PASSWORD RESET for ${user.email}`);
+            console.log(`🔗 Reset URL: ${url}`);
+            console.log(`${"=".repeat(50)}\n`);
+            
+            // Uncomment when you have a verified domain:
+            // try {
+            //     await sendResetPasswordEmail({ email: user.email, url, name: user.name });
+            // } catch (error) {
+            //     console.error("Failed to send reset email:", error);
+            //     if (process.env.NODE_ENV === "production") throw error;
+            // }
         },
     },
 
@@ -47,12 +59,19 @@ export const auth = betterAuth({
                     name: user.name,
                 });
                 console.log(`✅ OTP email sent successfully to ${user.email}`);
-                console.log(`📧 OTP for ${user.email}: ${otp}`);
             } catch (error) {
+                // In development, just log the OTP to console and continue
+                // This allows testing without a verified Resend domain
                 console.error(`❌ Failed to send OTP email to ${user.email}:`, error);
-                // Also log to console as fallback for development
-                console.log(`📧 Fallback - OTP for ${user.email}: ${otp}`);
-                throw error; // Re-throw to let better-auth handle the error
+                console.log(`\n${"=".repeat(50)}`);
+                console.log(`📧 DEVELOPMENT MODE - OTP for ${user.email}`);
+                console.log(`🔑 OTP CODE: ${otp}`);
+                console.log(`${"=".repeat(50)}\n`);
+                
+                // Don't throw error in development - allow sign-up to continue
+                if (process.env.NODE_ENV === "production") {
+                    throw error;
+                }
             }
         },
     },
